@@ -1,0 +1,7 @@
+{
+  "name": "node",
+  "type": "module",
+  "dependencies": {
+    "@openformat/sdk": "*"
+  }
+}
