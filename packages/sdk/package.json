@@ -9,10 +9,10 @@
   },
   "type": "module",
   "main": "dist/index.js",
-  "module": "dist/sdk.esm.js",
+  "module": "dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/sdk.esm.js",
+      "import": "./dist/index.js",
       "require": "./dist/index.js"
     }
   },
@@ -25,22 +25,15 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests --runInBand",
-    "lint": "tsdx lint",
-    "prepare": "yarn run generate-contract-types && tsdx build",
+    "start": "tsup --watch",
+    "build": "tsup",
+    "prepare": "yarn run generate-contract-types && tsup",
     "generate-contract-types": "typechain --target ethers-v5 --out-dir src/contract-types ./abis/*.json",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
     "ethers": "^5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
   },
   "jest": {
     "globalSetup": "./test/setup.ts",
@@ -71,8 +64,8 @@
     "ganache": "^7.2.0",
     "husky": "^8.0.1",
     "size-limit": "^7.0.8",
-    "tsdx": "^0.14.1",
     "tslib": "^2.4.0",
+    "tsup": "^6.5.0",
     "typechain": "^8.1.0",
     "typescript": "^4.7.3"
   },
