@@ -27,7 +27,6 @@
   "scripts": {
     "start": "tsup --watch",
     "build": "tsup",
-    "prepare": "tsup",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },

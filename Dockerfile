@@ -28,6 +28,4 @@ WORKDIR /app
 
 COPY --from=deps /workspace-install ./
 
-WORKDIR /app/examples/react-next
-
 CMD ["yarn", "dev"]

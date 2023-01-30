@@ -3,13 +3,17 @@
   "baseBranch": "origin/main",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "^prepare"],
       "outputs": ["dist/**"]
     },
     "test": {
       "dependsOn": ["build"],
       "outputs": []
     },
+    "dev": {
+      "dependsOn": ["@openformat/sdk#build", "@openformat/react#build"]
+    },
+    "prepare": {},
     "start": {
       "cache": false
     }
