@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  # Start web-app in development
+  # docker-compose -f docker-compose.yml -f docker-compose.web-app.yml up main-db develop
+  develop:
+    container_name: nextjs-app-develop
+    stdin_open: true
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: develop
+    volumes:
+      # Share the source code to allow development
+      - .:/app/
+      # Prevent sharing of node_modules between host and container
+      # to avoid ownership and/or platform issues
+      - build_nextjs-app:/app/examples/react-next/.next
+      - nm_nextjs-app:/app/node_modules
+
+volumes:
+  build_nextjs-app:
+  nm_nextjs-app:

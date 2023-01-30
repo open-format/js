@@ -14,7 +14,7 @@
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
   },
-  "packageManager": "yarn@1.22.17",
+  "packageManager": "yarn@3.3.1",
   "scripts": {
     "prepare": "yarn workspace @openformat/js generate-contract-types",
     "start": "turbo run start --parallel --filter=!docs",

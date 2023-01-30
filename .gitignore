@@ -1,11 +1,16 @@
 # Dependencies
 node_modules
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
 
 # Turbo
 .turbo
 
-# yarn
-.yarn
 
 # Misc
 .DS_Store
