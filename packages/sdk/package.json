@@ -9,10 +9,10 @@
   },
   "type": "module",
   "main": "dist/index.js",
-  "module": "dist/sdk.esm.js",
+  "module": "dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/sdk.esm.js",
+      "import": "./dist/index.js",
       "require": "./dist/index.js"
     }
   },
@@ -34,11 +34,6 @@
   },
   "peerDependencies": {
     "ethers": "^5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
   },
   "jest": {
     "globalSetup": "./test/setup.ts",
