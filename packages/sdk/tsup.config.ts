@@ -12,7 +12,6 @@ export default defineConfig(() => {
     bundle: env === 'production',
     skipNodeModulesBundle: true,
     entryPoints: ['src/index.ts'],
-    watch: env === 'development',
     entry: ['src/**/*.ts'], //include all files under src
   };
 });

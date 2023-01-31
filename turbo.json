@@ -3,7 +3,7 @@
   "baseBranch": "origin/main",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build", "^prepare"],
+      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
     "test": {
@@ -13,7 +13,10 @@
     "dev": {
       "dependsOn": ["@openformat/sdk#build", "@openformat/react#build"]
     },
-    "prepare": {},
+    "@openformat/sdk#build": {
+      "dependsOn": ["generate-contract-types"]
+    },
+    "generate-contract-types": {},
     "start": {
       "cache": false
     }

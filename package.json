@@ -16,7 +16,6 @@
   },
   "packageManager": "yarn@3.3.1",
   "scripts": {
-    "prepare": "yarn workspace @openformat/sdk generate-contract-types",
     "dev": "turbo run dev",
     "start": "turbo run start --parallel --filter=!docs",
     "test": "turbo run test --filter=!docs --filter=!react-next",

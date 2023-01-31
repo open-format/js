@@ -3,10 +3,8 @@
     "baseUrl": "./src",
     "paths": {
       // regular app aliases
-      "@/components/*": ["./components/*"],
+      "@/components/*": ["./components/*"]
       // packages aliases, relative to app_directory/baseUrl
-      "@openformat/react/*": ["../../../packages/react/src/*"],
-      "@openformat/react": ["../../../packages/react/src/index"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
