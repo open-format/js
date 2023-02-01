@@ -25,7 +25,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsup --watch",
+    "watch": "tsup --watch",
     "build": "tsup",
     "prepare": "tsup",
     "size": "size-limit",

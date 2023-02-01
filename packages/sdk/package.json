@@ -25,7 +25,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsup --watch",
+    "watch": "tsup --watch",
     "build": "tsup",
     "prepare": "yarn run generate-contract-types && tsup",
     "generate-contract-types": "typechain --target ethers-v5 --out-dir src/contract-types ./abis/**/*.json",

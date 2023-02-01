@@ -10,6 +10,7 @@
       "dependsOn": ["build"],
       "outputs": []
     },
+    "watch": {},
     "dev": {
       "dependsOn": ["@openformat/sdk#build", "@openformat/react#build"]
     },
