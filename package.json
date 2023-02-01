@@ -14,12 +14,14 @@
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
   },
-  "packageManager": "yarn@1.22.17",
+  "packageManager": "yarn@3.4.0",
   "scripts": {
-    "prepare": "yarn workspace @openformat/js generate-contract-types",
+    "dev:node": "turbo run dev --filter=node",
+    "dev:react": "turbo run dev --filter=react-next",
+    "dev": "turbo run dev",
     "start": "turbo run start --parallel --filter=!docs",
     "test": "turbo run test --filter=!docs --filter=!react-next",
-    "build": "turbo run build --filter=!react-next",
+    "build:packages": "turbo run build --filter='./packages/*'",
     "document": "node generate-docs.js"
   },
   "devDependencies": {
