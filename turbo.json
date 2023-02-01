@@ -10,6 +10,13 @@
       "dependsOn": ["build"],
       "outputs": []
     },
+    "dev": {
+      "dependsOn": ["@openformat/sdk#build", "@openformat/react#build"]
+    },
+    "@openformat/sdk#build": {
+      "dependsOn": ["generate-contract-types"]
+    },
+    "generate-contract-types": {},
     "start": {
       "cache": false
     }
