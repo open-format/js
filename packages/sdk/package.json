@@ -28,7 +28,7 @@
     "start": "tsup --watch",
     "build": "tsup",
     "prepare": "yarn run generate-contract-types && tsup",
-    "generate-contract-types": "typechain --target ethers-v5 --out-dir src/contract-types ./abis/*.json",
+    "generate-contract-types": "typechain --target ethers-v5 --out-dir src/contract-types ./abis/**/*.json",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },

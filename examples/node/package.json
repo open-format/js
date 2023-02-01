@@ -1,7 +1,13 @@
 {
   "name": "node",
   "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
-    "@openformat/sdk": "*"
+    "@openformat/sdk": "workspace:^"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
