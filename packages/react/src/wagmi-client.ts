@@ -6,7 +6,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.polygonMumbai],
+  [chain.localhost, chain.polygonMumbai, chain.polygon],
   [publicProvider()]
 );
 
