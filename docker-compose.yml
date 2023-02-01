@@ -18,9 +18,11 @@ services:
       - .:/app/
       # Prevent sharing of node_modules between host and container
       # to avoid ownership and/or platform issues
-      - build_nextjs-app:/app/examples/react-next/.next
-      - nm_nextjs-app:/app/node_modules
+      - nm_react-next-app:/app/examples/react-next/node_modules
+      - nm_monorepo:/app/node_modules
+      - nm_react-package:/app/packages/react/node_modules
 
 volumes:
-  build_nextjs-app:
-  nm_nextjs-app:
+  nm_react-next-app:
+  nm_monorepo:
+  nm_react-package:
