@@ -24,6 +24,7 @@ export function OpenFormatProvider({
   children,
   config = {
     network: 'localhost',
+    appId: '',
   },
 }: {
   children: React.ReactNode;
@@ -40,6 +41,7 @@ function InnerProvider({
   children,
   config = {
     network: 'localhost',
+    appId: '',
   },
 }: {
   children: React.ReactNode;
