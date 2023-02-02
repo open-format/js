@@ -6,10 +6,12 @@ import { providers, Signer } from 'ethers';
 export class BaseContract {
   provider: providers.Provider;
   signer: Signer | undefined;
+  appId: string;
 
-  constructor(provider: providers.Provider, signer?: Signer) {
+  constructor(provider: providers.Provider, appId: string, signer?: Signer) {
     this.provider = provider;
     this.signer = signer;
+    this.appId = appId;
   }
 
   /**

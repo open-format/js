@@ -9,7 +9,7 @@ export class ERC721 extends BaseContract {
   contract: ERC721Base | undefined;
 
   constructor(provider: providers.Provider, address: string, signer: Signer) {
-    super(provider, signer);
+    super(provider, address, signer);
 
     if (address && ethers.utils.isAddress(address)) {
       this.contract = ERC721Base__factory.connect(address, signer);

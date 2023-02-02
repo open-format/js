@@ -2,6 +2,7 @@ import { Signer } from 'ethers';
 
 export interface SDKOptions {
   network: Chain;
+  appId: string;
   signer?: Signer | string;
   nftStorageToken?: string;
 }

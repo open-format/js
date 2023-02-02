@@ -12,7 +12,7 @@ export class App extends BaseContract {
   address: string;
 
   constructor(address: string, provider: providers.Provider, signer?: Signer) {
-    super(provider, signer);
+    super(provider, address, signer);
     this.address = address;
     this.signer = signer;
   }

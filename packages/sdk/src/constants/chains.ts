@@ -20,7 +20,7 @@ export const Chains: {
   },
   localhost: {
     id: 'localhost',
-    chainId: 1337,
+    chainId: 31337,
     name: 'Localhost',
     token: 'ETH',
     rpcUrl: 'http://127.0.0.1:8545',
