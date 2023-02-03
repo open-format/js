@@ -10,6 +10,7 @@
   "type": "module",
   "main": "dist/openformat-react.cjs.js",
   "module": "dist/openformat-react.esm.js",
+  "types": "dist/openformat-react.d.ts",
   "exports": {
     ".": {
       "module": "./dist/openformat-react.esm.js",
