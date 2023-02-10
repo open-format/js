@@ -26,9 +26,10 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsup --watch",
-    "build": "tsup",
-    "prepare": "tsup",
+    "postinstall": "preconstruct dev",
+    "build": "preconstruct build",
+    "watch": "preconstruct watch",
+    "fix": "preconstruct fix",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },

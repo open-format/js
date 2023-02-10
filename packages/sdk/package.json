@@ -7,7 +7,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
   "main": "dist/openformat-sdk.cjs.js",
   "module": "dist/openformat-sdk.esm.js",
   "types": "dist/openformat-sdk.d.ts",
@@ -29,8 +28,10 @@
     "postinstall": "preconstruct dev",
     "build": "preconstruct build",
     "fix": "preconstruct fix",
+    "validate": "preconstruct validate",
+    "watch": "preconstruct watch",
     "prepare": "yarn run generate-contract-types",
-    "generate-contract-types": "typechain --target ethers-v5 --out-dir src/contract-types ./abis/*.json",
+    "generate-contract-types": "typechain --target ethers-v5 --out-dir src/contract-types ./abis/**/*.json",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
@@ -49,7 +50,10 @@
     "trailingComma": "es5"
   },
   "preconstruct": {
-    "exports": true
+    "exports": true,
+    "entrypoints": [
+      "index.ts"
+    ]
   },
   "size-limit": [
     {
