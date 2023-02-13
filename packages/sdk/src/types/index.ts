@@ -9,6 +9,8 @@ export interface SDKOptions {
 
 export type Chain = 'mainnet' | 'mumbai' | 'localhost' | (string & {});
 
+export type ChainId = number;
+
 export type TokenProperty = {
   id: string;
   key: string;
@@ -25,6 +27,7 @@ export type ChainConfig = {
   name: string;
   token: string;
   rpcUrl: string;
+  subgraph: string;
 };
 
 export interface NFTMetadata {
@@ -55,32 +58,19 @@ export interface IPFSData {
  * Subgraph responses
  */
 
-export interface SaleDataResponse {
-  token: {
-    saleData: {
-      id: string;
-      maxSupply: string;
-      totalEarnings: string;
-      totalSold: string;
-      totalReleased: string;
-      salePrice: string;
-      createdAt: string;
-      royaltiesPercentage: string;
-      primaryCommission: string;
-      secondaryCommission: string;
-    };
-  } | null;
+export interface ContractResponse {
+  contracts: {
+    id: string;
+    createdAt: string;
+    creator: string;
+    type: string;
+  }[];
 }
 
-export interface TokensResponse {
-  tokens: {
+export interface AppResponse {
+  apps: {
     id: string;
-    symbol: string;
-    creator: {
-      id: string;
-    };
-    properties: TokenProperty[];
-    release_type: ReleaseType;
     createdAt: string;
+    creator: string;
   }[];
 }
