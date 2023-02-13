@@ -18,6 +18,7 @@
   "scripts": {
     "dev:node": "turbo run dev --filter=node",
     "dev:react": "turbo run dev --filter=react-next",
+    "packages:watch": "turbo run watch --filter='./packages/*'",
     "dev": "turbo run dev",
     "start": "turbo run start --parallel --filter=!docs",
     "test": "turbo run test --filter=!docs --filter=!react-next",

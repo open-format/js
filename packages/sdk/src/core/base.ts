@@ -1,4 +1,5 @@
 import { providers, Signer } from 'ethers';
+import { getSubgraphUrlFromChainID } from '../helpers/providers';
 
 /**
  * Creates a new instance of the BaseContract which manages the provider and signer
@@ -6,12 +7,22 @@ import { providers, Signer } from 'ethers';
 export class BaseContract {
   provider: providers.Provider;
   signer?: Signer | undefined;
+  subgraphEndpoint?: string;
   appId: string;
 
   constructor(provider: providers.Provider, appId: string, signer?: Signer) {
     this.provider = provider;
     this.signer = signer;
     this.appId = appId;
+
+    this.getSubgraphEndpoint();
+  }
+
+  async getSubgraphEndpoint() {
+    const providerNetwork = await this.provider.getNetwork();
+    this.subgraphEndpoint = getSubgraphUrlFromChainID(providerNetwork.chainId);
+
+    return this.subgraphEndpoint;
   }
 
   /**

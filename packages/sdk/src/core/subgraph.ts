@@ -1,9 +1,6 @@
 import { gql, request, RequestDocument, Variables } from 'graphql-request';
 import { AppResponse, ContractResponse } from '../types';
 
-//@TODO: This needs to be updated depending on chain
-const ENDPOINT = 'http://0.0.0.0:8000/subgraphs/name/open-format/mumbai';
-
 /**
  * Makes a raw request to the Open Format subgraph allowing you to pass your own
  * Query or Mutation
@@ -16,13 +13,20 @@ const ENDPOINT = 'http://0.0.0.0:8000/subgraphs/name/open-format/mumbai';
  * ```
  */
 export async function rawRequest<T = any, V = Variables>(
+  endpoint: string,
   document: RequestDocument,
   variables?: V
 ) {
-  return await request<T, V>(ENDPOINT, document, variables);
+  return await request<T, V>(endpoint, document, variables);
 }
 
-export async function getAppIdsByCreator({ creator }: { creator: string }) {
+export async function getAppIdsByCreator({
+  endpoint,
+  creator,
+}: {
+  endpoint: string;
+  creator: string;
+}) {
   const query = gql`
     query getAppIdsByCreator($creator: String) {
       apps(
@@ -35,15 +39,17 @@ export async function getAppIdsByCreator({ creator }: { creator: string }) {
     }
   `;
 
-  return await request<AppResponse, { creator: string }>(ENDPOINT, query, {
+  return await request<AppResponse, { creator: string }>(endpoint, query, {
     creator: creator,
   });
 }
 
 export async function getERC721ByCreator({
+  endpoint,
   appId,
   createdAt,
 }: {
+  endpoint: string;
   appId: string;
   createdAt: string;
 }) {
@@ -66,11 +72,37 @@ export async function getERC721ByCreator({
   `;
 
   return await request<ContractResponse, { appId: string; createdAt: string }>(
-    ENDPOINT,
+    endpoint,
     query,
     {
       appId: appId,
       createdAt: createdAt,
     }
   );
+}
+
+export async function getERC721ByID({
+  endpoint,
+  id,
+}: {
+  endpoint: string;
+  id: string;
+}) {
+  const query = gql`
+    query getERC721ContractByApp($id: String!) {
+      contracts(where: { id: $id, type: "ERC721" }) {
+        id
+        type
+        createdAt
+        creator
+        app {
+          id
+        }
+      }
+    }
+  `;
+
+  return await request<ContractResponse, { id: string }>(endpoint, query, {
+    id,
+  });
 }
