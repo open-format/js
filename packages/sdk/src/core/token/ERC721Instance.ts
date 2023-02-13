@@ -1,6 +1,7 @@
 import {
   ContractReceipt,
   ContractTransaction,
+  Overrides,
   providers,
   Signer,
 } from 'ethers';
@@ -33,8 +34,14 @@ export class ERC721Instance extends BaseContract {
     return receipt;
   }
 
-  async mint(address: string, tokenURI: string): Promise<ContractReceipt> {
-    const tx = await this.contract.mintTo(address, tokenURI);
+  async mint(
+    params: Parameters<typeof this.contract.mintTo>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    const tx = await this.contract.mintTo(params[0], params[1], {
+      ...transactionArgs,
+    });
+
     const receipt = this.processTransaction(tx);
     return receipt;
   }
