@@ -1,3 +1,3 @@
-export * from './useMint';
+export * from './useCreateContract';
 export * from './useNFT';
 export * from './useWallet';
