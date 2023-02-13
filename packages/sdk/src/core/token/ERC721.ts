@@ -1,25 +1,37 @@
-import { providers, Signer } from 'ethers';
+import { Overrides, providers, Signer } from 'ethers';
 import { ERC721Factory__factory } from '../../contract-types';
+import { ERC721Factory } from '../../contract-types/token/ERC721';
 import { poll } from '../../helpers/subgraph';
 import { ContractResponse } from '../../types';
 import { BaseContract } from '../base';
 import { getERC721ByCreator } from '../subgraph';
 
 export class ERC721 extends BaseContract {
-  constructor(provider: providers.Provider, address: string, signer: Signer) {
-    super(provider, address, signer);
+  contract: ERC721Factory;
+
+  constructor(provider: providers.Provider, appId: string, signer?: Signer) {
+    super(provider, appId, signer);
+
+    this.contract = ERC721Factory__factory.connect(
+      this.appId,
+      signer || provider
+    );
   }
 
   async create(
-    name: string,
-    symbol: string,
-    address: string,
-    royaltyBps: number
+    params: Parameters<typeof this.contract.createERC721>,
+    transactionArgs?: Overrides
   ) {
     if (!this.signer) return;
 
-    const contract = ERC721Factory__factory.connect(this.appId, this.signer);
-    const tx = await contract.createERC721(name, symbol, address, royaltyBps);
+    //@TODO: Check if there is a better way of doing this?
+    const tx = await this.contract.createERC721(
+      params[0],
+      params[1],
+      params[2],
+      params[3],
+      { ...transactionArgs }
+    );
     const receipt = await tx.wait();
     const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
       .timestamp;
