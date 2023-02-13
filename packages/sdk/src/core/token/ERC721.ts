@@ -65,7 +65,8 @@ export class ERC721 extends BaseContract {
     );
   }
 
-  async getNFT(contractAddress: string): Promise<ERC721Instance | Error> {
+  async getContract(contractAddress: string): Promise<ERC721Instance | Error> {
+    //@TODO Check subgraph for type of contract so can create correct instance
     const endpoint = await this.getSubgraphEndpoint();
     const fetchERC721 = await getERC721ByID({ endpoint, id: contractAddress });
 
@@ -79,6 +80,7 @@ export class ERC721 extends BaseContract {
       throw new Error('Contract does not not exist');
     }
 
+    //@TODO: Return correct instance depending on contract type from subgraph
     return new ERC721Instance(
       this.provider,
       this.appId,

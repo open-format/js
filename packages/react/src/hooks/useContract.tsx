@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useOpenFormat } from '../provider';
 
-export function useNFT(address: string) {
+export function useContract(address: string) {
   const { sdk } = useOpenFormat();
-  const { data } = useQuery(['nft'], () => sdk.ERC721.getNFT(address));
+  const { data } = useQuery(['contract'], () =>
+    sdk.ERC721.getContract(address)
+  );
 
   return data;
 }
