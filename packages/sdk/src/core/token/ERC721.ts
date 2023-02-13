@@ -37,8 +37,11 @@ export class ERC721 extends BaseContract {
     const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
       .timestamp;
 
+    const endpoint = await this.getSubgraphEndpoint();
+
     const subgraphCall = async () =>
       await getERC721ByCreator({
+        endpoint,
         appId: this.appId.toString(),
         createdAt: txTimestamp.toString(),
       });
@@ -63,8 +66,11 @@ export class ERC721 extends BaseContract {
   }
 
   async getNFT(contractAddress: string): Promise<ERC721Instance | Error> {
-    const fetchERC721 = await getERC721ByID({ id: contractAddress });
+    const endpoint = await this.getSubgraphEndpoint();
+    const fetchERC721 = await getERC721ByID({ endpoint, id: contractAddress });
+
     const contractExists = fetchERC721.contracts[0]?.id;
+
     if (!ethers.utils.isAddress(contractAddress)) {
       throw new Error('Invalid contract address');
     }
