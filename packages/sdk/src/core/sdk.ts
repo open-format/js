@@ -14,7 +14,7 @@ import { ERC721 } from './token/ERC721';
  */
 export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
-  ERC721?: ERC721;
+  ERC721: ERC721;
 
   static defaultOptions: SDKOptions = {
     network: 'http://localhost:8545',
@@ -37,13 +37,7 @@ export class OpenFormatSDK extends BaseContract {
 
     if (this.options.signer) {
       this.signer = getSigner(this.options.signer, this.provider);
-      this.ERC721 = new ERC721(this.provider, this.appId, this.signer);
     }
-  }
-
-  getNFT(address: string) {
-    if (!this.signer) return 'No signer found';
-    // GO FIND ADDRESS IN SUBGRAPH
-    return new ERC721(this.provider, address, this.signer);
+    this.ERC721 = new ERC721(this.provider, this.appId, this?.signer);
   }
 }

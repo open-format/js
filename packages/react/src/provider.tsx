@@ -1,7 +1,7 @@
 import { OpenFormatSDK, SDKOptions } from '@openformat/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConnectKitProvider } from 'connectkit';
-import React, { createContext, useContext, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
 import { Connector, useConnect, useSigner, WagmiConfig } from 'wagmi';
 import { wagmiClient } from './wagmi-client';
 
@@ -48,9 +48,15 @@ function InnerProvider({
   config?: SDKOptions;
 }) {
   const { connect, connectors } = useConnect();
-  const sdk = useRef(new OpenFormatSDK(config));
-
   const { data: signer } = useSigner();
+  const sdk = useMemo(
+    () =>
+      new OpenFormatSDK({
+        signer,
+        ...config,
+      }),
+    [signer]
+  );
 
   useEffect(() => {
     const wallet = JSON.parse(localStorage.getItem('wagmi.wallet') ?? '""');
@@ -67,18 +73,8 @@ function InnerProvider({
     }
   }, []);
 
-  useEffect(() => {
-    if (!config.signer) {
-      if (signer) {
-        sdk.current.signer = signer;
-      } else {
-        sdk.current.signer = undefined;
-      }
-    }
-  }, [signer, config]);
-
   return (
-    <OpenFormatContext.Provider value={{ sdk: sdk.current }}>
+    <OpenFormatContext.Provider value={{ sdk: sdk }}>
       <ConnectKitProvider>
         <QueryClientProvider client={queryClient}>
           {children}

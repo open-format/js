@@ -4,7 +4,6 @@ export interface SDKOptions {
   network: Chain;
   appId: string;
   signer?: Signer | string;
-  nftStorageToken?: string;
 }
 
 export type Chain = 'mainnet' | 'mumbai' | 'localhost' | (string & {});
