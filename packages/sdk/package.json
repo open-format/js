@@ -9,7 +9,6 @@
   },
   "main": "dist/openformat-sdk.cjs.js",
   "module": "dist/openformat-sdk.esm.js",
-  "types": "dist/openformat-sdk.d.ts",
   "exports": {
     ".": {
       "module": "./dist/openformat-sdk.esm.js",
@@ -50,7 +49,10 @@
     "trailingComma": "es5"
   },
   "preconstruct": {
-    "exports": true
+    "exports": true,
+    "entrypoints": [
+      "index.ts"
+    ]
   },
   "size-limit": [
     {

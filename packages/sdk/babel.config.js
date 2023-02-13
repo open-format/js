@@ -1,5 +1,5 @@
 /** @type {babel.ConfigFunction} */
-module.exports = api => {
+module.exports = (api) => {
   api.cache(true);
 
   return {

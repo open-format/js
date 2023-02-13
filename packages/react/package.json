@@ -49,7 +49,10 @@
     "trailingComma": "es5"
   },
   "preconstruct": {
-    "exports": true
+    "exports": true,
+    "entryPoints": [
+      "index.tsx"
+    ]
   },
   "size-limit": [
     {
