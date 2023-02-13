@@ -1,10 +1,11 @@
-import { Overrides, providers, Signer } from 'ethers';
+import { ethers, Overrides, providers, Signer } from 'ethers';
 import { ERC721Factory__factory } from '../../contract-types';
 import { ERC721Factory } from '../../contract-types/token/ERC721';
 import { poll } from '../../helpers/subgraph';
 import { ContractResponse } from '../../types';
 import { BaseContract } from '../base';
-import { getERC721ByCreator } from '../subgraph';
+import { getERC721ByCreator, getERC721ByID } from '../subgraph';
+import { ERC721Instance } from './ERC721Instance';
 
 export class ERC721 extends BaseContract {
   contract: ERC721Factory;
@@ -50,6 +51,33 @@ export class ERC721 extends BaseContract {
       validate,
       interval: 1000,
       maxAttempts: 20,
-    }).then((response) => (response as ContractResponse).contracts[0].id);
+    }).then(
+      (response) =>
+        new ERC721Instance(
+          this.provider,
+          this.appId,
+          (response as ContractResponse).contracts[0].id,
+          this.signer
+        )
+    );
+  }
+
+  async getNFT(contractAddress: string): Promise<ERC721Instance | Error> {
+    const fetchERC721 = await getERC721ByID({ id: contractAddress });
+    const contractExists = fetchERC721.contracts[0]?.id;
+    if (!ethers.utils.isAddress(contractAddress)) {
+      throw new Error('Invalid contract address');
+    }
+
+    if (!contractExists) {
+      throw new Error('Contract does not not exist');
+    }
+
+    return new ERC721Instance(
+      this.provider,
+      this.appId,
+      contractAddress,
+      this.signer
+    );
   }
 }

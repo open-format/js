@@ -74,3 +74,23 @@ export async function getERC721ByCreator({
     }
   );
 }
+
+export async function getERC721ByID({ id }: { id: string }) {
+  const query = gql`
+    query getERC721ContractByApp($id: String!) {
+      contracts(where: { id: $id, type: "ERC721" }) {
+        id
+        type
+        createdAt
+        creator
+        app {
+          id
+        }
+      }
+    }
+  `;
+
+  return await request<ContractResponse, { id: string }>(ENDPOINT, query, {
+    id,
+  });
+}
