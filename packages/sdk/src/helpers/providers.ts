@@ -1,6 +1,6 @@
 import { ethers, providers, Signer } from 'ethers';
 import { Chains } from '../constants';
-import { Chain } from '../types';
+import { Chain, ChainId } from '../types';
 
 /**
  * Returns a network URL base on a chain e.g. 'mumbai' and allows for
@@ -22,6 +22,19 @@ export function getProviderUrl(chain: Chain) {
       } else {
         throw new Error(`Couldn't get provider for '${chain}'`);
       }
+  }
+}
+//@TODO: comment
+export function getSubgraphUrlFromChainID(chainId: ChainId) {
+  switch (chainId) {
+    case Chains.mainnet.chainId:
+      return Chains.mainnet.subgraph;
+    case Chains.mumbai.chainId:
+      return Chains.mumbai.subgraph;
+    case Chains.localhost.chainId:
+      return Chains.localhost.subgraph;
+    default:
+      throw new Error(`Couldn't get subgraph URL for '${chainId}'`);
   }
 }
 
