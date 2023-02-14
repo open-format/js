@@ -26,7 +26,6 @@
     "node": ">=10"
   },
   "scripts": {
-    "postinstall": "preconstruct dev",
     "build": "preconstruct build",
     "watch": "preconstruct watch",
     "fix": "preconstruct fix",
