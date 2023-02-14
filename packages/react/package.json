@@ -80,7 +80,7 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@openformat/sdk": "workspace:^",
+    "@openformat/sdk": "^0.0.2",
     "@tanstack/react-query": "^4.0.10",
     "connectkit": "0.0.2",
     "wagmi": "0.5.8"

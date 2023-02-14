@@ -3496,7 +3496,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@openformat/react@workspace:packages/react"
   dependencies:
-    "@openformat/sdk": "workspace:^"
+    "@openformat/sdk": ^0.0.2
     "@preconstruct/cli": ^2.3.0
     "@size-limit/preset-small-lib": ^7.0.8
     "@tanstack/react-query": ^4.0.10
@@ -3520,7 +3520,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@openformat/sdk@workspace:^, @openformat/sdk@workspace:packages/sdk":
+"@openformat/sdk@^0.0.2, @openformat/sdk@workspace:^, @openformat/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@openformat/sdk@workspace:packages/sdk"
   dependencies:
