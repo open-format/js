@@ -6,6 +6,7 @@ import {
 } from '../helpers/providers';
 import { SDKOptions } from '../types';
 import { BaseContract } from './base';
+import { Factory } from './factory';
 import { ERC721 } from './token/ERC721';
 
 /**
@@ -15,6 +16,7 @@ import { ERC721 } from './token/ERC721';
 export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
   ERC721: ERC721;
+  factory: Factory;
 
   static defaultOptions: SDKOptions = {
     network: 'http://localhost:8545',
@@ -39,5 +41,6 @@ export class OpenFormatSDK extends BaseContract {
       this.signer = getSigner(this.options.signer, this.provider);
     }
     this.ERC721 = new ERC721(this.provider, this.appId, this?.signer);
+    this.factory = new Factory(this.provider, this.appId, this?.signer);
   }
 }

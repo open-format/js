@@ -1,33 +1,30 @@
-import { ContractReceipt, ContractTransaction, ethers, Signer } from 'ethers';
+import {
+  ContractReceipt,
+  ContractTransaction,
+  ethers,
+  providers,
+  Signer,
+} from 'ethers';
 import {
   Factory as FactoryContract,
   Factory__factory,
 } from '../contract-types';
-import {
-  getProviderFromUrl,
-  getProviderUrl,
-  getSigner,
-} from '../helpers/providers';
+import { BaseContract } from './base';
 
-export class Factory {
-  signer: Signer | string;
-  factoryAddress: string;
+export class Factory extends BaseContract {
   contract: FactoryContract;
 
-  constructor({
-    signer,
-    factoryAddress,
-    network = 'localhost',
-  }: {
-    signer: Signer | string;
-    factoryAddress: string;
-    network?: string;
-  }) {
-    const providerUrl = getProviderUrl(network);
-    const provider = getProviderFromUrl(providerUrl);
-    this.signer = getSigner(signer, provider);
-    this.factoryAddress = factoryAddress;
-    this.contract = Factory__factory.connect(this.factoryAddress, this.signer);
+  constructor(
+    provider: providers.Provider,
+    factoryAddress: string,
+    signer?: Signer
+  ) {
+    super(provider, factoryAddress, signer);
+
+    this.contract = Factory__factory.connect(
+      factoryAddress,
+      signer || provider
+    );
   }
 
   async processTransaction(tx: ContractTransaction): Promise<ContractReceipt> {
