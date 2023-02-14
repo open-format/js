@@ -1,5 +1,11 @@
 # @openformat/react
 
+## 0.0.3
+
+### Patch Changes
+
+- 801e095: Fix @openformat/sdk dependency versioning
+
 ## 0.0.2
 
 ### Patch Changes
