@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.0.2
+
+### Patch Changes
+
+- 0e1eabf: remove postinstall scripts
+
 ## 0.0.1
 
 ### Patch Changes

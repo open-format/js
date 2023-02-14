@@ -1,6 +1,6 @@
 {
   "name": "@openformat/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": "https://github.com/open-format/js/tree/main/packages/react",
   "author": "OpenFormat Dev <dev@openformat.tech>",
   "license": "Apache-2.0",
