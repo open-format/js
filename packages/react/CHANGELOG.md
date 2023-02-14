@@ -1,5 +1,13 @@
 # @openformat/react
 
+## 0.0.4
+
+### Patch Changes
+
+- c0efebf: Improve factory logic
+- Updated dependencies [c0efebf]
+  - @openformat/sdk@0.0.3
+
 ## 0.0.3
 
 ### Patch Changes
