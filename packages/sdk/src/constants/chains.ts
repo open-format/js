@@ -18,7 +18,7 @@ export const Chains: {
     name: 'Polygon Mumbai',
     token: 'MATIC',
     rpcUrl: 'https://matic-mumbai.chainstacklabs.com/',
-    subgraph: '',
+    subgraph: 'https://api.thegraph.com/subgraphs/name/open-format/mumbai',
   },
   localhost: {
     id: 'localhost',
