@@ -1,13 +1,14 @@
 {
   "name": "node",
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "nodemon index.js"
   },
-  "dependencies": {
-    "@openformat/sdk": "workspace:^"
-  },
   "devDependencies": {
     "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@openformat/sdk": "workspace:^"
   }
 }
