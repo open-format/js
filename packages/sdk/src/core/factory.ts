@@ -1,22 +1,25 @@
 import { ContractReceipt, ContractTransaction, ethers, Signer } from 'ethers';
-import { Factory, Factory__factory } from '../contract-types';
+import {
+  Factory as FactoryContract,
+  Factory__factory,
+} from '../contract-types';
 import {
   getProviderFromUrl,
   getProviderUrl,
   getSigner,
 } from '../helpers/providers';
 
-export class App {
-  signer: Signer;
+export class Factory {
+  signer: Signer | string;
   factoryAddress: string;
-  contract: Factory;
+  contract: FactoryContract;
 
   constructor({
     signer,
     factoryAddress,
     network = 'localhost',
   }: {
-    signer: Signer;
+    signer: Signer | string;
     factoryAddress: string;
     network?: string;
   }) {
