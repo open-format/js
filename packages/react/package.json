@@ -4,9 +4,7 @@
   "repository": "https://github.com/open-format/js/tree/main/packages/react",
   "author": "OpenFormat Dev <dev@openformat.tech>",
   "license": "Apache-2.0",
-  "publishConfig": {
-    "access": "public"
-  },
+  "type": "module",
   "main": "dist/openformat-react.cjs.js",
   "module": "dist/openformat-react.esm.js",
   "types": "dist/openformat-react.cjs.d.ts",
@@ -22,7 +20,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=14.13.1 || >=16.0.0"
   },
   "scripts": {
     "build": "preconstruct build",
