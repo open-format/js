@@ -5,6 +5,9 @@
   "author": "OpenFormat Dev <dev@openformat.tech>",
   "license": "Apache-2.0",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/openformat-react.cjs.js",
   "module": "dist/openformat-react.esm.js",
   "types": "dist/openformat-react.cjs.d.ts",
