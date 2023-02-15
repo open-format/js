@@ -7,10 +7,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
   "main": "dist/openformat-react.cjs.js",
   "module": "dist/openformat-react.esm.js",
-  "types": "dist/openformat-react.d.ts",
+  "types": "dist/openformat-react.cjs.d.ts",
   "exports": {
     ".": {
       "module": "./dist/openformat-react.esm.js",
@@ -49,17 +48,17 @@
   },
   "preconstruct": {
     "exports": true,
-    "entryPoints": [
-      "index.tsx"
+    "entrypoints": [
+      "index.ts"
     ]
   },
   "size-limit": [
     {
-      "path": "dist/react.cjs.production.min.js",
+      "path": "dist/openformat-react.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/react.esm.js",
+      "path": "dist/openformat-react.esm.js",
       "limit": "10 KB"
     }
   ],

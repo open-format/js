@@ -3492,11 +3492,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openformat/react@workspace:^, @openformat/react@workspace:packages/react":
+"@openformat/react@^0.0.4, @openformat/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@openformat/react@workspace:packages/react"
   dependencies:
-    "@openformat/sdk": ^0.0.2
+    "@openformat/sdk": ^0.0.3
     "@preconstruct/cli": ^2.3.0
     "@size-limit/preset-small-lib": ^7.0.8
     "@tanstack/react-query": ^4.0.10
@@ -3520,7 +3520,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@openformat/sdk@^0.0.2, @openformat/sdk@workspace:^, @openformat/sdk@workspace:packages/sdk":
+"@openformat/sdk@^0.0.3, @openformat/sdk@workspace:^, @openformat/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@openformat/sdk@workspace:packages/sdk"
   dependencies:
@@ -14878,7 +14878,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-next@workspace:examples/react-next"
   dependencies:
-    "@openformat/react": "workspace:^"
+    "@openformat/react": ^0.0.4
+    "@openformat/sdk": ^0.0.3
     "@types/node": 18.11.18
     "@types/react": 18.0.27
     "@types/react-dom": 18.0.10
