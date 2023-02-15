@@ -1,5 +1,11 @@
 # @openformat/react
 
+## 0.0.7
+
+### Patch Changes
+
+- 07e9d61: add es modules
+
 ## 0.0.6
 
 ### Patch Changes
