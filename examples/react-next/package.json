@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@openformat/react": "workspace:^",
+    "@openformat/react": "^0.0.5",
     "@openformat/sdk": "^0.0.3",
     "next": "13.1.5",
     "react": "18.2.0",
