@@ -1,4 +1,5 @@
-import { chain, configureChains, createClient } from 'wagmi';
+import { configureChains, createClient } from 'wagmi';
+import { foundry, polygon, polygonMumbai } from 'wagmi/chains';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
@@ -6,7 +7,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [chain.hardhat, chain.polygonMumbai, chain.polygon],
+  [foundry, polygon, polygonMumbai],
   [publicProvider()]
 );
 
