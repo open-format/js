@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@openformat/react": "0.0.7",
+    "@openformat/react": "0.0.8",
     "next": "13.1.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
