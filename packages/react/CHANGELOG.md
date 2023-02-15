@@ -1,5 +1,11 @@
 # @openformat/react
 
+## 0.0.5
+
+### Patch Changes
+
+- b7d6794: Fix package config
+
 ## 0.0.4
 
 ### Patch Changes
