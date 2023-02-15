@@ -1,5 +1,11 @@
 # @openformat/react
 
+## 0.0.6
+
+### Patch Changes
+
+- 37635c4: update wagmi and connectkit dependency versions
+
 ## 0.0.5
 
 ### Patch Changes
