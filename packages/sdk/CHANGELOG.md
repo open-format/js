@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.0.4
+
+### Patch Changes
+
+- 4047076: Update Factory abi
+
 ## 0.0.3
 
 ### Patch Changes
