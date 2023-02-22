@@ -1,5 +1,12 @@
 # @openformat/react
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [4047076]
+  - @openformat/sdk@0.0.4
+
 ## 0.0.8
 
 ### Patch Changes
