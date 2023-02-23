@@ -14,15 +14,20 @@
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
   },
-  "packageManager": "yarn@3.4.0",
+  "packageManager": "yarn@1.22.19",
   "scripts": {
     "dev:node": "turbo run dev --filter=node",
     "dev:react": "turbo run dev --filter=react-next",
     "packages:watch": "turbo run watch --filter='./packages/*'",
+    "packages:build": "turbo run build --filter='./packages/*'",
     "dev": "turbo run dev",
     "start": "turbo run start --parallel --filter=!docs",
+    "lint": "turbo run lint",
     "test": "turbo run test --filter=!docs --filter=!react-next",
-    "document": "node generate-docs.js"
+    "document": "node generate-docs.js",
+    "version:dev": "yarn changeset version --snapshot dev",
+    "release:dev": "yarn changeset publish --tag dev --no-git-tag",
+    "release": "yarn changeset publish"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.9",

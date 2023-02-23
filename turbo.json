@@ -17,6 +17,7 @@
     "@openformat/sdk#build": {
       "dependsOn": ["generate-contract-types"]
     },
+    "lint": {},
     "generate-contract-types": {},
     "start": {
       "cache": false
