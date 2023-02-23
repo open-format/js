@@ -17,8 +17,6 @@ jobs:
       - name: CI Setup
         uses: ./.github/actions/ci-setup
 
-      - run: yarn build
-
       - uses: actions/cache@v3
         timeout-minutes: 5
         id: cache-build

@@ -11,3 +11,6 @@ runs:
     - name: Install Dependencies
       run: yarn --immutable
       shell: bash
+
+    - name: Build packages
+      run: yarn packages:build

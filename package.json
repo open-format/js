@@ -19,6 +19,7 @@
     "dev:node": "turbo run dev --filter=node",
     "dev:react": "turbo run dev --filter=react-next",
     "packages:watch": "turbo run watch --filter='./packages/*'",
+    "packages:build": "turbo run build --filter='./packages/*'",
     "dev": "turbo run dev",
     "start": "turbo run start --parallel --filter=!docs",
     "lint": "turbo run lint",
