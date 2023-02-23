@@ -24,8 +24,8 @@
     "lint": "turbo run lint",
     "test": "turbo run test --filter=!docs --filter=!react-next",
     "document": "node generate-docs.js",
-    "version:alpha": "yarn changeset version --snapshot alpha",
-    "release:alpha": "yarn changeset publish --tag alpha --no-git-tag",
+    "version:dev": "yarn changeset version --snapshot dev",
+    "release:dev": "yarn changeset publish --tag dev --no-git-tag",
     "release": "yarn changeset publish"
   },
   "devDependencies": {
