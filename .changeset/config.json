@@ -2,10 +2,14 @@
   "$schema": "https://unpkg.com/@changesets/config@2.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": true,
-  "fixed": [],
+  "fixed": ["@openformat/sdk", "@openformat/react"],
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["node", "react-next", "docs"]
+  "ignore": ["node", "react-next", "docs"],
+  "snapshot": {
+    "useCalculatedVersion": true,
+    "prereleaseTemplate": "{tag}-{commit}"
+  }
 }
