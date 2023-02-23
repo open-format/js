@@ -5,19 +5,34 @@ const path = require("path");
 
 const files = [
   {
-    name: "NFT",
-    input: "packages/sdk/src/core/app.ts",
-    output: "docs/docs/api/javascript",
+    name: "Subgraph",
+    input: "packages/sdk/src/core/subgraph.ts",
+    output: "docs/api",
   },
   {
     name: "SDK",
     input: "packages/sdk/src/core/sdk.ts",
-    output: "docs/docs/api/javascript",
+    output: "docs/api",
   },
   {
     name: "Hooks",
     input: "packages/react/src/hooks/*.tsx",
-    output: "docs/docs/api/react",
+    output: "docs/api",
+  },
+  {
+    name: "ERC721",
+    input: "packages/sdk/src/core/token/ERC721.ts",
+    output: "docs/api",
+  },
+  {
+    name: "ERC721Instance",
+    input: "packages/sdk/src/core/token/ERC721Instance.ts",
+    output: "docs/api",
+  },
+  {
+    name: "ERC20",
+    input: "packages/sdk/src/core/token/ERC20.ts",
+    output: "docs/api",
   },
 ];
 
