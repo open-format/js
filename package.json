@@ -21,8 +21,12 @@
     "packages:watch": "turbo run watch --filter='./packages/*'",
     "dev": "turbo run dev",
     "start": "turbo run start --parallel --filter=!docs",
+    "lint": "turbo run lint",
     "test": "turbo run test --filter=!docs --filter=!react-next",
-    "document": "node generate-docs.js"
+    "document": "node generate-docs.js",
+    "version:alpha": "yarn changeset version --snapshot alpha",
+    "release:alpha": "yarn changeset publish --tag alpha --no-git-tag",
+    "release": "yarn changeset publish"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.9",
