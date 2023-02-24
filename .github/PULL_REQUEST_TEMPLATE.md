@@ -1,17 +1,13 @@
 <!--
-Thanks for your interest in the project. I appreciate bugs filed and PRs submitted!
+Before creating a pull request:
 
-Please make sure that you are familiar with and follow the Code of Conduct for
-this project (found in the CODE_OF_CONDUCT.md file).
-
-Also, please make sure you're familiar with and follow the instructions in the
-contributing guidelines (found in the CONTRIBUTING.md file).
-
-If you're new to contributing to open source projects, you might find this free
-video course helpful: http://kcd.im/pull-request
-
-Please fill out the information below to expedite the review and (hopefully)
-merge of your pull request!
+- Please check you haven't committed any unnecessary files. New folders and files may need to be added to .gitignore.
+- Please check locally that all tests, linting and builds are successful.
+- Please check for any spelling mistakes and that unnecessary console.logs are not committed.
+- Please update the name of the PR to `[TYPE]: [NAME]` e.g `Feature: Registration form`.
+- Please add at least two reviewers.
+- Please add yourself as an assignee.
+- Please add the correct label to your PR.
 -->
 
 <!-- What changes are being made? (What feature/bug is being fixed here?) -->
@@ -36,6 +32,10 @@ merge of your pull request!
 - [ ] Documentation
 - [ ] Tests
 - [ ] Code complete
-- [ ] Changeset <!-- This is necessary if your changes should release any packages. Run `yarn changeset` to create a changeset -->
+- [ ] Changeset <!-- Run `yarn changeset` to create a changeset -->
+
+<!-- key points/stats that would be useful for marketing purposes -->
+
+**Marketing Nuggets**:
 
 <!-- feel free to add additional comments -->
