@@ -35,4 +35,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'New dev releases of "[@openformat/sdk](https://www.npmjs.com/package/@openformat/sdk)" and "[@openformat/react](https://www.npmjs.com/package/@openformat/react)" are now available! 🚀 Earn $OPEN tokens for providing "[Feedback](https://www.google.com)" for these releases.'
+          args: 'New dev releases of "[@openformat/sdk](https://www.npmjs.com/package/@openformat/sdk)" and "[@openformat/react](https://www.npmjs.com/package/@openformat/react)" are now available! 🚀'
