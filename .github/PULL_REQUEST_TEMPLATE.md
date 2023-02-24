@@ -1,9 +1,6 @@
 <!--
-Before creating a pull request:
+Before going any further:
 
-- Please check you haven't committed any unnecessary files. New folders and files may need to be added to .gitignore.
-- Please check locally that all tests, linting and builds are successful.
-- Please check for any spelling mistakes and that unnecessary console.logs are not committed.
 - Please update the name of the PR to `[TYPE]: [NAME]` e.g `Feature: Registration form`.
 - Please add at least two reviewers.
 - Please add yourself as an assignee.
@@ -30,8 +27,12 @@ Before creating a pull request:
 <!-- to check an item, place an "x" in the box like so: "- [x] Documentation" -->
 
 - [ ] Documentation
-- [ ] Tests
 - [ ] Code complete
+- [ ] Linting
+- [ ] Tests
+- [ ] Spelling mistakes and console.logs
+- [ ] Only necessary files changes committed <!-- Please check you haven't committed any unnecessary files. New folders and files may need to be added to .gitignore. -->
+- [ ] Commenting <!-- To help your future self and other developers please leave appropriate function and helper comments in the code >
 - [ ] Changeset <!-- Run `yarn changeset` to create a changeset -->
 
 <!-- key points/stats that would be useful for marketing purposes -->
