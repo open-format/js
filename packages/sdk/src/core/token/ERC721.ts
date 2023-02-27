@@ -65,7 +65,7 @@ export class ERC721 extends BaseContract {
     );
   }
 
-  async getContract(contractAddress: string): Promise<ERC721Instance | Error> {
+  async getContract(contractAddress: string): Promise<ERC721Instance> {
     //@TODO Check subgraph for type of contract so can create correct instance
     const fetchERC721 = await this.subgraph.getERC721ByID({
       id: contractAddress,
