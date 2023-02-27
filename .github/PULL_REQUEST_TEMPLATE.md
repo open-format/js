@@ -32,7 +32,7 @@ Before going any further:
 - [ ] Tests
 - [ ] Spelling mistakes and console.logs
 - [ ] Only necessary files changes committed <!-- Please check you haven't committed any unnecessary files. New folders and files may need to be added to .gitignore. -->
-- [ ] Commenting <!-- To help your future self and other developers please leave appropriate function and helper comments in the code >
+- [ ] Commenting <!-- To help your future self and other developers please leave appropriate function and helper comments in the code -->
 - [ ] Changeset <!-- Run `yarn changeset` to create a changeset -->
 
 <!-- key points/stats that would be useful for marketing purposes -->
