@@ -1,5 +1,13 @@
 # @openformat/sdk
 
+## 0.0.5-dev-f257855
+
+### Patch Changes
+
+- 9c5c081: - Update function commenting
+  - Add `useRawRequest` hook
+  - Add basic tests
+
 ## 0.0.4
 
 ### Patch Changes
