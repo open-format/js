@@ -23,7 +23,7 @@ describe('useRawRequest', () => {
     );
   });
 
-  it('allows you to pass variables to a query', async () => {
+  it('allows you to pass variables and config to a query', async () => {
     render(<TestConfig />);
 
     await waitFor(() => {
