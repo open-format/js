@@ -3,6 +3,10 @@ import { gql, request, RequestDocument, Variables } from 'graphql-request';
 import { AppResponse, ContractResponse } from '../types';
 import { BaseContract } from './base';
 
+/**
+ * Creates a new Subgraph instance
+ * @public
+ */
 export class Subgraph extends BaseContract {
   constructor(provider: providers.Provider, appId: string, signer?: Signer) {
     super(provider, appId, signer);
@@ -11,12 +15,13 @@ export class Subgraph extends BaseContract {
   /**
    * Makes a raw request to the Open Format subgraph allowing you to pass your own
    * Query or Mutation
-   * @param document
+   * @param {RequestDocument} document a graphql query
+   * @param {V} [variables] an optional object of query variables
    * @returns a result from the subgraph
    *
    * @example
    * ```
-   * rawRequest(gql`{ apps { id } }`)
+   * sdk.subgraph.rawRequest(gql`{ apps { id } }`)
    * ```
    */
   async rawRequest<T = any, V = Variables>(

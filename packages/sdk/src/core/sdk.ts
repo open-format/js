@@ -13,6 +13,15 @@ import { ERC721 } from './token/ERC721';
 /**
  * Creates a new instance of the Open Format SDK
  * @public
+ * @param {SDKOptions} options
+ * @example
+ * ```ts
+ * const sdk = new OpenFormatSDK({
+ *  signer: "0x....",
+ *  appId: "0x1ade2613adb6bafbc65d40eb9c1effbe3bfd8b81",
+ *  network: "mumbai",
+ * });
+ * ```
  */
 export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
