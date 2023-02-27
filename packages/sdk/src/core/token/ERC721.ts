@@ -41,7 +41,7 @@ export class ERC721 extends BaseContract {
       .timestamp;
 
     const subgraphCall = async () =>
-      await this.subgraph.getERC721ByCreator({
+      await this.subgraph.getERC721ByTimestamp({
         appId: this.appId.toString(),
         createdAt: txTimestamp.toString(),
       });
