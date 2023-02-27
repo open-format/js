@@ -26,6 +26,7 @@
   "scripts": {
     "build": "preconstruct build",
     "fix": "preconstruct fix",
+    "test": "jest test",
     "validate": "preconstruct validate",
     "watch": "preconstruct watch",
     "prepare": "yarn run generate-contract-types",
@@ -37,8 +38,6 @@
     "ethers": "^5"
   },
   "jest": {
-    "globalSetup": "./test/setup.ts",
-    "globalTeardown": "./test/teardown.ts",
     "testTimeout": 10000
   },
   "prettier": {
@@ -71,6 +70,7 @@
     "ethers": "^5",
     "ganache": "^7.2.0",
     "husky": "^8.0.1",
+    "jest": "^29.4.3",
     "size-limit": "^7.0.8",
     "tslib": "^2.4.0",
     "typechain": "^8.1.0",
