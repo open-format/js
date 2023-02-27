@@ -2,10 +2,14 @@ import { useMutation } from '@tanstack/react-query';
 import { Overrides } from 'ethers';
 import { useOpenFormat } from '../provider';
 
-export enum ContractType {
-  ERC20,
-  ERC721,
-}
+/**
+ * Create a contract
+ * @param {ContractType} type The type of contract you want to create e.g ContractType.ERC721
+ * @example
+ * ```tsx
+ * const { data, create } = useCreateContract(ContractType.ERC721);
+ * ```
+ */
 
 export function useCreateContract(
   type: ContractType,
@@ -41,4 +45,9 @@ export function useCreateContract(
       create: mutateAsync,
     };
   }
+}
+
+export enum ContractType {
+  ERC20,
+  ERC721,
 }

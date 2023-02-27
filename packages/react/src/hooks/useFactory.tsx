@@ -2,6 +2,14 @@ import { Factory } from '@openformat/sdk';
 import { useMutation } from '@tanstack/react-query';
 import { useOpenFormat } from '../provider';
 
+/**
+ * Create apps
+ * @example
+ * ```tsx
+ * const { data, create } = useFactory();
+ * ```
+ */
+
 export function useFactory() {
   const { sdk } = useOpenFormat();
 

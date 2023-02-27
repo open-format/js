@@ -3,11 +3,11 @@ import { useMutation } from '@tanstack/react-query';
 
 /**
  * Hook to mint
- * @param {OpenFormatNFT} nft A deployed NFT instance
+ * @param {ERC721Instance} nft ERC721Instance
  *
  * @example
  * ```tsx
- * const { ...mutation, mint } = useMint(nft);
+ * const { data: transactionReceipt, mint } = useMint(nft);
  * ```
  *
  */
