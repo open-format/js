@@ -6,7 +6,7 @@ import { OpenFormatProvider } from '../src/provider';
 const signer = new ethers.Wallet(
   '0x04c65fb1737cf9a5fb605b403b5027924309e53a3433d06029a0441cc03e2042',
   new ethers.providers.JsonRpcProvider(
-    'https://matic-mainnet.chainstacklabs.com/'
+    'https://matic-mumbai.chainstacklabs.com/'
   )
 );
 
