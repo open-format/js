@@ -1,17 +1,10 @@
 <!--
-Thanks for your interest in the project. I appreciate bugs filed and PRs submitted!
+Before going any further:
 
-Please make sure that you are familiar with and follow the Code of Conduct for
-this project (found in the CODE_OF_CONDUCT.md file).
-
-Also, please make sure you're familiar with and follow the instructions in the
-contributing guidelines (found in the CONTRIBUTING.md file).
-
-If you're new to contributing to open source projects, you might find this free
-video course helpful: http://kcd.im/pull-request
-
-Please fill out the information below to expedite the review and (hopefully)
-merge of your pull request!
+- Please update the name of the PR to `[TYPE]: [NAME]` e.g `Feature: Registration form`.
+- Please add at least two reviewers.
+- Please add yourself as an assignee.
+- Please add the correct label to your PR.
 -->
 
 <!-- What changes are being made? (What feature/bug is being fixed here?) -->
@@ -34,8 +27,16 @@ merge of your pull request!
 <!-- to check an item, place an "x" in the box like so: "- [x] Documentation" -->
 
 - [ ] Documentation
-- [ ] Tests
 - [ ] Code complete
-- [ ] Changeset <!-- This is necessary if your changes should release any packages. Run `yarn changeset` to create a changeset -->
+- [ ] Linting
+- [ ] Tests
+- [ ] Spelling mistakes and console.logs
+- [ ] Only necessary files changes committed <!-- Please check you haven't committed any unnecessary files. New folders and files may need to be added to .gitignore. -->
+- [ ] Commenting <!-- To help your future self and other developers please leave appropriate function and helper comments in the code -->
+- [ ] Changeset <!-- Run `yarn changeset` to create a changeset -->
+
+<!-- key points/stats that would be useful for marketing purposes -->
+
+**Marketing Nuggets**:
 
 <!-- feel free to add additional comments -->
