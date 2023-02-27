@@ -14,8 +14,6 @@ export class BaseContract {
     this.provider = provider;
     this.signer = signer;
     this.appId = appId;
-
-    this.getSubgraphEndpoint();
   }
 
   async getSubgraphEndpoint() {
