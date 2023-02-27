@@ -1,6 +1,6 @@
 {
   "name": "@openformat/react",
-  "version": "0.0.9",
+  "version": "0.0.10-dev-f257855",
   "repository": "https://github.com/open-format/js/tree/main/packages/react",
   "author": "OpenFormat Dev <dev@openformat.tech>",
   "license": "Apache-2.0",
@@ -81,7 +81,7 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@openformat/sdk": "^0.0.4",
+    "@openformat/sdk": "0.0.5-dev-f257855",
     "@tanstack/react-query": "^4.0.10",
     "connectkit": "1.0.1",
     "wagmi": "0.7.15"

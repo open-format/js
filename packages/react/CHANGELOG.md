@@ -1,5 +1,15 @@
 # @openformat/react
 
+## 0.0.10-dev-f257855
+
+### Patch Changes
+
+- 9c5c081: - Update function commenting
+  - Add `useRawRequest` hook
+  - Add basic tests
+- Updated dependencies [9c5c081]
+  - @openformat/sdk@0.0.5-dev-f257855
+
 ## 0.0.9
 
 ### Patch Changes
