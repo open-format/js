@@ -4,11 +4,12 @@ import { ERC721Factory } from '../../contract-types/token/ERC721';
 import { poll } from '../../helpers/subgraph';
 import { ContractResponse } from '../../types';
 import { BaseContract } from '../base';
-import { getERC721ByCreator, getERC721ByID } from '../subgraph';
+import { Subgraph } from '../subgraph';
 import { ERC721Instance } from './ERC721Instance';
 
 export class ERC721 extends BaseContract {
   contract: ERC721Factory;
+  subgraph: Subgraph;
 
   constructor(provider: providers.Provider, appId: string, signer?: Signer) {
     super(provider, appId, signer);
@@ -17,6 +18,8 @@ export class ERC721 extends BaseContract {
       this.appId,
       signer || provider
     );
+
+    this.subgraph = new Subgraph(provider, appId, signer);
   }
 
   async create(
@@ -37,11 +40,8 @@ export class ERC721 extends BaseContract {
     const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
       .timestamp;
 
-    const endpoint = await this.getSubgraphEndpoint();
-
     const subgraphCall = async () =>
-      await getERC721ByCreator({
-        endpoint,
+      await this.subgraph.getERC721ByCreator({
         appId: this.appId.toString(),
         createdAt: txTimestamp.toString(),
       });
@@ -67,8 +67,9 @@ export class ERC721 extends BaseContract {
 
   async getContract(contractAddress: string): Promise<ERC721Instance | Error> {
     //@TODO Check subgraph for type of contract so can create correct instance
-    const endpoint = await this.getSubgraphEndpoint();
-    const fetchERC721 = await getERC721ByID({ endpoint, id: contractAddress });
+    const fetchERC721 = await this.subgraph.getERC721ByID({
+      id: contractAddress,
+    });
 
     const contractExists = fetchERC721.contracts[0]?.id;
 
