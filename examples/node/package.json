@@ -9,6 +9,6 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "@openformat/sdk": "workspace:^"
+    "@openformat/sdk": "*"
   }
 }

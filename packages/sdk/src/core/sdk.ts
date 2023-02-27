@@ -7,16 +7,27 @@ import {
 import { SDKOptions } from '../types';
 import { BaseContract } from './base';
 import { Factory } from './factory';
+import { Subgraph } from './subgraph';
 import { ERC721 } from './token/ERC721';
 
 /**
  * Creates a new instance of the Open Format SDK
  * @public
+ * @param {SDKOptions} options
+ * @example
+ * ```ts
+ * const sdk = new OpenFormatSDK({
+ *  signer: "0x....",
+ *  appId: "0x1ade2613adb6bafbc65d40eb9c1effbe3bfd8b81",
+ *  network: "mumbai",
+ * });
+ * ```
  */
 export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
   ERC721: ERC721;
   factory: Factory;
+  subgraph: Subgraph;
 
   static defaultOptions: SDKOptions = {
     network: 'http://localhost:8545',
@@ -42,5 +53,6 @@ export class OpenFormatSDK extends BaseContract {
     }
     this.ERC721 = new ERC721(this.provider, this.appId, this?.signer);
     this.factory = new Factory(this.provider, this.appId, this?.signer);
+    this.subgraph = new Subgraph(this.provider, this.appId, this?.signer);
   }
 }
