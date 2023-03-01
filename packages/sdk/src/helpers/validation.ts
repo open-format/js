@@ -9,3 +9,7 @@ export function validateWalletAndMetadata(wallet: string, url: string) {
     throw new Error('Invalid metadata URL');
   }
 }
+
+export function address(addr: string) {
+  return ethers.utils.getAddress(addr);
+}
