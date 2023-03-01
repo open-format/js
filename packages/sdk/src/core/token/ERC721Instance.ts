@@ -1,11 +1,13 @@
 import {
   ContractReceipt,
   ContractTransaction,
+  ethers,
   Overrides,
   providers,
   Signer,
 } from 'ethers';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
+import { validateWalletAndMetadata } from '../../helpers/validation';
 import { BaseContract } from '../base';
 
 export class ERC721Instance extends BaseContract {
@@ -19,13 +21,13 @@ export class ERC721Instance extends BaseContract {
   ) {
     super(provider, appId, signer);
 
-    if (contractAddress) {
+    if (contractAddress && ethers.utils.isAddress(contractAddress)) {
       this.contract = ERC721Base__factory.connect(
         contractAddress,
         signer || provider
       );
     } else {
-      throw new Error('Invalid Address');
+      throw new Error('Failed to get contract');
     }
   }
 
@@ -38,6 +40,8 @@ export class ERC721Instance extends BaseContract {
     params: Parameters<typeof this.contract.mintTo>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
+    validateWalletAndMetadata(params[0].toString(), params[1].toString());
+
     const tx = await this.contract.mintTo(params[0], params[1], {
       ...transactionArgs,
     });
@@ -50,6 +54,8 @@ export class ERC721Instance extends BaseContract {
     params: Parameters<typeof this.contract.batchMintTo>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
+    validateWalletAndMetadata(params[0].toString(), params[2].toString());
+
     const tx = await this.contract.batchMintTo(
       params[0],
       params[1],
@@ -61,12 +67,5 @@ export class ERC721Instance extends BaseContract {
 
     const receipt = this.processTransaction(tx);
     return receipt;
-  }
-
-  async burn() {
-    return 'burn()';
-  }
-  async transfer() {
-    return 'transfer()';
   }
 }
