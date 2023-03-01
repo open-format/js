@@ -49,7 +49,20 @@ export class ERC721Instance extends BaseContract {
   async burn() {
     return 'burn()';
   }
-  async transfer() {
-    return 'transfer()';
+  async transfer(
+    params: Parameters<typeof this.contract.transferFrom>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    const tx = await this.contract.transferFrom(
+      params[0],
+      params[1],
+      params[2],
+      {
+        ...transactionArgs,
+      }
+    );
+
+    const receipt = this.processTransaction(tx);
+    return receipt;
   }
 }
