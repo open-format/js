@@ -95,4 +95,15 @@ export class ERC721Instance extends BaseContract {
 
     return tx;
   }
+
+  async ownerOf(
+    params: Parameters<typeof this.contract.ownerOf>,
+    transactionArgs?: Overrides
+  ): Promise<string> {
+    const tx = await this.contract.ownerOf(params[0], {
+      ...transactionArgs,
+    });
+
+    return tx;
+  }
 }
