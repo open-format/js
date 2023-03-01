@@ -1,4 +1,5 @@
 import {
+  BigNumber,
   ContractReceipt,
   ContractTransaction,
   Overrides,
@@ -9,7 +10,7 @@ import { ERC721Base, ERC721Base__factory } from '../../contract-types';
 import { BaseContract } from '../base';
 
 export class ERC721Instance extends BaseContract {
-  contract: ERC721Base;
+  private contract: ERC721Base;
 
   constructor(
     provider: providers.Provider,
@@ -70,6 +71,14 @@ export class ERC721Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<string> {
     const tx = await this.contract.getApproved(params[0], {
+      ...transactionArgs,
+    });
+
+    return tx;
+  }
+
+  async totalSupply(transactionArgs?: Overrides): Promise<BigNumber> {
+    const tx = await this.contract.totalSupply({
       ...transactionArgs,
     });
 
