@@ -84,4 +84,15 @@ export class ERC721Instance extends BaseContract {
 
     return tx;
   }
+
+  async balanceOf(
+    params: Parameters<typeof this.contract.balanceOf>,
+    transactionArgs?: Overrides
+  ): Promise<BigNumber> {
+    const tx = await this.contract.balanceOf(params[0], {
+      ...transactionArgs,
+    });
+
+    return tx;
+  }
 }
