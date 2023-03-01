@@ -1,3 +1,4 @@
+export * from './useBurn';
 export * from './useContract';
 export * from './useCreateContract';
 export * from './useFactory';
