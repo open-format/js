@@ -52,4 +52,27 @@ export class ERC721Instance extends BaseContract {
   async transfer() {
     return 'transfer()';
   }
+
+  async approve(
+    params: Parameters<typeof this.contract.approve>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    const tx = await this.contract.approve(params[0], params[1], {
+      ...transactionArgs,
+    });
+
+    const receipt = this.processTransaction(tx);
+    return receipt;
+  }
+
+  async getApproved(
+    params: Parameters<typeof this.contract.getApproved>,
+    transactionArgs?: Overrides
+  ): Promise<string> {
+    const tx = await this.contract.getApproved(params[0], {
+      ...transactionArgs,
+    });
+
+    return tx;
+  }
 }

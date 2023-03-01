@@ -1,3 +1,4 @@
+export * from './useApprove';
 export * from './useContract';
 export * from './useCreateContract';
 export * from './useFactory';
