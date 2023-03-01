@@ -46,6 +46,23 @@ export class ERC721Instance extends BaseContract {
     return receipt;
   }
 
+  async batchMint(
+    params: Parameters<typeof this.contract.batchMintTo>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    const tx = await this.contract.batchMintTo(
+      params[0],
+      params[1],
+      params[2],
+      {
+        ...transactionArgs,
+      }
+    );
+
+    const receipt = this.processTransaction(tx);
+    return receipt;
+  }
+
   async burn() {
     return 'burn()';
   }

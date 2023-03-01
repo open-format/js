@@ -1,3 +1,4 @@
+export * from './useBatchMint';
 export * from './useContract';
 export * from './useCreateContract';
 export * from './useFactory';
