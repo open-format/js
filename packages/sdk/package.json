@@ -38,7 +38,10 @@
     "ethers": "^5"
   },
   "jest": {
-    "testTimeout": 10000
+    "testTimeout": 10000,
+    "collectCoverageFrom": [
+      "src/!(contract-types)**/*"
+    ]
   },
   "prettier": {
     "printWidth": 80,
