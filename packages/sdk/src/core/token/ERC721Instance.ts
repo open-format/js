@@ -1,14 +1,13 @@
-import {
-  ContractReceipt,
-  ContractTransaction,
-  ethers,
-  Overrides,
-  providers,
-  Signer,
-} from 'ethers';
+import { ContractReceipt, ethers, Overrides, providers, Signer } from 'ethers';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
+import { processTransaction } from '../../helpers/transaction';
 import { validateWalletAndMetadata } from '../../helpers/validation';
 import { BaseContract } from '../base';
+
+/**
+ * ERC721 Instance
+ * @public
+ */
 
 export class ERC721Instance extends BaseContract {
   contract: ERC721Base;
@@ -31,10 +30,18 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async processTransaction(tx: ContractTransaction): Promise<ContractReceipt> {
-    const receipt = await tx.wait();
-    return receipt;
-  }
+  /**
+   * Mint ERC721 NFTs
+   * @public
+   * @description NFT minting functionality
+   * @param {string[]} params wallet address and metadataURL
+   * @param {Overrides} [transactionArgs] optional transaction arguments
+   * @example
+   * ```javascript
+   * const nft = await sdk.getContract("{{contract_address}}");
+   * await nft.mint([walletAddress, metadataURL]);
+   * ```
+   */
 
   async mint(
     params: Parameters<typeof this.contract.mintTo>,
@@ -46,9 +53,22 @@ export class ERC721Instance extends BaseContract {
       ...transactionArgs,
     });
 
-    const receipt = this.processTransaction(tx);
+    const receipt = processTransaction(tx);
     return receipt;
   }
+
+  /**
+   * Batch mint ERC721 NFTs
+   * @public
+   * @description NFT batch minting functionality
+   * @param {string[]} params wallet address, number of tokens to mint, metadataURL
+   * @param {Overrides} [transactionArgs] optional transaction arguments
+   * @example
+   * ```javascript
+   * const nft = await sdk.getContract("{{contract_address}}");
+   * await nft.batchMint([walletAddress, 5, metadataURL]);
+   * ```
+   */
 
   async batchMint(
     params: Parameters<typeof this.contract.batchMintTo>,
@@ -65,7 +85,7 @@ export class ERC721Instance extends BaseContract {
       }
     );
 
-    const receipt = this.processTransaction(tx);
+    const receipt = processTransaction(tx);
     return receipt;
   }
 }
