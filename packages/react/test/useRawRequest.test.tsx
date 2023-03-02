@@ -3,6 +3,7 @@ import { gql } from 'graphql-request';
 import React from 'react';
 import { useRawRequest } from '../src/hooks';
 import { render, screen, waitFor } from '../src/utilities';
+import * as constants from './constants';
 
 describe('useRawRequest', () => {
   it('allows you to make a custom request', async () => {
@@ -18,9 +19,7 @@ describe('useRawRequest', () => {
 
     await waitFor(() => screen.getByTestId('tokenId'));
 
-    expect(screen.getByTestId('tokenId')).toHaveTextContent(
-      '0x05a3e6a34baffa74586a93f64b57cbd9a6383c23'
-    );
+    expect(screen.getByTestId('tokenId')).toHaveTextContent(constants.APP_ID);
   });
 
   it('allows you to pass variables and config to a query', async () => {
@@ -69,7 +68,7 @@ function TestVariables() {
       }
     `,
     variables: {
-      id: '0x05a3e6a34baffa74586a93f64b57cbd9a6383c23',
+      id: constants.APP_ID,
     },
   });
 
