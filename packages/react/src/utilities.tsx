@@ -2,20 +2,19 @@ import { render, RenderOptions } from '@testing-library/react';
 import { ethers } from 'ethers';
 import React, { FC, ReactElement } from 'react';
 import { OpenFormatProvider } from '../src/provider';
+import * as constants from '../test/constants';
 
 const signer = new ethers.Wallet(
-  '0x04c65fb1737cf9a5fb605b403b5027924309e53a3433d06029a0441cc03e2042',
-  new ethers.providers.JsonRpcProvider(
-    'https://matic-mumbai.chainstacklabs.com/'
-  )
+  constants.PRIVATE_KEY,
+  new ethers.providers.JsonRpcProvider('http://localhost:8545')
 );
 
 const App: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <OpenFormatProvider
       config={{
-        network: 'mumbai',
-        appId: '0x05a3e6a34baffa74586a93f64b57cbd9a6383c23',
+        network: 'localhost',
+        appId: constants.APP_ID,
         signer,
       }}
     >
