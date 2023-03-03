@@ -1,12 +1,13 @@
-import {
-  ContractReceipt,
-  ContractTransaction,
-  Overrides,
-  providers,
-  Signer,
-} from 'ethers';
+import { ContractReceipt, ethers, Overrides, providers, Signer } from 'ethers';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
+import { processTransaction } from '../../helpers/transaction';
+import { validateWalletAndMetadata } from '../../helpers/validation';
 import { BaseContract } from '../base';
+
+/**
+ * ERC721 Instance
+ * @public
+ */
 
 export class ERC721Instance extends BaseContract {
   contract: ERC721Base;
@@ -19,32 +20,79 @@ export class ERC721Instance extends BaseContract {
   ) {
     super(provider, appId, signer);
 
-    if (contractAddress) {
+    if (contractAddress && ethers.utils.isAddress(contractAddress)) {
       this.contract = ERC721Base__factory.connect(
         contractAddress,
         signer || provider
       );
     } else {
-      throw new Error('Invalid Address');
+      throw new Error('Failed to get contract');
     }
   }
 
-  async processTransaction(tx: ContractTransaction): Promise<ContractReceipt> {
-    const receipt = await tx.wait();
-    return receipt;
-  }
+  /**
+   * Mint ERC721 NFTs
+   * @public
+   * @description NFT minting functionality
+   * @param {string[]} params wallet address and metadataURL
+   * @param {Overrides} [transactionArgs] optional transaction arguments
+   * @example
+   * ```javascript
+   * const nft = await sdk.getContract("{{contract_address}}");
+   * await nft.mint([walletAddress, metadataURL]);
+   * ```
+   */
 
   async mint(
     params: Parameters<typeof this.contract.mintTo>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
+    validateWalletAndMetadata(params[0].toString(), params[1].toString());
+
     const tx = await this.contract.mintTo(params[0], params[1], {
       ...transactionArgs,
     });
 
-    const receipt = this.processTransaction(tx);
+    const receipt = processTransaction(tx);
     return receipt;
   }
+
+  /**
+   * Batch mint ERC721 NFTs
+   * @public
+   * @description NFT batch minting functionality
+   * @param {string[]} params wallet address, number of tokens to mint, metadataURL
+   * @param {Overrides} [transactionArgs] optional transaction arguments
+   * @example
+   * ```javascript
+   * const nft = await sdk.getContract("{{contract_address}}");
+   * await nft.batchMint([walletAddress, 5, metadataURL]);
+   * ```
+   */
+
+  async batchMint(
+    params: Parameters<typeof this.contract.batchMintTo>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    validateWalletAndMetadata(params[0].toString(), params[2].toString());
+
+    const tx = await this.contract.batchMintTo(
+      params[0],
+      params[1],
+      params[2],
+      {
+        ...transactionArgs,
+      }
+    );
+
+    const receipt = processTransaction(tx);
+    return receipt;
+  }
+
+  /**
+   * Batch mint ERC721 NFTs
+   * @public
+   */
 
   async burn(
     params: Parameters<typeof this.contract.burn>,
@@ -54,7 +102,7 @@ export class ERC721Instance extends BaseContract {
       ...transactionArgs,
     });
 
-    const receipt = this.processTransaction(tx);
+    const receipt = processTransaction(tx);
     return receipt;
   }
 

@@ -28,7 +28,7 @@
     "build": "preconstruct build",
     "watch": "preconstruct watch",
     "fix": "preconstruct fix",
-    "test": "jest",
+    "test": "jest --runInBand",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
