@@ -68,7 +68,7 @@ describe('sdk', () => {
   });
 
   // BATCH MINTING
-  it('mints a 5 tokens if wallet and metadata are valid', async () => {
+  it('batch mints 5 tokens if wallet and metadata are valid', async () => {
     const params: [string, number, string] = [walletAddress, 5, 'ipfs://'];
     const tx = await contract.batchMint(params);
 
@@ -92,7 +92,7 @@ describe('sdk', () => {
     );
   });
 
-  it('minting fails if to metadata URL is not valid', async () => {
+  it('batch minting fails if to metadata URL is not valid', async () => {
     const params: [string, number, string] = [walletAddress, 5, 'invalid'];
 
     async function batchMint() {
