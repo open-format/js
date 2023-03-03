@@ -9,6 +9,6 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "@openformat/sdk": "0.0.5-dev-f257855"
+    "@openformat/sdk": "0.0.5-dev-4dd8896"
   }
 }
