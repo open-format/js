@@ -1,15 +1,20 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useBatchMint, useContract } from '../src/hooks';
-import { render, screen, waitFor } from '../src/utilities';
-import * as constants from './constants';
+import {
+  ERC721_CONTRACT_ADDRESS,
+  render,
+  screen,
+  waitFor,
+  WALLET_ADDRESS,
+} from './utilities';
 
 function Mint({ address }: { address: string }) {
   const nft = useContract(address);
   const { data, batchMint } = useBatchMint(nft);
 
   async function handleMint() {
-    await batchMint([constants.WALLET_ADDRESS2, 5, 'ipfs://']);
+    await batchMint([WALLET_ADDRESS, 5, 'ipfs://']);
   }
 
   return (
@@ -28,7 +33,7 @@ function Mint({ address }: { address: string }) {
 
 describe('useMint', () => {
   it('allows you to mint a deployed Open Format contract', async () => {
-    render(<Mint address={constants.ERC721_CONTRACT_ADDRESS} />);
+    render(<Mint address={ERC721_CONTRACT_ADDRESS} />);
     const mintButton = await waitFor(() => screen.getByTestId('mint'));
     mintButton.click();
 
