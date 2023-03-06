@@ -7,21 +7,21 @@ import { useMutation } from '@tanstack/react-query';
  *
  * @example
  * ```tsx
- * const { data: transactionReceipt, mint } = useMint(nft);
+ * const { data: transactionReceipt, burn } = useBurn(nft);
  * ```
  *
  */
-export function useMint(nft: ERC721Instance) {
+export function useBurn(nft: ERC721Instance) {
   const { mutateAsync, ...mutation } = useMutation<
-    Awaited<ReturnType<typeof nft.mint>>,
+    Awaited<ReturnType<typeof nft.burn>>,
     unknown,
-    Parameters<typeof nft.mint>[0]
+    Parameters<ERC721Instance['burn']>[0]
   >(async (data) => {
-    return await nft.mint(data);
+    return await nft.burn(data);
   });
 
   return {
     ...mutation,
-    mint: mutateAsync,
+    burn: mutateAsync,
   };
 }

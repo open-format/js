@@ -10,7 +10,7 @@ import {
 } from './utilities';
 
 function Mint({ address }: { address: string }) {
-  const nft = useContract(address);
+  const { data: nft } = useContract(address);
   const { data, mint } = useMint(nft);
 
   async function handleMint() {
