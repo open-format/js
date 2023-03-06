@@ -1,5 +1,18 @@
 # @openformat/react
 
+## 0.1.0-dev-5820fce
+
+### Minor Changes
+
+- 17ad654: ERC721 approve functionality, state function wrappers
+- add8572: - ERC721 burn functionality
+
+### Patch Changes
+
+- Updated dependencies [17ad654]
+- Updated dependencies [add8572]
+  - @openformat/sdk@0.1.0-dev-5820fce
+
 ## 0.0.10-dev-4dd8896
 
 ### Patch Changes
