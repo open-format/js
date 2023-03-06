@@ -16,8 +16,8 @@ export function useMint(nft: ERC721Instance) {
     Awaited<ReturnType<typeof nft.mint>>,
     unknown,
     Parameters<typeof nft.mint>[0]
-  >((data) => {
-    return nft.mint(data);
+  >(async (data) => {
+    return await nft.mint(data);
   });
 
   return {
