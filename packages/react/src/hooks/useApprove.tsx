@@ -16,8 +16,8 @@ export function useApprove(nft: ERC721Instance) {
     Awaited<ReturnType<typeof nft.approve>>,
     unknown,
     Parameters<typeof nft.approve>[0]
-  >((data) => {
-    return nft.approve(data);
+  >(async (data) => {
+    return await nft.approve(data);
   });
 
   return {
