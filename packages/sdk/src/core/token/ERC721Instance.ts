@@ -1,12 +1,14 @@
 import {
   BigNumber,
   ContractReceipt,
+  ethers,
   Overrides,
   providers,
   Signer,
 } from 'ethers';
+import ERC721Interface from '../../../abis/token/ERC721/ERC721Base.json';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
-import { processTransaction } from '../../helpers/transaction';
+import { parseErrorData, processTransaction } from '../../helpers/transaction';
 import { validateWalletAndMetadata } from '../../helpers/validation';
 import { BaseContract } from '../base';
 
@@ -59,7 +61,7 @@ export class ERC721Instance extends BaseContract {
       ...transactionArgs,
     });
 
-    const receipt = processTransaction(tx);
+    const receipt = await processTransaction(tx);
     return receipt;
   }
 
@@ -91,7 +93,7 @@ export class ERC721Instance extends BaseContract {
       }
     );
 
-    const receipt = processTransaction(tx);
+    const receipt = await processTransaction(tx);
     return receipt;
   }
 
@@ -103,7 +105,7 @@ export class ERC721Instance extends BaseContract {
       ...transactionArgs,
     });
 
-    const receipt = this.processTransaction(tx);
+    const receipt = processTransaction(tx);
     return receipt;
   }
 
@@ -135,6 +137,54 @@ export class ERC721Instance extends BaseContract {
     });
 
     return tx;
+  }
+  /**
+   * Burn a single token
+   * @public
+   */
+
+  async burn(
+    params: Parameters<typeof this.contract.burn>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    try {
+      const tx = await this.contract.burn(params[0], {
+        ...transactionArgs,
+      });
+
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.name);
+    }
+  }
+
+  async nextTokenIdToMint() {
+    return await this.contract.nextTokenIdToMint();
+  }
+  async transfer(
+    params: Parameters<typeof this.contract.transferFrom>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    try {
+      const tx = await this.contract.transferFrom(
+        params[0],
+        params[1],
+        params[2],
+        {
+          ...transactionArgs,
+        }
+      );
+
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.name);
+    }
   }
 
   async ownerOf(
