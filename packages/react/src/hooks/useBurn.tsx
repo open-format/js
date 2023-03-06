@@ -16,8 +16,8 @@ export function useBurn(nft: ERC721Instance) {
     Awaited<ReturnType<typeof nft.burn>>,
     unknown,
     Parameters<ERC721Instance['burn']>[0]
-  >((data) => {
-    return nft.burn(data);
+  >(async (data) => {
+    return await nft.burn(data);
   });
 
   return {
