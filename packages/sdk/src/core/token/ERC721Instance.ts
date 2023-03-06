@@ -115,8 +115,37 @@ export class ERC721Instance extends BaseContract {
   async nextTokenIdToMint() {
     return await this.contract.nextTokenIdToMint();
   }
+  async transfer(
+    params: Parameters<typeof this.contract.transferFrom>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    try {
+      const tx = await this.contract.transferFrom(
+        params[0],
+        params[1],
+        params[2],
+        {
+          ...transactionArgs,
+        }
+      );
 
-  async transfer() {
-    return 'transfer()';
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.name);
+    }
+  }
+
+  async ownerOf(
+    params: Parameters<typeof this.contract.ownerOf>,
+    transactionArgs?: Overrides
+  ): Promise<string> {
+    const tx = await this.contract.ownerOf(params[0], {
+      ...transactionArgs,
+    });
+
+    return tx;
   }
 }
