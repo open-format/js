@@ -1,4 +1,11 @@
-import { ContractReceipt, ethers, Overrides, providers, Signer } from 'ethers';
+import {
+  BigNumber,
+  ContractReceipt,
+  ethers,
+  Overrides,
+  providers,
+  Signer,
+} from 'ethers';
 import ERC721Interface from '../../../abis/token/ERC721/ERC721Base.json';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
@@ -89,6 +96,7 @@ export class ERC721Instance extends BaseContract {
     const receipt = await processTransaction(tx);
     return receipt;
   }
+
   /**
    * Burn a single token
    * @public
@@ -112,9 +120,6 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async nextTokenIdToMint() {
-    return await this.contract.nextTokenIdToMint();
-  }
   async transfer(
     params: Parameters<typeof this.contract.transferFrom>,
     transactionArgs?: Overrides
@@ -138,14 +143,87 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
+  async approve(
+    params: Parameters<typeof this.contract.approve>,
+    transactionArgs?: Overrides
+  ): Promise<ContractReceipt> {
+    try {
+      const tx = await this.contract.approve(params[0], params[1], {
+        ...transactionArgs,
+      });
+
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.name);
+    }
+  }
+
+  async getApproved(
+    params: Parameters<typeof this.contract.getApproved>,
+    transactionArgs?: Overrides
+  ): Promise<string> {
+    try {
+      const tx = await this.contract.getApproved(params[0], {
+        ...transactionArgs,
+      });
+
+      return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.name);
+    }
+  }
+
+  async totalSupply(transactionArgs?: Overrides): Promise<BigNumber> {
+    try {
+      const tx = await this.contract.totalSupply({
+        ...transactionArgs,
+      });
+
+      return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.name);
+    }
+  }
+
+  async balanceOf(
+    params: Parameters<typeof this.contract.balanceOf>,
+    transactionArgs?: Overrides
+  ): Promise<BigNumber> {
+    try {
+      const tx = await this.contract.balanceOf(params[0], {
+        ...transactionArgs,
+      });
+
+      return tx;
+    } catch (error: any) {
+      //@TODO: Improve parseErrorData helper.
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.reason);
+    }
+  }
+
   async ownerOf(
     params: Parameters<typeof this.contract.ownerOf>,
     transactionArgs?: Overrides
   ): Promise<string> {
-    const tx = await this.contract.ownerOf(params[0], {
-      ...transactionArgs,
-    });
+    try {
+      const tx = await this.contract.ownerOf(params[0], {
+        ...transactionArgs,
+      });
 
-    return tx;
+      return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      throw new Error(parsedError.name);
+    }
+  }
+
+  async nextTokenIdToMint() {
+    return await this.contract.nextTokenIdToMint();
   }
 }
