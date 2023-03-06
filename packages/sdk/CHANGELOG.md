@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.0.5-dev-4dd8896
+
+### Patch Changes
+
+- eabe1c2: - Batch minting functionality
+
 ## 0.0.5-dev-f257855
 
 ### Patch Changes

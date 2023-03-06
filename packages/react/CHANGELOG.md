@@ -1,5 +1,13 @@
 # @openformat/react
 
+## 0.0.10-dev-4dd8896
+
+### Patch Changes
+
+- eabe1c2: - Batch minting functionality
+- Updated dependencies [eabe1c2]
+  - @openformat/sdk@0.0.5-dev-4dd8896
+
 ## 0.0.10-dev-f257855
 
 ### Patch Changes
