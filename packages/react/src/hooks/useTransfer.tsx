@@ -16,8 +16,8 @@ export function useTransfer(nft: ERC721Instance) {
     Awaited<ReturnType<typeof nft.transfer>>,
     unknown,
     Parameters<typeof nft.transfer>[0]
-  >((data) => {
-    return nft.transfer(data);
+  >(async (data) => {
+    return await nft.transfer(data);
   });
 
   return {
