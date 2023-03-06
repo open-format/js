@@ -1,5 +1,12 @@
 # @openformat/sdk
 
+## 0.1.0-dev-5820fce
+
+### Minor Changes
+
+- 17ad654: ERC721 approve functionality, state function wrappers
+- add8572: - ERC721 burn functionality
+
 ## 0.0.5-dev-4dd8896
 
 ### Patch Changes
