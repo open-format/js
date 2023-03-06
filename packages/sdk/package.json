@@ -26,7 +26,7 @@
   "scripts": {
     "build": "preconstruct build",
     "fix": "preconstruct fix",
-    "test": "jest test",
+    "test": "jest",
     "validate": "preconstruct validate",
     "watch": "preconstruct watch",
     "prepare": "yarn run generate-contract-types",
@@ -38,7 +38,10 @@
     "ethers": "^5"
   },
   "jest": {
-    "testTimeout": 10000
+    "testTimeout": 10000,
+    "collectCoverageFrom": [
+      "src/!(contract-types)**/*"
+    ]
   },
   "prettier": {
     "printWidth": 80,
@@ -74,6 +77,8 @@
     "size-limit": "^7.0.8",
     "tslib": "^2.4.0",
     "typechain": "^8.1.0",
+    "typedoc": "^0.23.26",
+    "typedoc-plugin-markdown": "^3.14.0",
     "typescript": "^4.7.3"
   },
   "dependencies": {

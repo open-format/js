@@ -1,0 +1,16 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "exclude": ["**/*+(.spec|.e2e).ts"],
+  "excludePrivate": true,
+  "excludeNotDocumented": true,
+  "excludeNotDocumentedKinds": [
+    "Variable",
+    "Property",
+    "Constructor",
+    "ConstructorSignature",
+    "Interface"
+  ],
+  "out": "../../doc",
+  "categorizeByGroup": false
+}
