@@ -88,6 +88,17 @@ export class OpenFormatSDK extends BaseContract {
       throw new Error('Contract does not not exist');
     }
 
+    if (subgraphResponse.contracts.length > 1) {
+      const contractList = subgraphResponse.contracts.map((contract) =>
+        JSON.stringify([
+          { name, contractAddress: contract.id, type: contract.type },
+        ])
+      );
+      throw new Error(
+        `More than one contract found. Please use name and/or contractAddress parameter: ${contractList}`
+      );
+    }
+
     if (contract.type === ContractType.ERC721) {
       return new ERC721Instance(
         this.provider,
