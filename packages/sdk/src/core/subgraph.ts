@@ -32,12 +32,12 @@ export class Subgraph extends BaseContract {
     return await request<T, V>(endpoint, document, variables);
   }
 
-  async getAppIdsByCreator({ creator }: { creator: string }) {
+  async getAppIdsByOwner({ owner }: { owner: string }) {
     const endpoint = await this.getSubgraphEndpoint();
     const query = gql`
-      query getAppIdsByCreator($creator: String) {
+      query getAppIdsByOwner($owner: String) {
         apps(
-          where: { creator: $creator }
+          where: { owner: $owner }
           orderBy: createdAt
           orderDirection: desc
         ) {
@@ -46,8 +46,8 @@ export class Subgraph extends BaseContract {
       }
     `;
 
-    return await request<AppResponse, { creator: string }>(endpoint, query, {
-      creator: creator,
+    return await request<AppResponse, { owner: string }>(endpoint, query, {
+      owner: owner,
     });
   }
 
@@ -69,7 +69,7 @@ export class Subgraph extends BaseContract {
           id
           type
           createdAt
-          creator
+          owner
           app {
             id
           }
@@ -95,7 +95,7 @@ export class Subgraph extends BaseContract {
           id
           type
           createdAt
-          creator
+          owner
           app {
             id
           }

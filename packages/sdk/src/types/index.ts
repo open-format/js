@@ -61,7 +61,7 @@ export interface ContractResponse {
   contracts: {
     id: string;
     createdAt: string;
-    creator: string;
+    owner: string;
     type: string;
   }[];
 }
@@ -70,6 +70,6 @@ export interface AppResponse {
   apps: {
     id: string;
     createdAt: string;
-    creator: string;
+    owner: string;
   }[];
 }
