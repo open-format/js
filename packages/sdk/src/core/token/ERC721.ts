@@ -1,8 +1,8 @@
-import { ethers, Overrides, providers, Signer } from 'ethers';
+import { Overrides, providers, Signer } from 'ethers';
 import { ERC721Factory__factory } from '../../contract-types';
-import { ERC721Factory } from '../../contract-types/token/ERC721';
+import { ERC721Factory } from '../../contract-types/ERC721';
 import { poll } from '../../helpers/subgraph';
-import { ContractResponse } from '../../types';
+import { ContractResponse, ContractType } from '../../types';
 import { BaseContract } from '../base';
 import { Subgraph } from '../subgraph';
 import { ERC721Instance } from './ERC721Instance';
@@ -41,9 +41,10 @@ export class ERC721 extends BaseContract {
       .timestamp;
 
     const subgraphCall = async () =>
-      await this.subgraph.getERC721ByTimestamp({
+      await this.subgraph.getContractByTimestamp({
         appId: this.appId.toString(),
         createdAt: txTimestamp.toString(),
+        type: ContractType.ERC721,
       });
 
     const validate = (response: ContractResponse) =>
@@ -62,31 +63,6 @@ export class ERC721 extends BaseContract {
           (response as ContractResponse).contracts[0].id,
           this.signer
         )
-    );
-  }
-
-  async getContract(contractAddress: string): Promise<ERC721Instance> {
-    //@TODO Check subgraph for type of contract so can create correct instance
-    const fetchERC721 = await this.subgraph.getERC721ByID({
-      id: contractAddress,
-    });
-
-    const contractExists = fetchERC721.contracts[0]?.id;
-
-    if (!ethers.utils.isAddress(contractAddress)) {
-      throw new Error('Invalid contract address');
-    }
-
-    if (!contractExists) {
-      throw new Error('Contract does not not exist');
-    }
-
-    //@TODO: Return correct instance depending on contract type from subgraph
-    return new ERC721Instance(
-      this.provider,
-      this.appId,
-      contractAddress,
-      this.signer
     );
   }
 }

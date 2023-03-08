@@ -6,10 +6,10 @@ import {
   providers,
   Signer,
 } from 'ethers';
-import ERC721Interface from '../../../abis/token/ERC721/ERC721Base.json';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
 import { validateWalletAndMetadata } from '../../helpers/validation';
+import { ContractType } from '../../types';
 import { BaseContract } from '../base';
 
 /**
@@ -115,7 +115,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      const parsedError = parseErrorData(error, ContractType.ERC721);
       throw new Error(parsedError.name);
     }
   }
@@ -138,7 +138,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      const parsedError = parseErrorData(error, ContractType.ERC721);
       throw new Error(parsedError.name);
     }
   }
@@ -156,7 +156,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      const parsedError = parseErrorData(error, ContractType.ERC721);
       throw new Error(parsedError.name);
     }
   }
@@ -172,7 +172,7 @@ export class ERC721Instance extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      const parsedError = parseErrorData(error, ContractType.ERC721);
       throw new Error(parsedError.name);
     }
   }
@@ -185,7 +185,7 @@ export class ERC721Instance extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      const parsedError = parseErrorData(error, ContractType.ERC721);
       throw new Error(parsedError.name);
     }
   }
@@ -202,7 +202,7 @@ export class ERC721Instance extends BaseContract {
       return tx;
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
-      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      const parsedError = parseErrorData(error, ContractType.ERC721);
       throw new Error(parsedError.reason);
     }
   }
@@ -218,7 +218,7 @@ export class ERC721Instance extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ERC721Interface.abi);
+      const parsedError = parseErrorData(error, ContractType.ERC721);
       throw new Error(parsedError.name);
     }
   }
