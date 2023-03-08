@@ -86,25 +86,80 @@ export class Subgraph extends BaseContract {
     });
   }
 
-  async getERC721ByID({ id }: { id: string }) {
+  async getContractByAddressOrName({
+    id = '',
+    name = '',
+    appId,
+  }: {
+    id: string;
+    name: string;
+    appId: string;
+  }) {
     const endpoint = await this.getSubgraphEndpoint();
 
     const query = gql`
-      query getERC721ContractByApp($id: String!) {
-        contracts(where: { id: $id, type: "ERC721" }) {
+      query getContractByAddressOrName(
+        $id: String!
+        $name: String!
+        $appId: String!
+      ) {
+        contracts(
+          where: {
+            or: [
+              { id: $id, app_contains_nocase: $appId }
+              { metadata_: { name: $name }, app_contains_nocase: $appId }
+            ]
+          }
+        ) {
           id
           type
           createdAt
-          owner
-          app {
-            id
+          metadata {
+            name
           }
         }
       }
     `;
 
-    return await request<ContractResponse, { id: string }>(endpoint, query, {
+    return await request<
+      ContractResponse,
+      { id: string; name: string; appId: string }
+    >(endpoint, query, {
       id,
+      name,
+      appId,
     });
+  }
+  async getERC721ByID({ id, name }: { id: string; name: string }) {
+    const endpoint = await this.getSubgraphEndpoint();
+
+    const query = gql`
+      query getERC721ContractByApp($id: String, $name: String) {
+        contracts(
+          where: {
+            or: [
+              { id: $id, type: "ERC721" }
+              { metadata_: { name: $name }, type: "ERC721" }
+            ]
+          }
+        ) {
+          id
+          type
+          createdAt
+          metadata {
+            name
+          }
+        }
+      }
+    `;
+
+    return await request<ContractResponse, { id: string; name: string }>(
+      endpoint,
+      query,
+      {
+        id,
+        name,
+      }
+    );
   }
 }
