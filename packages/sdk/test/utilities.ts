@@ -13,6 +13,7 @@ export const WALLET_ADDRESS3 = '0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc';
 export const APP_ID = address('0x1ade2613adb6bafbc65d40eb9c1effbe3bfd8b81');
 export const ERC721_CONTRACT_ADDRESS =
   '0x93998942b6a740da71faea1c4781965a5138b9aa';
+export const ERC721_CONTRACT_NAME = 'My collectionss';
 export const ERC20_CONTRACT_ADDRESS =
   '0xb1e39f154a5c7f038053eeed781c3b7640342088';
 

@@ -1,9 +1,18 @@
 import { Signer } from 'ethers';
+import { ERC20Instance } from '../core/token/ERC20Instance';
+import { ERC721Instance } from '../core/token/ERC721Instance';
 
 export interface SDKOptions {
   network: Chain;
   appId: string;
   signer?: Signer | string;
+}
+
+export type OpenFormatContract = ERC721Instance | ERC20Instance;
+
+export enum ContractType {
+  ERC721 = 'ERC721',
+  ERC20 = 'ERC20',
 }
 
 export type Chain = 'mainnet' | 'mumbai' | 'localhost' | (string & {});
@@ -73,3 +82,12 @@ export interface AppResponse {
     owner: string;
   }[];
 }
+
+type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
+  U[keyof U];
+
+// Requires either contractAddress or name
+export type GetContractParameters = AtLeastOne<{
+  contractAddress: string;
+  name: string;
+}>;
