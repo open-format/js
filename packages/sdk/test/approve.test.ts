@@ -1,7 +1,7 @@
 import { ERC721Instance, OpenFormatSDK } from '../src';
 import {
   APP_ID,
-  ERC721_CONTRACT_NAME,
+  ERC721_CONTRACT_ADDRESS,
   PRIVATE_KEY,
   WALLET_ADDRESS2,
 } from './utilities';
@@ -19,7 +19,7 @@ describe('approve()', () => {
     });
 
     contract = (await sdk.getContract({
-      name: ERC721_CONTRACT_NAME,
+      contractAddress: ERC721_CONTRACT_ADDRESS,
     })) as ERC721Instance;
 
     if (sdk.signer) {
