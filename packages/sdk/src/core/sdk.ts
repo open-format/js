@@ -1,14 +1,22 @@
+import { ethers } from 'ethers';
 import merge from 'lodash.merge';
 import {
   getProviderFromUrl,
   getProviderUrl,
   getSigner,
 } from '../helpers/providers';
-import { SDKOptions } from '../types';
+import {
+  ContractType,
+  GetContractParameters,
+  OpenFormatContract,
+  SDKOptions,
+} from '../types';
 import { BaseContract } from './base';
 import { Factory } from './factory';
 import { Subgraph } from './subgraph';
+import { ERC20 } from './token/ERC20';
 import { ERC721 } from './token/ERC721';
+import { ERC721Instance } from './token/ERC721Instance';
 
 /**
  * Creates a new instance of the Open Format SDK
@@ -54,5 +62,44 @@ export class OpenFormatSDK extends BaseContract {
     this.ERC721 = new ERC721(this.provider, this.appId, this?.signer);
     this.factory = new Factory(this.provider, this.appId, this?.signer);
     this.subgraph = new Subgraph(this.provider, this.appId, this?.signer);
+  }
+
+  async getContract({
+    contractAddress,
+    name,
+  }: GetContractParameters): Promise<OpenFormatContract> {
+    const subgraphResponse = await this.subgraph.getContractByAddressOrName({
+      id: contractAddress as string,
+      name: name as string,
+      appId: this.appId,
+    });
+
+    const contract = subgraphResponse.contracts[0];
+
+    if ((contractAddress as string) === '' || name === '') {
+      throw new Error('Please enter valid contract address or name');
+    }
+
+    if (contractAddress && !ethers.utils.isAddress(contractAddress as string)) {
+      throw new Error('Invalid contract address');
+    }
+
+    if (!contract.id) {
+      throw new Error('Contract does not not exist');
+    }
+
+    if (contract.type === ContractType.ERC721) {
+      return new ERC721Instance(
+        this.provider,
+        this.appId,
+        contract.id,
+        this.signer
+      );
+    } else if (contract.type === ContractType.ERC20) {
+      //@TODO: ERC20 logic
+      return new ERC20();
+    } else {
+      throw new Error('Error getting contract');
+    }
   }
 }
