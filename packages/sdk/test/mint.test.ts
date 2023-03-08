@@ -1,7 +1,7 @@
 import { ERC721Instance, OpenFormatSDK } from '../src';
-import { APP_ID, ERC721_CONTRACT_ADDRESS, PRIVATE_KEY } from './utilities';
+import { APP_ID, ERC721_CONTRACT_NAME, PRIVATE_KEY } from './utilities';
 
-describe('SDK', () => {
+describe('ERC721', () => {
   let sdk: OpenFormatSDK;
   let contract: ERC721Instance;
   let walletAddress: string;
@@ -13,7 +13,9 @@ describe('SDK', () => {
       signer: PRIVATE_KEY,
     });
 
-    contract = await sdk.ERC721.getContract(ERC721_CONTRACT_ADDRESS);
+    contract = (await sdk.getContract({
+      name: ERC721_CONTRACT_NAME,
+    })) as ERC721Instance;
 
     if (sdk.signer) {
       walletAddress = await sdk.signer?.getAddress();
