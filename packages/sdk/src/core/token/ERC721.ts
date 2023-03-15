@@ -2,6 +2,7 @@ import { Overrides, providers, Signer } from 'ethers';
 import { ERC721Factory__factory } from '../../contract-types';
 import { ERC721Factory } from '../../contract-types/ERC721';
 import { poll } from '../../helpers/subgraph';
+import { validateBigNumber, validateWallet } from '../../helpers/validation';
 import { ContractResponse, ContractType } from '../../types';
 import { BaseContract } from '../base';
 import { Subgraph } from '../subgraph';
@@ -26,7 +27,13 @@ export class ERC721 extends BaseContract {
     params: Parameters<typeof this.contract.createERC721>,
     transactionArgs?: Overrides
   ) {
-    if (!this.signer) return;
+    //@TODO calculateERC721FactoryDeploymentAddress when ready
+    if (!this.signer) {
+      throw new Error('Signer undefined');
+    }
+
+    validateWallet(params[2]);
+    validateBigNumber(params[3]);
 
     //@TODO: Check if there is a better way of doing this?
     const tx = await this.contract.createERC721(

@@ -15,6 +15,7 @@ import { BaseContract } from './base';
 import { Factory } from './factory';
 import { Subgraph } from './subgraph';
 import { ERC20 } from './token/ERC20';
+import { ERC20Instance } from './token/ERC20Instance';
 import { ERC721 } from './token/ERC721';
 import { ERC721Instance } from './token/ERC721Instance';
 
@@ -34,6 +35,7 @@ import { ERC721Instance } from './token/ERC721Instance';
 export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
   ERC721: ERC721;
+  ERC20: ERC20;
   factory: Factory;
   subgraph: Subgraph;
 
@@ -60,6 +62,7 @@ export class OpenFormatSDK extends BaseContract {
       this.signer = getSigner(this.options.signer, this.provider);
     }
     this.ERC721 = new ERC721(this.provider, this.appId, this?.signer);
+    this.ERC20 = new ERC20(this.provider, this.appId, this?.signer);
     this.factory = new Factory(this.provider, this.appId, this?.signer);
     this.subgraph = new Subgraph(this.provider, this.appId, this?.signer);
   }
@@ -69,7 +72,7 @@ export class OpenFormatSDK extends BaseContract {
     name,
   }: GetContractParameters): Promise<OpenFormatContract> {
     const subgraphResponse = await this.subgraph.getContractByAddressOrName({
-      id: contractAddress as string,
+      id: contractAddress?.toLowerCase() as string,
       name: name as string,
       appId: this.appId,
     });
@@ -107,8 +110,12 @@ export class OpenFormatSDK extends BaseContract {
         this.signer
       );
     } else if (contract.type === ContractType.ERC20) {
-      //@TODO: ERC20 logic
-      return new ERC20();
+      return new ERC20Instance(
+        this.provider,
+        this.appId,
+        contract.id,
+        this.signer
+      );
     } else {
       throw new Error('Error getting contract');
     }

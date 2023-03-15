@@ -1,14 +1,10 @@
-import {
-  BigNumber,
-  ContractReceipt,
-  ethers,
-  Overrides,
-  providers,
-  Signer,
-} from 'ethers';
+import { ContractReceipt, ethers, Overrides, providers, Signer } from 'ethers';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
-import { validateWalletAndMetadata } from '../../helpers/validation';
+import {
+  validateWallet,
+  validateWalletAndMetadata,
+} from '../../helpers/validation';
 import { ContractType } from '../../types';
 import { BaseContract } from '../base';
 
@@ -55,14 +51,19 @@ export class ERC721Instance extends BaseContract {
     params: Parameters<typeof this.contract.mintTo>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
-    validateWalletAndMetadata(params[0].toString(), params[1].toString());
+    try {
+      validateWalletAndMetadata(params[0].toString(), params[1].toString());
 
-    const tx = await this.contract.mintTo(params[0], params[1], {
-      ...transactionArgs,
-    });
+      const tx = await this.contract.mintTo(params[0], params[1], {
+        ...transactionArgs,
+      });
 
-    const receipt = await processTransaction(tx);
-    return receipt;
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ContractType.ERC721);
+      throw new Error(parsedError);
+    }
   }
 
   /**
@@ -82,19 +83,24 @@ export class ERC721Instance extends BaseContract {
     params: Parameters<typeof this.contract.batchMintTo>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
-    validateWalletAndMetadata(params[0].toString(), params[2].toString());
+    try {
+      validateWalletAndMetadata(params[0].toString(), params[2].toString());
 
-    const tx = await this.contract.batchMintTo(
-      params[0],
-      params[1],
-      params[2],
-      {
-        ...transactionArgs,
-      }
-    );
+      const tx = await this.contract.batchMintTo(
+        params[0],
+        params[1],
+        params[2],
+        {
+          ...transactionArgs,
+        }
+      );
 
-    const receipt = await processTransaction(tx);
-    return receipt;
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ContractType.ERC721);
+      throw new Error(parsedError);
+    }
   }
 
   /**
@@ -116,7 +122,7 @@ export class ERC721Instance extends BaseContract {
       return receipt;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
@@ -139,7 +145,7 @@ export class ERC721Instance extends BaseContract {
       return receipt;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
@@ -157,7 +163,7 @@ export class ERC721Instance extends BaseContract {
       return receipt;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
@@ -173,37 +179,38 @@ export class ERC721Instance extends BaseContract {
       return tx;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
-  async totalSupply(transactionArgs?: Overrides): Promise<BigNumber> {
+  async totalSupply(transactionArgs?: Overrides): Promise<Number> {
     try {
-      const tx = await this.contract.totalSupply({
+      const totalSupply = await this.contract.totalSupply({
         ...transactionArgs,
       });
 
-      return tx;
+      return totalSupply.toNumber();
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
   async balanceOf(
     params: Parameters<typeof this.contract.balanceOf>,
     transactionArgs?: Overrides
-  ): Promise<BigNumber> {
+  ): Promise<Number> {
     try {
-      const tx = await this.contract.balanceOf(params[0], {
+      validateWallet(params[0]);
+      const balance = await this.contract.balanceOf(params[0], {
         ...transactionArgs,
       });
 
-      return tx;
+      return balance.toNumber();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
       const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError.reason);
+      throw new Error(parsedError);
     }
   }
 
@@ -219,7 +226,17 @@ export class ERC721Instance extends BaseContract {
       return tx;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
+    }
+  }
+
+  async owner(transactionArgs?: Overrides): Promise<string> {
+    try {
+      const tx = await this.contract.owner({ ...transactionArgs });
+      return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ContractType.ERC721);
+      throw new Error(parsedError);
     }
   }
 

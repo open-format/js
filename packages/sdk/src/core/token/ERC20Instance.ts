@@ -8,12 +8,12 @@ import {
 } from 'ethers';
 import { ERC20Base, ERC20Base__factory } from '../../contract-types';
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
-import { validateWalletAndMetadata } from '../../helpers/validation';
+import { validateWalletAndAmount } from '../../helpers/validation';
 import { ContractType } from '../../types';
 import { BaseContract } from '../base';
 
 /**
- * ERC721 Instance
+ * ERC20 Instance
  * @public
  */
 
@@ -39,15 +39,15 @@ export class ERC20Instance extends BaseContract {
   }
 
   /**
-   * Mint ERC721 NFTs
+   * Mint ERC20 Tokens
    * @public
-   * @description NFT minting functionality
-   * @param {string[]} params wallet address and metadataURL
+   * @description Token minting functionality
+   * @param {string[]} params wallet address and amount
    * @param {Overrides} [transactionArgs] optional transaction arguments
    * @example
    * ```javascript
-   * const nft = await sdk.getContract("{{contract_address}}");
-   * await nft.mint([walletAddress, metadataURL]);
+   * const token = await sdk.getContract("{{contract_address}}");
+   * await token.mint([walletAddress, amount]);
    * ```
    */
 
@@ -55,7 +55,7 @@ export class ERC20Instance extends BaseContract {
     params: Parameters<typeof this.contract.mintTo>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
-    validateWalletAndMetadata(params[0].toString());
+    validateWalletAndAmount(params[0].toString(), params[1]);
 
     const tx = await this.contract.mintTo(params[0], params[1], {
       ...transactionArgs,
