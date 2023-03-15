@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query';
  * ```
  *
  */
-export function useBurn(nft: ERC721Instance) {
+export function useBurnNFT(nft: ERC721Instance) {
   const { mutateAsync, ...mutation } = useMutation<
     Awaited<ReturnType<typeof nft.burn>>,
     unknown,

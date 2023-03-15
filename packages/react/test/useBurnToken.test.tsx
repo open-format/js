@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { useBurn, useContract, useMint } from '../src/hooks';
+import { useBurnToken, useContract, useMintToken } from '../src/hooks';
 import {
-  ERC721_CONTRACT_ADDRESS,
+  ERC20_CONTRACT_ADDRESS,
   render,
   screen,
   waitFor,
@@ -10,22 +10,18 @@ import {
 } from './utilities';
 
 function Burn({ address }: { address: string }) {
-  const { data: nft } = useContract(address);
-  const { mint } = useMint(nft);
-  const { data, burn } = useBurn(nft);
+  const { data: token } = useContract(address);
+  const { mint } = useMintToken(token);
+  const { data, burn } = useBurnToken(token);
 
   async function handleMintAndBurn() {
-    const tokenId = await nft?.nextTokenIdToMint();
-    await mint([WALLET_ADDRESS, 'ipfs://']);
-
-    if (tokenId) {
-      await burn([tokenId]);
-    }
+    await mint([WALLET_ADDRESS, 1]);
+    await burn([1]);
   }
 
   return (
     <>
-      {nft && (
+      {token && (
         <>
           <button onClick={handleMintAndBurn} data-testid="burn">
             Burn
@@ -39,7 +35,7 @@ function Burn({ address }: { address: string }) {
 
 describe('useBurn()', () => {
   it('burns a given token', async () => {
-    render(<Burn address={ERC721_CONTRACT_ADDRESS} />);
+    render(<Burn address={ERC20_CONTRACT_ADDRESS} />);
     const burnButton = await waitFor(() => screen.getByTestId('burn'));
     burnButton.click();
 
