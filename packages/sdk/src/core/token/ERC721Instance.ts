@@ -183,7 +183,7 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async totalSupply(transactionArgs?: Overrides): Promise<Number> {
+  async totalSupply(transactionArgs?: Overrides): Promise<number> {
     try {
       const totalSupply = await this.contract.totalSupply({
         ...transactionArgs,
@@ -199,7 +199,7 @@ export class ERC721Instance extends BaseContract {
   async balanceOf(
     params: Parameters<typeof this.contract.balanceOf>,
     transactionArgs?: Overrides
-  ): Promise<Number> {
+  ): Promise<number> {
     try {
       validateWallet(params[0]);
       const balance = await this.contract.balanceOf(params[0], {
