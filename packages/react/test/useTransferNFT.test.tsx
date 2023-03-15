@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { useContract, useMint, useTransfer } from '../src/hooks';
+import { useContract, useMintNFT, useTransferNFT } from '../src/hooks';
 import {
   ERC721_CONTRACT_ADDRESS,
   render,
@@ -12,8 +12,8 @@ import {
 
 function Transfer({ address }: { address: string }) {
   const { data: nft } = useContract(address);
-  const { mint } = useMint(nft);
-  const { data, transfer } = useTransfer(nft);
+  const { mint } = useMintNFT(nft);
+  const { data, transfer } = useTransferNFT(nft);
 
   async function handleMintAndTransfer() {
     const tokenId = await nft?.nextTokenIdToMint();
