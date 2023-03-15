@@ -91,3 +91,36 @@ export type GetContractParameters = AtLeastOne<{
   contractAddress: string;
   name: string;
 }>;
+
+enum ERC721Error {
+  ApprovalCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
+  ApprovalQueryForNonexistentToken = 'The token does not exist.',
+  BalanceQueryForZeroAddress = 'Cannot query the balance for the zero address',
+  MintToZeroAddress = 'Cannot mint to the zero address',
+  MintZeroQuantity = 'The quantity of tokens minted must be more than zero',
+  OwnerQueryForNonexistentToken = 'The token does not exist',
+  TransferCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
+  TransferFromIncorrectOwner = 'The token must be owned by `from`',
+  TransferToNonERC721ReceiverImplementer = 'Cannot safely transfer to a contract that does not implement the ERC721Receiver interface',
+  TransferToZeroAddress = 'Cannot transfer to the zero address.',
+  URIQueryForNonexistentToken = 'The token does not exist',
+  MintERC2309QuantityExceedsLimit = 'The `quantity` minted with ERC2309 exceeds the safety limit.',
+  OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
+}
+
+enum ERC20Error {
+  ERC20Base__ApproveFromZeroAddress,
+  ERC20Base__ApproveToZeroAddress,
+  ERC20Base__BurnExceedsBalance,
+  ERC20Base__BurnFromZeroAddress,
+  ERC20Base__InsufficientAllowance,
+  ERC20Base__MintToZeroAddress,
+  ERC20Base__TransferExceedsBalance,
+  ERC20Base__TransferFromZeroAddress,
+  ERC20Base__TransferToZeroAddress,
+}
+
+const Errors = {
+  OwnershipNotInitializedForExtraData:
+    'The `extraData` cannot be set on an unintialized ownership slot.',
+};
