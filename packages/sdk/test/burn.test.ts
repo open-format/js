@@ -80,7 +80,7 @@ describe('ERC20', () => {
       const walletBalance = await contract.balanceOf([walletAddress]);
 
       async function burn() {
-        await contract.burn([walletBalance.add(1)]);
+        await contract.burn([walletBalance + 1]);
       }
 
       //@TODO update error when errors in contract are updated

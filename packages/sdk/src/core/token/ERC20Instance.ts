@@ -8,7 +8,11 @@ import {
 } from 'ethers';
 import { ERC20Base, ERC20Base__factory } from '../../contract-types';
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
-import { validateWalletAndAmount } from '../../helpers/validation';
+import {
+  validateWallet,
+  validateWalletAndAmount,
+  validateWallets,
+} from '../../helpers/validation';
 import { ContractType } from '../../types';
 import { BaseContract } from '../base';
 
@@ -55,14 +59,20 @@ export class ERC20Instance extends BaseContract {
     params: Parameters<typeof this.contract.mintTo>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
-    validateWalletAndAmount(params[0].toString(), params[1]);
+    try {
+      validateWalletAndAmount(params[0].toString(), params[1]);
 
-    const tx = await this.contract.mintTo(params[0], params[1], {
-      ...transactionArgs,
-    });
+      const tx = await this.contract.mintTo(params[0], params[1], {
+        ...transactionArgs,
+      });
 
-    const receipt = await processTransaction(tx);
-    return receipt;
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ContractType.ERC20);
+
+      throw new Error(parsedError);
+    }
   }
 
   /**
@@ -84,30 +94,26 @@ export class ERC20Instance extends BaseContract {
       return receipt;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC20);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
+  //@TODO Transfer From
   async transfer(
-    params: Parameters<typeof this.contract.transferFrom>,
+    params: Parameters<typeof this.contract.transfer>,
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
     try {
-      const tx = await this.contract.transferFrom(
-        params[0],
-        params[1],
-        params[2],
-        {
-          ...transactionArgs,
-        }
-      );
+      const tx = await this.contract.transfer(params[0], params[1], {
+        ...transactionArgs,
+      });
 
       const receipt = await processTransaction(tx);
 
       return receipt;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC20);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
@@ -116,6 +122,8 @@ export class ERC20Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
     try {
+      validateWalletAndAmount(params[0], params[1]);
+
       const tx = await this.contract.approve(params[0], params[1], {
         ...transactionArgs,
       });
@@ -125,53 +133,58 @@ export class ERC20Instance extends BaseContract {
       return receipt;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC20);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
-  async getApproved(
+  async allowance(
     params: Parameters<typeof this.contract.allowance>,
     transactionArgs?: Overrides
-  ): Promise<BigNumber> {
+  ): Promise<number> {
     try {
-      const tx = await this.contract.allowance(params[0], params[1], {
+      validateWallets([params[0], params[1]]);
+
+      const allowance = await this.contract.allowance(params[0], params[1], {
         ...transactionArgs,
       });
 
-      return tx;
+      return allowance.toNumber();
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC20);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
-  async totalSupply(transactionArgs?: Overrides): Promise<BigNumber> {
+  async totalSupply(transactionArgs?: Overrides): Promise<number> {
     try {
-      const tx = await this.contract.totalSupply({
+      const totalSupply = await this.contract.totalSupply({
         ...transactionArgs,
       });
 
-      return tx;
+      return totalSupply.toNumber();
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC20);
-      throw new Error(parsedError.name);
+      throw new Error(parsedError);
     }
   }
 
+  //@TODO Should all BigNumbers and HexStrings be returned as numbers or strings?
   async balanceOf(
     params: Parameters<typeof this.contract.balanceOf>,
     transactionArgs?: Overrides
-  ): Promise<BigNumber> {
+  ): Promise<number> {
     try {
-      const tx = await this.contract.balanceOf(params[0], {
+      validateWallet(params[0]);
+
+      const balance = await this.contract.balanceOf(params[0], {
         ...transactionArgs,
       });
 
-      return tx;
+      return balance.toNumber();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
       const parsedError = parseErrorData(error, ContractType.ERC20);
-      throw new Error(parsedError.reason);
+      throw new Error(parsedError);
     }
   }
 }
