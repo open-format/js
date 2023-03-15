@@ -2,7 +2,7 @@ import { ERC721Instance } from '@openformat/sdk';
 import { useMutation } from '@tanstack/react-query';
 
 /**
- * Hook to grant approvals for tokens
+ * Hook to grant approvals for NFTs
  * @param {ERC721Instance} nft ERC721Instance
  *
  * @example
@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query';
  * ```
  *
  */
-export function useApprove(nft: ERC721Instance) {
+export function useApproveNFT(nft: ERC721Instance) {
   const { mutateAsync, ...mutation } = useMutation<
     Awaited<ReturnType<typeof nft.approve>>,
     unknown,

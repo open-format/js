@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { useApprove, useContract, useMint } from '../src/hooks';
+import { useApproveNFT, useContract, useMintNFT } from '../src/hooks';
 import {
   ERC721_CONTRACT_ADDRESS,
   render,
@@ -12,8 +12,8 @@ import {
 
 function Approve({ address }: { address: string }) {
   const { data: nft } = useContract(address);
-  const { mint } = useMint(nft);
-  const { data, approve } = useApprove(nft);
+  const { mint } = useMintNFT(nft);
+  const { data, approve } = useApproveNFT(nft);
 
   async function handleMintAndApprove() {
     const tokenId = await nft?.nextTokenIdToMint();
