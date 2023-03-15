@@ -87,7 +87,7 @@ export class Subgraph extends BaseContract {
       ContractResponse,
       { appId: string; createdAt: string; type: string }
     >(endpoint, query, {
-      appId,
+      appId: appId.toLowerCase(),
       createdAt,
       type,
     });
