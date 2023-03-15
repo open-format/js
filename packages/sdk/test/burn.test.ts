@@ -13,7 +13,9 @@ describe('burn()', () => {
       signer: PRIVATE_KEY,
     });
 
-    contract = await sdk.ERC721.getContract(ERC721_CONTRACT_ADDRESS);
+    contract = (await sdk.getContract({
+      contractAddress: ERC721_CONTRACT_ADDRESS,
+    })) as ERC721Instance;
 
     if (sdk.signer) {
       walletAddress = await sdk.signer?.getAddress();
