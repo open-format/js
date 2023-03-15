@@ -8,7 +8,9 @@ export function address(addr: string) {
 }
 
 // @dev Testing requires a local ethereum node and subgraph to be running. These addresses are
-// used in the tests
+// used in the tests.
+
+// @todo setup Jest so a single utilities.tsx can be shared between all packages.
 
 export const PRIVATE_KEY =
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
@@ -22,7 +24,12 @@ export const ERC721_CONTRACT_ADDRESS =
   '0x93998942b6a740da71faea1c4781965a5138b9aa';
 export const ERC721_CONTRACT_NAME = 'My collectionss';
 export const ERC20_CONTRACT_ADDRESS =
-  '0xb1e39f154a5c7f038053eeed781c3b7640342088';
+  '0xde0ae9668f59e02f599d38e9cf2ff3b3d75a79e2';
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
+export function generateRandomString(length: number): string {
+  return Math.random().toString(20).substring(2, length);
+}
 
 const signer = new ethers.Wallet(
   PRIVATE_KEY,

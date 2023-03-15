@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { useContract, useMint } from '../src/hooks';
+import { useContract, useMintNFT } from '../src/hooks';
 import {
   ERC721_CONTRACT_ADDRESS,
   render,
@@ -9,9 +9,9 @@ import {
   WALLET_ADDRESS,
 } from './utilities';
 
-function Mint({ address }: { address: string }) {
+function MintNFT({ address }: { address: string }) {
   const { data: nft } = useContract(address);
-  const { data, mint } = useMint(nft);
+  const { data, mint } = useMintNFT(nft);
 
   async function handleMint() {
     await mint([WALLET_ADDRESS, 'ipfs://']);
@@ -32,8 +32,8 @@ function Mint({ address }: { address: string }) {
 }
 
 describe('useMint', () => {
-  it('allows you to mint a deployed Open Format contract', async () => {
-    render(<Mint address={ERC721_CONTRACT_ADDRESS} />);
+  it('allows you to mint an NFT from a deployed ERC721 contract', async () => {
+    render(<MintNFT address={ERC721_CONTRACT_ADDRESS} />);
     const mintButton = await waitFor(() => screen.getByTestId('mint'));
     mintButton.click();
 

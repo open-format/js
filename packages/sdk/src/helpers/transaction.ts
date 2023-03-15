@@ -1,4 +1,3 @@
-import { Fragment, JsonFragment } from '@ethersproject/abi';
 import { ContractReceipt, ContractTransaction, ethers } from 'ethers';
 import ERC20Base from '../../abis/ERC20/ERC20Base.json';
 import ERC721Base from '../../abis/ERC721/ERC721Base.json';
@@ -31,11 +30,14 @@ export function parseErrorData(error: any, contractType: ContractType) {
   // Must return: error signature, name, transaction data
 
   if (error?.data) {
-    return iface.parseError(error.data);
+    if (iface.parseError(error.data)) return iface.parseError(error.data).name;
   } else if (error?.error?.error?.error?.data) {
-    return iface.parseError(error.error.error.error.data);
+    if (iface.parseError(error.error.error.error.data))
+      return iface.parseError(error.error.error.error.data).name;
   } else if (error?.reason === 'network does not support ENS') {
-    return { reason: 'Invalid wallet address' };
+    return 'Invalid wallet address';
+  } else if (error?.reason) {
+    return error.reason;
   } else {
     return error;
   }

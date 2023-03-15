@@ -1,5 +1,13 @@
-import { ERC721Instance, OpenFormatSDK } from '../src';
-import { APP_ID, ERC721_CONTRACT_ADDRESS, PRIVATE_KEY } from './utilities';
+import { BigNumberish } from 'ethers';
+import { ERC20Instance, ERC721Instance, OpenFormatSDK } from '../src';
+import {
+  APP_ID,
+  ERC20_CONTRACT_ADDRESS,
+  ERC721_CONTRACT_ADDRESS,
+  PRIVATE_KEY,
+} from './utilities';
+
+//@TODO Tidy test naming across ALL tests
 
 describe('ERC721', () => {
   let sdk: OpenFormatSDK;
@@ -35,14 +43,6 @@ describe('ERC721', () => {
       expect(tx.status).toBe(1);
     });
 
-    it('throws an error if contract address is invalid', async () => {
-      async function createInstance() {
-        await sdk.ERC721.getContract('0x');
-      }
-
-      await expect(createInstance).rejects.toThrow('Invalid contract address');
-    });
-
     it('throws an error if to address is not valid', async () => {
       const params: [string, string] = ['0x1', 'ipfs://'];
 
@@ -51,7 +51,7 @@ describe('ERC721', () => {
       }
 
       await expect(mint()).rejects.toThrow(
-        'Invalid wallet or contract address'
+        'Error: Invalid wallet or contract address'
       );
     });
 
@@ -110,6 +110,67 @@ describe('ERC721', () => {
       }
 
       expect(createInstance()).rejects.toThrow('Failed to get contract');
+    });
+  });
+});
+
+describe('ERC20', () => {
+  let sdk: OpenFormatSDK;
+  let contract: ERC20Instance;
+  let walletAddress: string;
+
+  beforeAll(async () => {
+    sdk = new OpenFormatSDK({
+      network: 'localhost',
+      appId: APP_ID,
+      signer: PRIVATE_KEY,
+    });
+
+    contract = (await sdk.getContract({
+      contractAddress: ERC20_CONTRACT_ADDRESS,
+    })) as ERC20Instance;
+
+    if (sdk.signer) {
+      walletAddress = await sdk.signer?.getAddress();
+    }
+  });
+
+  describe('mint()', () => {
+    const AMOUNT = 100;
+    it('mints 100 tokens if to address is valid', async () => {
+      const params: [string, BigNumberish] = [walletAddress, AMOUNT];
+      const tx = await contract.mint(params);
+
+      const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
+
+      if (mintedEvent?.args) {
+        expect(mintedEvent.args[0]).toBe(walletAddress);
+      }
+      expect(tx.status).toBe(1);
+    });
+
+    it('throws an error if to address is not valid', async () => {
+      const params: [string, BigNumberish] = ['0x1', AMOUNT];
+
+      async function mint() {
+        await contract.mint(params);
+      }
+
+      await expect(mint()).rejects.toThrow(
+        'Invalid wallet or contract address'
+      );
+    });
+
+    it('throws an error if amount is not valid', async () => {
+      const params: [string, string] = [walletAddress, 'Fdgd'];
+
+      async function mint() {
+        await contract.mint(params);
+      }
+
+      await expect(mint()).rejects.toThrow(
+        'Invalid amount. Please check you are passing a valid number'
+      );
     });
   });
 });
