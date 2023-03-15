@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.1.0-dev-c33c530
+
+### Minor Changes
+
+- 0bfe879: ERC20 Minting functionality
+
 ## 0.1.0-dev-5820fce
 
 ### Minor Changes
