@@ -2,7 +2,7 @@ import { ERC721Instance } from '@openformat/sdk';
 import { useMutation } from '@tanstack/react-query';
 
 /**
- * Hook to mint
+ * Hook to mint an NFT
  * @param {ERC721Instance} nft ERC721Instance
  *
  * @example
@@ -11,13 +11,13 @@ import { useMutation } from '@tanstack/react-query';
  * ```
  *
  */
-export function useMint(nft: ERC721Instance) {
+export function useMintNFT(token: ERC721Instance) {
   const { mutateAsync, ...mutation } = useMutation<
-    Awaited<ReturnType<typeof nft.mint>>,
+    Awaited<ReturnType<typeof token.mint>>,
     unknown,
-    Parameters<typeof nft.mint>[0]
+    Parameters<typeof token.mint>[0]
   >(async (data) => {
-    return await nft.mint(data);
+    return await token.mint(data);
   });
 
   return {
