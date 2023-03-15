@@ -51,18 +51,24 @@ export class Subgraph extends BaseContract {
     });
   }
 
-  async getERC721ByTimestamp({
+  async getContractByTimestamp({
     appId,
     createdAt,
+    type,
   }: {
     appId: string;
     createdAt: string;
+    type: string;
   }) {
     const endpoint = await this.getSubgraphEndpoint();
     const query = gql`
-      query getERC721ByTimestamp($appId: String!, $createdAt: String!) {
+      query getContractByTimestamp(
+        $appId: String!
+        $createdAt: String!
+        $type: String!
+      ) {
         contracts(
-          where: { app: $appId, type: "ERC721", createdAt: $createdAt }
+          where: { app: $appId, type: $type, createdAt: $createdAt }
           orderBy: createdAt
           orderDirection: desc
         ) {
@@ -79,10 +85,11 @@ export class Subgraph extends BaseContract {
 
     return await request<
       ContractResponse,
-      { appId: string; createdAt: string }
+      { appId: string; createdAt: string; type: string }
     >(endpoint, query, {
-      appId: appId,
-      createdAt: createdAt,
+      appId,
+      createdAt,
+      type,
     });
   }
 

@@ -1,11 +1,11 @@
 import { ethers } from 'ethers';
 
-export function validateWalletAndMetadata(wallet: string, url: string) {
+export function validateWalletAndMetadata(wallet: string, url?: string) {
   if (!ethers.utils.isAddress(wallet)) {
     throw new Error('Invalid wallet or contract address');
   }
 
-  if (!url.startsWith('ipfs://') && !url.startsWith('https://')) {
+  if (url && !url.startsWith('ipfs://') && !url.startsWith('https://')) {
     throw new Error('Invalid metadata URL');
   }
 }

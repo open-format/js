@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import ERC721ABI from '../abis/token/ERC721/ERC721Base.json';
+import ERC721Base from '../abis/ERC721/ERC721Base.json';
 import { address } from '../src/helpers/validation';
 // @dev Testing requires a local ethereum node and subgraph to be running. These addresses are
 // used in the tests
@@ -16,9 +16,3 @@ export const ERC721_CONTRACT_ADDRESS =
 export const ERC721_CONTRACT_NAME = 'My collectionss';
 export const ERC20_CONTRACT_ADDRESS =
   '0xb1e39f154a5c7f038053eeed781c3b7640342088';
-
-export function parseERC721BaseError(error: any) {
-  const iface = new ethers.utils.Interface(ERC721ABI.abi);
-  const errorResponse = iface.parseError(error.error.error.error.data);
-  return errorResponse.name;
-}
