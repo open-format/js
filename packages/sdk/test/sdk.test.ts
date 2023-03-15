@@ -35,4 +35,17 @@ describe('sdk', () => {
     }
     await expect(getContract).rejects.toThrow();
   });
+
+  it('throws an error if contract address is invalid', async () => {
+    const sdk = new OpenFormatSDK({
+      network: 'localhost',
+      appId: APP_ID,
+    });
+
+    async function createInstance() {
+      await sdk.getContract({ contractAddress: '0x' });
+    }
+
+    await expect(createInstance).rejects.toThrow('Invalid contract address');
+  });
 });

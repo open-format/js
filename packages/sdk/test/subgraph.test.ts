@@ -1,11 +1,11 @@
 import { gql } from 'graphql-request';
 import { OpenFormatSDK } from '../src/index';
-
+import { APP_ID } from './utilities';
 describe('subgraph', () => {
   it('allows you to perform a raw request', async () => {
     const sdk = new OpenFormatSDK({
-      network: 'mumbai',
-      appId: '0x05a3e6a34baffa74586a93f64b57cbd9a6383c23',
+      network: 'localhost',
+      appId: APP_ID,
     });
 
     const query = gql`
