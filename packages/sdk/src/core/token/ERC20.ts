@@ -31,6 +31,8 @@ export class ERC20 extends BaseContract {
       throw new Error('Signer undefined');
     }
 
+    await this.checkNetworksMatch();
+
     validateBigNumbers([params[2], params[3]]);
     //@TODO: Check if there is a better way of doing this?
     const tx = await this.contract.createERC20(

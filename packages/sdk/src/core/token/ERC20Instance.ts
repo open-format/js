@@ -1,11 +1,4 @@
-import {
-  BigNumber,
-  ContractReceipt,
-  ethers,
-  Overrides,
-  providers,
-  Signer,
-} from 'ethers';
+import { ContractReceipt, ethers, Overrides, providers, Signer } from 'ethers';
 import { ERC20Base, ERC20Base__factory } from '../../contract-types';
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
 import {
@@ -60,6 +53,7 @@ export class ERC20Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
       validateWalletAndAmount(params[0].toString(), params[1]);
 
       const tx = await this.contract.mintTo(params[0], params[1], {
@@ -85,6 +79,8 @@ export class ERC20Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.burn(params[0], {
         ...transactionArgs,
       });
@@ -104,6 +100,8 @@ export class ERC20Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.transfer(params[0], params[1], {
         ...transactionArgs,
       });
@@ -122,6 +120,8 @@ export class ERC20Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       validateWalletAndAmount(params[0], params[1]);
 
       const tx = await this.contract.approve(params[0], params[1], {
@@ -142,6 +142,8 @@ export class ERC20Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<number> {
     try {
+      await this.checkNetworksMatch();
+
       validateWallets([params[0], params[1]]);
 
       const allowance = await this.contract.allowance(params[0], params[1], {
@@ -157,6 +159,8 @@ export class ERC20Instance extends BaseContract {
 
   async totalSupply(transactionArgs?: Overrides): Promise<number> {
     try {
+      await this.checkNetworksMatch();
+
       const totalSupply = await this.contract.totalSupply({
         ...transactionArgs,
       });
@@ -174,6 +178,8 @@ export class ERC20Instance extends BaseContract {
     transactionArgs?: Overrides
   ): Promise<number> {
     try {
+      await this.checkNetworksMatch();
+
       validateWallet(params[0]);
 
       const balance = await this.contract.balanceOf(params[0], {
