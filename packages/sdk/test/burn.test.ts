@@ -78,17 +78,19 @@ describe('ERC20', () => {
     });
 
     it('burns a token', async () => {
-      await contract.mint([walletAddress, 1]);
-      const tx = await contract.burn([1]);
+      await contract.mint({ to: walletAddress, amount: 1 });
+      const tx = await contract.burn({ amount: 1 });
       expect(tx.status).toBe(1);
     });
 
     it('throws an error if non existent token is passed', async () => {
-      await contract.mint([walletAddress, 1]);
-      const walletBalance = await contract.balanceOf([walletAddress]);
+      await contract.mint({ to: walletAddress, amount: 1 });
+      const walletBalance = await contract.balanceOf({
+        account: walletAddress,
+      });
 
       async function burn() {
-        await contract.burn([walletBalance + 1]);
+        await contract.burn({ amount: walletBalance + 1 });
       }
 
       //@TODO update error when errors in contract are updated

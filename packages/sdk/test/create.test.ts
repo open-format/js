@@ -101,27 +101,31 @@ describe('ERC20', () => {
   });
 
   it('creates an ERC20 contract and returns an instance of it', async () => {
-    const contract = await sdk.ERC20.create([
-      generateRandomString(5),
-      'NFT',
-      18,
-      1000,
-    ]);
+    const params = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      decimal: 18,
+      supply: 1000,
+    };
+
+    const contract = await sdk.ERC20.create(params);
 
     if (contract) {
-      const balanceOf = await contract.balanceOf([walletAddress]);
+      const balanceOf = await contract.balanceOf({ account: walletAddress });
       expect(balanceOf).toBe(1000);
     }
   });
 
   it('throws an error if decimals parameter is a not a BigNumber', async () => {
+    const params = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      decimal: 'InvalidDecimals',
+      supply: 1000,
+    };
+
     async function create() {
-      await sdk.ERC20.create([
-        generateRandomString(5),
-        'NFT',
-        'InvalidDecimals',
-        1000,
-      ]);
+      await sdk.ERC20.create(params);
     }
 
     await expect(create).rejects.toThrow(
@@ -130,13 +134,15 @@ describe('ERC20', () => {
   });
 
   it('throws an error if supply parameter is a not a BigNumber', async () => {
+    const params = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      decimal: 18,
+      supply: 'InvalidSupply',
+    };
+
     async function create() {
-      await sdk.ERC20.create([
-        generateRandomString(5),
-        'NFT',
-        18,
-        'InvalidSupply',
-      ]);
+      await sdk.ERC20.create(params);
     }
 
     await expect(create).rejects.toThrow(
@@ -145,13 +151,20 @@ describe('ERC20', () => {
   });
 
   it('throws an error if a signer is not passed', async () => {
+    const params = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      decimal: 18,
+      supply: 1000,
+    };
+
     sdk = new OpenFormatSDK({
       network: 'localhost',
       appId: APP_ID,
     });
 
     async function create() {
-      await sdk.ERC20.create([generateRandomString(5), 'NFT', 18, 1000]);
+      await sdk.ERC20.create(params);
     }
 
     await expect(create).rejects.toThrow('Signer undefined');

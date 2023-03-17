@@ -1,5 +1,10 @@
 import { BigNumberish } from 'ethers';
-import { ERC20Instance, ERC721Instance, OpenFormatSDK } from '../src';
+import {
+  ERC20Instance,
+  ERC20MintParams,
+  ERC721Instance,
+  OpenFormatSDK,
+} from '../src';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -160,7 +165,10 @@ describe('ERC20', () => {
   describe('mint()', () => {
     const AMOUNT = 100;
     it('mints 100 tokens if to address is valid', async () => {
-      const params: [string, BigNumberish] = [walletAddress, AMOUNT];
+      const params: ERC20MintParams = {
+        to: walletAddress,
+        amount: AMOUNT,
+      };
       const tx = await contract.mint(params);
 
       const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
@@ -172,7 +180,10 @@ describe('ERC20', () => {
     });
 
     it('throws an error if to address is not valid', async () => {
-      const params: [string, BigNumberish] = ['0x1', AMOUNT];
+      const params: ERC20MintParams = {
+        to: '0x1',
+        amount: AMOUNT,
+      };
 
       async function mint() {
         await contract.mint(params);
@@ -184,7 +195,10 @@ describe('ERC20', () => {
     });
 
     it('throws an error if amount is not valid', async () => {
-      const params: [string, string] = [walletAddress, 'Fdgd'];
+      const params: ERC20MintParams = {
+        to: walletAddress,
+        amount: 'NaN',
+      };
 
       async function mint() {
         await contract.mint(params);

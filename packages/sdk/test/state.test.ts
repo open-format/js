@@ -112,23 +112,27 @@ describe('ERC20', () => {
     describe('totalSupply()', () => {
       it('returns the total supply', async () => {
         const totalSupply = await contract.totalSupply();
-        await contract.mint([walletAddress, AMOUNT]);
+        await contract.mint({ to: walletAddress, amount: AMOUNT });
         const newTotalSupply = await contract.totalSupply();
         expect(newTotalSupply).toBe(totalSupply + AMOUNT);
       });
     });
     describe('balanceOf()', () => {
       it(`returns ${AMOUNT} after minting ${AMOUNT} token`, async () => {
-        const balanceOf = await contract.balanceOf([WALLET_ADDRESS2]);
-        await contract.mint([WALLET_ADDRESS2, AMOUNT]);
-        const newBalanceOf = await contract.balanceOf([WALLET_ADDRESS2]);
+        const balanceOf = await contract.balanceOf({
+          account: WALLET_ADDRESS2,
+        });
+        await contract.mint({ to: WALLET_ADDRESS2, amount: AMOUNT });
+        const newBalanceOf = await contract.balanceOf({
+          account: WALLET_ADDRESS2,
+        });
 
         expect(newBalanceOf).toBe(balanceOf + AMOUNT);
       });
 
       it('throws an error if the attempted wallet to be checked is not valid', async () => {
         async function balanceOf() {
-          await contract.balanceOf(['0x13fg4']);
+          await contract.balanceOf({ account: '0x13fg4' });
         }
 
         await expect(balanceOf).rejects.toThrow(
@@ -138,20 +142,20 @@ describe('ERC20', () => {
     });
     describe('allowance()', () => {
       it(`returns ${AMOUNT} as the allowance`, async () => {
-        await contract.mint([walletAddress, AMOUNT]);
-        await contract.approve([WALLET_ADDRESS2, AMOUNT]);
+        await contract.mint({ to: walletAddress, amount: AMOUNT });
+        await contract.approve({ spender: WALLET_ADDRESS2, amount: AMOUNT });
 
-        const allowance = await contract.allowance([
-          walletAddress,
-          WALLET_ADDRESS2,
-        ]);
+        const allowance = await contract.allowance({
+          holder: walletAddress,
+          spender: WALLET_ADDRESS2,
+        });
 
         expect(allowance).toBe(AMOUNT);
       });
 
       it('throws an error if the attempted wallet to be checked is not valid', async () => {
         async function balanceOf() {
-          await contract.balanceOf(['0x13fg4']);
+          await contract.balanceOf({ account: '0x13fg4' });
         }
 
         await expect(balanceOf).rejects.toThrow(

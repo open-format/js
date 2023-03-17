@@ -100,21 +100,23 @@ describe('ERC20', () => {
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
       }
-      await contract.mint([walletAddress, AMOUNT]);
+      await contract.mint({ to: walletAddress, amount: AMOUNT });
     });
 
     it('approves another wallet to transfer a token', async () => {
-      await contract.approve([WALLET_ADDRESS2, AMOUNT]);
-      const approved = await contract.allowance([
-        walletAddress,
-        WALLET_ADDRESS2,
-      ]);
+      await contract.approve({ spender: WALLET_ADDRESS2, amount: AMOUNT });
+
+      const approved = await contract.allowance({
+        holder: walletAddress,
+        spender: WALLET_ADDRESS2,
+      });
+
       expect(approved).toBe(AMOUNT);
     });
 
     it('throws an error when to address is not a valid address', async () => {
       async function approve() {
-        await contract.approve(['INVALID', AMOUNT]);
+        await contract.approve({ spender: 'INVALID', amount: AMOUNT });
       }
 
       await expect(approve).rejects.toThrow(
@@ -124,7 +126,7 @@ describe('ERC20', () => {
 
     it('throws an error when to address is a ZERO address', async () => {
       async function approve() {
-        await contract.approve([ZERO_ADDRESS, AMOUNT]);
+        await contract.approve({ spender: ZERO_ADDRESS, amount: AMOUNT });
       }
 
       await expect(approve).rejects.toThrow('ERC20Base__ApproveToZeroAddress');
