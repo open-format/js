@@ -1,5 +1,10 @@
 import { Signer } from 'ethers';
-import { ERC721Base, ERC721Factory } from '../contract-types';
+import {
+  ERC20Base,
+  ERC20Factory,
+  ERC721Base,
+  ERC721Factory,
+} from '../contract-types';
 import { ERC20Instance } from '../core/token/ERC20Instance';
 import { ERC721Instance } from '../core/token/ERC721Instance';
 
@@ -160,6 +165,56 @@ enum ERC721Error {
   OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
 }
 
+///////////////////
+////   ERC20   ////
+///////////////////
+
+export interface ERC20CreateParams {
+  name: Parameters<ERC20Factory['createERC20']>[0];
+  symbol: Parameters<ERC20Factory['createERC20']>[1];
+  decimal: Parameters<ERC20Factory['createERC20']>[2];
+  supply: Parameters<ERC20Factory['createERC20']>[3];
+  overrides?: Parameters<ERC20Factory['createERC20']>[4];
+}
+
+export interface ERC20MintParams {
+  to: Parameters<ERC20Base['mintTo']>[0];
+  amount: Parameters<ERC20Base['mintTo']>[1];
+  overrides?: Parameters<ERC20Base['mintTo']>[2];
+}
+
+export interface ERC20BurnParams {
+  amount: Parameters<ERC20Base['burn']>[0];
+  overrides?: Parameters<ERC20Base['burn']>[1];
+}
+
+export interface ERC20TransferParams {
+  to: Parameters<ERC20Base['transfer']>[0];
+  amount: Parameters<ERC20Base['transfer']>[1];
+  overrides?: Parameters<ERC20Base['transfer']>[2];
+}
+
+export interface ERC20ApproveParams {
+  spender: Parameters<ERC20Base['approve']>[0];
+  amount: Parameters<ERC20Base['approve']>[1];
+  overrides?: Parameters<ERC20Base['approve']>[2];
+}
+
+export interface ERC20AllowanceParams {
+  holder: Parameters<ERC20Base['allowance']>[0];
+  spender: Parameters<ERC20Base['allowance']>[1];
+  overrides?: Parameters<ERC20Base['allowance']>[2];
+}
+
+export interface ERC20TotalSupplyParams {
+  overrides?: Parameters<ERC20Base['totalSupply']>[0];
+}
+
+export interface ERC20BalanceOfParams {
+  account: Parameters<ERC20Base['balanceOf']>[0];
+  overrides?: Parameters<ERC20Base['balanceOf']>[1];
+}
+
 enum ERC20Error {
   ERC20Base__ApproveFromZeroAddress,
   ERC20Base__ApproveToZeroAddress,
@@ -171,7 +226,3 @@ enum ERC20Error {
   ERC20Base__TransferFromZeroAddress,
   ERC20Base__TransferToZeroAddress,
 }
-
-///////////////////
-////   ERC20   ////
-///////////////////
