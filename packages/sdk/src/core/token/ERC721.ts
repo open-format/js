@@ -1,12 +1,22 @@
-import { Overrides, providers, Signer } from 'ethers';
+import { providers, Signer } from 'ethers';
 import { ERC721Factory__factory } from '../../contract-types';
 import { ERC721Factory } from '../../contract-types/ERC721';
 import { poll } from '../../helpers/subgraph';
 import { validateBigNumber, validateWallet } from '../../helpers/validation';
-import { ContractResponse, ContractType } from '../../types';
+import {
+  ContractResponse,
+  ContractType,
+  ERC721CreateParams,
+} from '../../types';
 import { BaseContract } from '../base';
 import { Subgraph } from '../subgraph';
 import { ERC721Instance } from './ERC721Instance';
+
+/**
+ * Represents an ERC721 contract instance with utility methods to create an ERC721 contract
+ * @class ERC721
+ * @extends BaseContract
+ */
 
 export class ERC721 extends BaseContract {
   contract: ERC721Factory;
@@ -23,25 +33,34 @@ export class ERC721 extends BaseContract {
     this.subgraph = new Subgraph(provider, appId, signer);
   }
 
-  async create(
-    params: Parameters<typeof this.contract.createERC721>,
-    transactionArgs?: Overrides
-  ) {
+  /**
+   * Creates a new ERC721 token.
+   * @async
+   * @function create
+   * @param {string} params.name - Name of the ERC721 token.
+   * @param {string} params.symbol - Symbol of the ERC721 token.
+   * @param {string} params.royaltyRecipient - Address of the royalty recipient.
+   * @param {BigNumber} params.royaltyBps - Royalty basis points.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ERC721Instance>} Promise that resolves to a new instance of the created ERC721 token.
+   * @throws Will throw an error if the signer is undefined or if validation fails.
+   */
+
+  async create(params: ERC721CreateParams): Promise<ERC721Instance> {
     //@TODO calculateERC721FactoryDeploymentAddress when ready
     if (!this.signer) {
       throw new Error('Signer undefined');
     }
 
-    validateWallet(params[2]);
-    validateBigNumber(params[3]);
+    validateWallet(params.royaltyRecipient);
+    validateBigNumber(params.royaltyBps);
 
-    //@TODO: Check if there is a better way of doing this?
     const tx = await this.contract.createERC721(
-      params[0],
-      params[1],
-      params[2],
-      params[3],
-      { ...transactionArgs }
+      params.name,
+      params.symbol,
+      params.royaltyRecipient,
+      params.royaltyBps,
+      { ...params.overrides }
     );
     const receipt = await tx.wait();
     const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
