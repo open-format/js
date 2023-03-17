@@ -1,4 +1,5 @@
-export * from './useApprove';
+export * from './useApproveNFT';
+export * from './useApproveToken';
 export * from './useBatchMint';
 export * from './useBurnNFT';
 export * from './useBurnToken';

@@ -3,7 +3,7 @@ import { PromiseOrValue } from '../contract-types/common';
 
 export function validateWalletAndMetadata(
   wallet: PromiseOrValue<string>,
-  url: string
+  url: PromiseOrValue<string>
 ) {
   validateWallet(wallet);
   validateMetadata(url);
@@ -20,9 +20,7 @@ export function validateWalletAndAmount(
 export function validateWallets(wallets: PromiseOrValue<string>[]) {
   for (let i = 0; i < wallets.length; i++) {
     try {
-      if (ethers.utils.isAddress(wallets[i] as string)) {
-      }
-      continue;
+      if (ethers.utils.isAddress(wallets[i] as string)) continue;
     } catch (e) {
       throw new Error('Invalid wallet or contract address');
     }
@@ -35,8 +33,11 @@ export function validateWallet(wallet: PromiseOrValue<string>) {
   }
 }
 
-function validateMetadata(url: string) {
-  if (!url.startsWith('ipfs://') && !url.startsWith('https://')) {
+function validateMetadata(url: PromiseOrValue<string>) {
+  if (
+    !(url as string).startsWith('ipfs://') &&
+    !(url as string).startsWith('https://')
+  ) {
     throw new Error('Invalid metadata URL');
   }
 }

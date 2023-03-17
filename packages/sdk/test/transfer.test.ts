@@ -1,5 +1,10 @@
-import { BigNumber } from 'ethers';
-import { ERC20Instance, ERC721Instance, OpenFormatSDK } from '../src';
+import {
+  ERC20Instance,
+  ERC721Instance,
+  ERC721MintParams,
+  ERC721TransferParams,
+  OpenFormatSDK,
+} from '../src';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -14,6 +19,7 @@ describe('ERC721', () => {
     let contract: ERC721Instance;
 
     let walletAddress: string;
+    let ERC721MintParams: ERC721MintParams;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
@@ -28,27 +34,36 @@ describe('ERC721', () => {
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
+        ERC721MintParams = { to: walletAddress, tokenURI: 'ipfs://' };
       }
     });
 
     it('transfers a token', async () => {
       const nextId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
-      await contract.transfer([walletAddress, WALLET_ADDRESS2, nextId]);
+      await contract.mint(ERC721MintParams);
+
+      const params: ERC721TransferParams = {
+        from: walletAddress,
+        to: WALLET_ADDRESS2,
+        tokenId: nextId,
+      };
+      await contract.transfer(params);
       const ownerOf = await contract.ownerOf([nextId]);
       expect(ownerOf.toString()).toBe(WALLET_ADDRESS2);
     });
 
     it('throws an error if non existent token is attempted to be transferred', async () => {
       const nextId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
+      await contract.mint(ERC721MintParams);
+
+      const params: ERC721TransferParams = {
+        from: walletAddress,
+        to: WALLET_ADDRESS2,
+        tokenId: nextId.add(1),
+      };
 
       async function transfer() {
-        await contract.transfer([
-          walletAddress,
-          WALLET_ADDRESS2,
-          nextId.add(1),
-        ]);
+        await contract.transfer(params);
       }
 
       await expect(transfer).rejects.toThrow('OwnerQueryForNonexistentToken');
@@ -56,11 +71,18 @@ describe('ERC721', () => {
 
     it('throws an error if token transferred is not owned by signer', async () => {
       const nextId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
-      await contract.transfer([walletAddress, WALLET_ADDRESS2, nextId]);
+      await contract.mint(ERC721MintParams);
+
+      const params: ERC721TransferParams = {
+        from: walletAddress,
+        to: WALLET_ADDRESS2,
+        tokenId: nextId,
+      };
+
+      await contract.transfer(params);
 
       async function transfer() {
-        await contract.transfer([walletAddress, WALLET_ADDRESS2, nextId]);
+        await contract.transfer(params);
       }
 
       await expect(transfer).rejects.toThrow('TransferFromIncorrectOwner');

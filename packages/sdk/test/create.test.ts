@@ -1,4 +1,4 @@
-import { OpenFormatSDK } from '../src';
+import { ERC721CreateParams, OpenFormatSDK } from '../src';
 import { APP_ID, generateRandomString, PRIVATE_KEY } from './utilities';
 
 describe('ERC721', () => {
@@ -18,12 +18,13 @@ describe('ERC721', () => {
   });
 
   it('creates an ERC721 contract and returns an instance of it', async () => {
-    const contract = await sdk.ERC721.create([
-      generateRandomString(5),
-      'NFT',
-      walletAddress,
-      1000,
-    ]);
+    const params: ERC721CreateParams = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      royaltyRecipient: walletAddress,
+      royaltyBps: 1000,
+    };
+    const contract = await sdk.ERC721.create(params);
 
     if (contract) {
       const ownerOf = await contract.owner();
@@ -32,26 +33,30 @@ describe('ERC721', () => {
   });
 
   it('throws an error if royaltyRecipient parameter is a not a BigNumber', async () => {
+    const params: ERC721CreateParams = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      royaltyRecipient: 'InvalidRoyaltyRecipient',
+      royaltyBps: 1000,
+    };
+
     async function create() {
-      await sdk.ERC721.create([
-        generateRandomString(5),
-        'NFT',
-        'InvalidRoyaltyRecipient',
-        1000,
-      ]);
+      await sdk.ERC721.create(params);
     }
 
     await expect(create).rejects.toThrow('Invalid wallet or contract address');
   });
 
   it('throws an error if royaltyBps parameter is a not a BigNumber', async () => {
+    const params: ERC721CreateParams = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      royaltyRecipient: walletAddress,
+      royaltyBps: 'InvalidRoyaltyBps',
+    };
+
     async function create() {
-      await sdk.ERC721.create([
-        generateRandomString(5),
-        'NFT',
-        walletAddress,
-        'InvalidRoyaltyBps',
-      ]);
+      await sdk.ERC721.create(params);
     }
 
     await expect(create).rejects.toThrow(
@@ -60,18 +65,20 @@ describe('ERC721', () => {
   });
 
   it('throws an error if a signer is not passed', async () => {
+    const params: ERC721CreateParams = {
+      name: generateRandomString(5),
+      symbol: 'NFT',
+      royaltyRecipient: walletAddress,
+      royaltyBps: 1000,
+    };
+
     sdk = new OpenFormatSDK({
       network: 'localhost',
       appId: APP_ID,
     });
 
     async function create() {
-      await sdk.ERC721.create([
-        generateRandomString(5),
-        'NFT',
-        walletAddress,
-        1000,
-      ]);
+      await sdk.ERC721.create(params);
     }
 
     await expect(create).rejects.toThrow('Signer undefined');

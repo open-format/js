@@ -32,7 +32,10 @@ describe('ERC721', () => {
 
   describe('mint()', () => {
     it('mints a token if wallet and metadata are valid', async () => {
-      const params: [string, string] = [walletAddress, 'ipfs://'];
+      const params = {
+        to: walletAddress,
+        tokenURI: 'ipfs://',
+      };
       const tx = await contract.mint(params);
 
       const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
@@ -44,7 +47,10 @@ describe('ERC721', () => {
     });
 
     it('throws an error if to address is not valid', async () => {
-      const params: [string, string] = ['0x1', 'ipfs://'];
+      const params = {
+        to: '0x1',
+        tokenURI: 'ipfs://',
+      };
 
       async function mint() {
         await contract.mint(params);
@@ -56,7 +62,10 @@ describe('ERC721', () => {
     });
 
     it('throws an error if to metadata URL is not valid', async () => {
-      const params: [string, string] = [walletAddress, 'invalid'];
+      const params = {
+        to: walletAddress,
+        tokenURI: 'invalid',
+      };
 
       async function mint() {
         await contract.mint(params);
@@ -69,7 +78,12 @@ describe('ERC721', () => {
   describe('batchMint()', () => {
     // BATCH MINTING
     it('batch mints 5 tokens if wallet and metadata are valid', async () => {
-      const params: [string, number, string] = [walletAddress, 5, 'ipfs://'];
+      const params = {
+        to: walletAddress,
+        quantity: 5,
+        baseURI: 'ipfs://',
+      };
+
       const tx = await contract.batchMint(params);
 
       const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
@@ -81,7 +95,11 @@ describe('ERC721', () => {
     });
 
     it('throws an error if to address is not valid', async () => {
-      const params: [string, number, string] = ['0x1', 5, 'ipfs://'];
+      const params = {
+        to: '0x1',
+        quantity: 5,
+        baseURI: 'ipfs://',
+      };
 
       async function batchMint() {
         await contract.batchMint(params);
@@ -93,7 +111,11 @@ describe('ERC721', () => {
     });
 
     it('throws an error if to metadata URL is not valid', async () => {
-      const params: [string, number, string] = [walletAddress, 5, 'invalid'];
+      const params = {
+        to: walletAddress,
+        quantity: 5,
+        baseURI: 'invalid',
+      };
 
       async function batchMint() {
         await contract.batchMint(params);

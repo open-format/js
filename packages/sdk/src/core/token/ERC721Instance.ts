@@ -1,16 +1,29 @@
-import { ContractReceipt, ethers, Overrides, providers, Signer } from 'ethers';
+import { BigNumber, ContractReceipt, ethers, providers, Signer } from 'ethers';
 import { ERC721Base, ERC721Base__factory } from '../../contract-types';
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
 import {
   validateWallet,
   validateWalletAndMetadata,
 } from '../../helpers/validation';
-import { ContractType } from '../../types';
+import {
+  ContractType,
+  ERC721ApproveParams,
+  ERC721BalanceOfParams,
+  ERC721BatchMintParams,
+  ERC721BurnParams,
+  ERC721GetApprovedParams,
+  ERC721MintParams,
+  ERC721OwnerOfParams,
+  ERC721OwnerParams,
+  ERC721TotalSupplyParams,
+  ERC721TransferParams,
+} from '../../types';
 import { BaseContract } from '../base';
 
 /**
- * ERC721 Instance
- * @public
+ * Represents an ERC721 contract instance with utility methods to interact with an ERC721 contract
+ * @class ERC721
+ * @extends BaseContract
  */
 
 export class ERC721Instance extends BaseContract {
@@ -35,27 +48,22 @@ export class ERC721Instance extends BaseContract {
   }
 
   /**
-   * Mint ERC721 NFTs
-   * @public
-   * @description NFT minting functionality
-   * @param {string[]} params wallet address and metadataURL
-   * @param {Overrides} [transactionArgs] optional transaction arguments
-   * @example
-   * ```javascript
-   * const nft = await sdk.getContract("{{contract_address}}");
-   * await nft.mint([walletAddress, metadataURL]);
-   * ```
+   * Mint a new ERC721 token with the given tokenURI to the specified recipient address.
+   * @async
+   * @function mint
+   * @param {string} params.to - The address of the recipient of the newly minted token.
+   * @param {string} params.tokenURI - The URI of the token's metadata.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - The transaction receipt object.
+   * @throws {Error} - Throws an error if the recipient address or tokenURI is invalid or if the transaction fails.
    */
 
-  async mint(
-    params: Parameters<typeof this.contract.mintTo>,
-    transactionArgs?: Overrides
-  ): Promise<ContractReceipt> {
+  async mint(params: ERC721MintParams): Promise<ContractReceipt> {
     try {
-      validateWalletAndMetadata(params[0].toString(), params[1].toString());
+      validateWalletAndMetadata(params.to, params.tokenURI);
 
-      const tx = await this.contract.mintTo(params[0], params[1], {
-        ...transactionArgs,
+      const tx = await this.contract.mintTo(params.to, params.tokenURI, {
+        ...params.overrides,
       });
 
       const receipt = await processTransaction(tx);
@@ -67,31 +75,28 @@ export class ERC721Instance extends BaseContract {
   }
 
   /**
-   * Batch mint ERC721 NFTs
-   * @public
-   * @description NFT batch minting functionality
-   * @param {string[]} params wallet address, number of tokens to mint, metadataURL
-   * @param {Overrides} [transactionArgs] optional transaction arguments
-   * @example
-   * ```javascript
-   * const nft = await sdk.getContract("{{contract_address}}");
-   * await nft.batchMint([walletAddress, 5, metadataURL]);
-   * ```
+   * Mint multiple tokens and transfer them to the specified address.
+   * @async
+   * @function batchMint
+   * @param {string} params.to - The array of address to mint the tokens to.
+   * @param {number} params.quantity - The number of tokens to mint.
+   * @param {string} params.baseURI - The base URI of the token metadata.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} The transaction receipt.
+   * @throws Will throw an error if the wallet or metadata are invalid or if an error occurs during the transaction.
    */
 
-  async batchMint(
-    params: Parameters<typeof this.contract.batchMintTo>,
-    transactionArgs?: Overrides
-  ): Promise<ContractReceipt> {
+  async batchMint(params: ERC721BatchMintParams): Promise<ContractReceipt> {
     try {
-      validateWalletAndMetadata(params[0].toString(), params[2].toString());
+      validateWalletAndMetadata(params.to, params.baseURI);
 
       const tx = await this.contract.batchMintTo(
-        params[0],
-        params[1],
-        params[2],
+        params.to,
+        params.quantity,
+        params.baseURI,
+
         {
-          ...transactionArgs,
+          ...params.overrides,
         }
       );
 
@@ -104,17 +109,19 @@ export class ERC721Instance extends BaseContract {
   }
 
   /**
-   * Burn a single token
-   * @public
+   * Burns an ERC721 token with the specified token ID.
+   * @async
+   * @function burn
+   * @param {number} params.tokenId - The ID of the token to burn.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - The transaction receipt for the burn operation.
+   * @throws {Error} - Throws an error if the burn operation fails.
    */
 
-  async burn(
-    params: Parameters<typeof this.contract.burn>,
-    transactionArgs?: Overrides
-  ): Promise<ContractReceipt> {
+  async burn(params: ERC721BurnParams): Promise<ContractReceipt> {
     try {
-      const tx = await this.contract.burn(params[0], {
-        ...transactionArgs,
+      const tx = await this.contract.burn(params.tokenId, {
+        ...params.overrides,
       });
 
       const receipt = await processTransaction(tx);
@@ -126,17 +133,26 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async transfer(
-    params: Parameters<typeof this.contract.transferFrom>,
-    transactionArgs?: Overrides
-  ): Promise<ContractReceipt> {
+  /**
+   * Transfers ownership of an ERC721 token from one address to another.
+   * @async
+   * @function transfer
+   * @param {string} params.from - The address of the current token owner.
+   * @param {string} params.to - The address of the new token owner.
+   * @param {number} params.tokenId - The ID of the token to transfer.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - The transaction receipt for the transfer operation.
+   * @throws {Error} - Throws an error if the transfer operation fails.
+   */
+
+  async transfer(params: ERC721TransferParams): Promise<ContractReceipt> {
     try {
       const tx = await this.contract.transferFrom(
-        params[0],
-        params[1],
-        params[2],
+        params.from,
+        params.to,
+        params.tokenId,
         {
-          ...transactionArgs,
+          ...params.overrides,
         }
       );
 
@@ -149,13 +165,21 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async approve(
-    params: Parameters<typeof this.contract.approve>,
-    transactionArgs?: Overrides
-  ): Promise<ContractReceipt> {
+  /**
+   * Grants approval to another address to transfer ownership of an ERC721 token.
+   * @async
+   * @function approve
+   * @param {string} params.account - The address of the account to grant approval to.
+   * @param {number} params.tokenId - The ID of the token to grant approval for.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - The transaction receipt for the approval operation.
+   * @throws {Error} - Throws an error if the approval operation fails.
+   */
+
+  async approve(params: ERC721ApproveParams): Promise<ContractReceipt> {
     try {
-      const tx = await this.contract.approve(params[0], params[1], {
-        ...transactionArgs,
+      const tx = await this.contract.approve(params.account, params.tokenId, {
+        ...params.overrides,
       });
 
       const receipt = await processTransaction(tx);
@@ -167,13 +191,20 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async getApproved(
-    params: Parameters<typeof this.contract.getApproved>,
-    transactionArgs?: Overrides
-  ): Promise<string> {
+  /**
+   * Retrieves the account approved to transfer the ownership of a specific token ID.
+   * @async
+   * @function getApproved
+   * @param {number} params.tokenId - The token ID for which to retrieve the approved account.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<string>} - A Promise that resolves to the approved account address.
+   * @throws {Error} - Throws an error if there was an issue retrieving the approved account.
+   */
+
+  async getApproved(params: ERC721GetApprovedParams): Promise<string> {
     try {
-      const tx = await this.contract.getApproved(params[0], {
-        ...transactionArgs,
+      const tx = await this.contract.getApproved(params.tokenId, {
+        ...params.overrides,
       });
 
       return tx;
@@ -183,10 +214,20 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async totalSupply(transactionArgs?: Overrides): Promise<number> {
+  /**
+   * Returns the total supply of tokens in the ERC721 contract
+   * @async
+   * @function totalSupply
+   * @param {ERC721TotalSupplyParams} [params] - Optional parameters for the transaction
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<number>} - The total number of tokens in the contract
+   * @throws {Error} If there was an error retrieving the total supply
+   */
+
+  async totalSupply(params?: ERC721TotalSupplyParams): Promise<number> {
     try {
       const totalSupply = await this.contract.totalSupply({
-        ...transactionArgs,
+        ...params?.overrides,
       });
 
       return totalSupply.toNumber();
@@ -196,14 +237,21 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async balanceOf(
-    params: Parameters<typeof this.contract.balanceOf>,
-    transactionArgs?: Overrides
-  ): Promise<number> {
+  /**
+   * Gets the number of tokens owned by a specific account.
+   * @async
+   * @function balanceOf
+   * @param {string} params.owner - The address to query the balance of.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<number>} A promise that resolves to the number of tokens owned by the specified account.
+   * @throws {Error} If there was an error executing the balanceOf function.
+   */
+
+  async balanceOf(params: ERC721BalanceOfParams): Promise<number> {
     try {
-      validateWallet(params[0]);
-      const balance = await this.contract.balanceOf(params[0], {
-        ...transactionArgs,
+      validateWallet(params.owner);
+      const balance = await this.contract.balanceOf(params.owner, {
+        ...params.overrides,
       });
 
       return balance.toNumber();
@@ -214,13 +262,20 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async ownerOf(
-    params: Parameters<typeof this.contract.ownerOf>,
-    transactionArgs?: Overrides
-  ): Promise<string> {
+  /**
+   * Returns the owner of the specified NFT.
+   * @async
+   * @function ownerOf
+   * @param {number} params.tokenId - The identifier of the NFT.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<string>} - The address of the owner of the specified NFT.
+   * @throws {Error} If there was an error executing the transaction.
+   */
+
+  async ownerOf(params: ERC721OwnerOfParams): Promise<string> {
     try {
-      const tx = await this.contract.ownerOf(params[0], {
-        ...transactionArgs,
+      const tx = await this.contract.ownerOf(params.tokenId, {
+        ...params.overrides,
       });
 
       return tx;
@@ -230,9 +285,18 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async owner(transactionArgs?: Overrides): Promise<string> {
+  /**
+   * Returns the owner of the contract.
+   * @async
+   * @function owner
+   * @param {ERC721OwnerParams} [params] - Optional overrides for the transaction
+   * @returns {Promise<string>} The address of the owner of the contract.
+   * @throws {Error} If there was an error executing the transaction.
+   */
+
+  async owner(params?: ERC721OwnerParams): Promise<string> {
     try {
-      const tx = await this.contract.owner({ ...transactionArgs });
+      const tx = await this.contract.owner({ ...params?.overrides });
       return tx;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
@@ -240,7 +304,12 @@ export class ERC721Instance extends BaseContract {
     }
   }
 
-  async nextTokenIdToMint() {
+  /**
+   * Get the next token ID to be minted.
+   * @returns {Promise<BigNumber>} The next token ID.
+   */
+
+  async nextTokenIdToMint(): Promise<BigNumber> {
     return await this.contract.nextTokenIdToMint();
   }
 }
