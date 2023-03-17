@@ -1,4 +1,9 @@
-import { ERC20Instance, ERC721Instance, OpenFormatSDK } from '../src';
+import {
+  ERC20Instance,
+  ERC721Instance,
+  ERC721MintParams,
+  OpenFormatSDK,
+} from '../src';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -11,6 +16,7 @@ describe('ERC721', () => {
     let sdk: OpenFormatSDK;
     let contract: ERC721Instance;
     let walletAddress: string;
+    let ERC721MintParams: ERC721MintParams;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
@@ -26,21 +32,23 @@ describe('ERC721', () => {
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
       }
+      ERC721MintParams = { to: walletAddress, tokenURI: 'ipfs://' };
     });
 
     it('burns a token', async () => {
       const nextId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
-      const tx = await contract.burn([nextId]);
+
+      await contract.mint(ERC721MintParams);
+      const tx = await contract.burn({ tokenId: nextId });
       expect(tx.status).toBe(1);
     });
 
     it('throws an error if non existent token is passed', async () => {
       const nextId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
+      await contract.mint(ERC721MintParams);
 
       async function burn() {
-        await contract.burn([nextId.add(1)]);
+        await contract.burn({ tokenId: nextId.add(1) });
       }
 
       await expect(burn).rejects.toThrow('OwnerQueryForNonexistentToken');

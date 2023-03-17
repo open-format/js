@@ -1,4 +1,9 @@
-import { ERC20Instance, ERC721Instance, OpenFormatSDK } from '../src';
+import {
+  ERC20Instance,
+  ERC721Instance,
+  ERC721MintParams,
+  OpenFormatSDK,
+} from '../src';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -13,6 +18,7 @@ describe('ERC721', () => {
     let sdk: OpenFormatSDK;
     let contract: ERC721Instance;
     let walletAddress: string;
+    let ERC721MintParams: ERC721MintParams;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
@@ -27,23 +33,27 @@ describe('ERC721', () => {
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
+        ERC721MintParams = { to: walletAddress, tokenURI: 'ipfs://' };
       }
     });
 
     it('approves another wallet to transfer a token', async () => {
       const tokenId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
-      await contract.approve([WALLET_ADDRESS2, tokenId]);
+      await contract.mint(ERC721MintParams);
+      await contract.approve({ account: WALLET_ADDRESS2, tokenId });
       const approved = await contract.getApproved([tokenId]);
       expect(approved.toString()).toBe(WALLET_ADDRESS2);
     });
 
     it('throws an error if token attempted to be transferred does not exist', async () => {
       const tokenId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
+      await contract.mint(ERC721MintParams);
 
       async function approve() {
-        await contract.approve([WALLET_ADDRESS2, tokenId.add(1)]);
+        await contract.approve({
+          account: WALLET_ADDRESS2,
+          tokenId: tokenId.add(1),
+        });
       }
 
       await expect(approve).rejects.toThrow('OwnerQueryForNonexistentToken');
@@ -51,11 +61,15 @@ describe('ERC721', () => {
 
     it('throws an error if token attempted to be approved is not owned by signer', async () => {
       const tokenId = await contract.nextTokenIdToMint();
-      await contract.mint([walletAddress, 'ipfs://']);
-      await contract.transfer([walletAddress, WALLET_ADDRESS2, tokenId]);
+      await contract.mint(ERC721MintParams);
+      await contract.transfer({
+        from: walletAddress,
+        to: WALLET_ADDRESS2,
+        tokenId,
+      });
 
       async function approve() {
-        await contract.approve([WALLET_ADDRESS2, tokenId]);
+        await contract.approve({ account: WALLET_ADDRESS2, tokenId });
       }
 
       await expect(approve).rejects.toThrow(
