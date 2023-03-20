@@ -1,5 +1,18 @@
 # @openformat/react
 
+## 0.1.0-dev-04dcc8a
+
+### Minor Changes
+
+- bef1263: ERC20 transfer functionality
+- 493d303: ERC20 burn functions and hooks
+
+### Patch Changes
+
+- Updated dependencies [bef1263]
+- Updated dependencies [493d303]
+  - @openformat/sdk@0.1.0-dev-04dcc8a
+
 ## 0.1.0-dev-c33c530
 
 ### Minor Changes
