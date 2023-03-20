@@ -95,7 +95,6 @@ describe('ERC20', () => {
   describe('transfer()', () => {
     let sdk: OpenFormatSDK;
     let contract: ERC20Instance;
-
     let walletAddress: string;
 
     beforeAll(async () => {
@@ -115,9 +114,13 @@ describe('ERC20', () => {
     });
 
     it('transfers a token', async () => {
-      const receiverBalance = await contract.balanceOf([WALLET_ADDRESS2]);
-      await contract.transfer([WALLET_ADDRESS2, 100]);
-      const newReceiverBalance = await contract.balanceOf([WALLET_ADDRESS2]);
+      const receiverBalance = await contract.balanceOf({
+        account: WALLET_ADDRESS2,
+      });
+      await contract.transfer({ to: WALLET_ADDRESS2, amount: 100 });
+      const newReceiverBalance = await contract.balanceOf({
+        account: WALLET_ADDRESS2,
+      });
 
       expect(newReceiverBalance).toBe(receiverBalance + 100);
     });

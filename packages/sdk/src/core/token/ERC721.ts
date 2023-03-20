@@ -34,7 +34,7 @@ export class ERC721 extends BaseContract {
   }
 
   /**
-   * Creates a new ERC721 token.
+   * Creates a new ERC721 token and deploys it to the blockchain.
    * @async
    * @function create
    * @param {string} params.name - Name of the ERC721 token.

@@ -1,12 +1,19 @@
-import { Overrides, providers, Signer } from 'ethers';
+import { providers, Signer } from 'ethers';
 import { ERC20Factory__factory } from '../../contract-types';
 import { ERC20Factory } from '../../contract-types/ERC20';
 import { poll } from '../../helpers/subgraph';
 import { validateBigNumbers } from '../../helpers/validation';
-import { ContractResponse, ContractType } from '../../types';
+import { ContractResponse, ContractType, ERC20CreateParams } from '../../types';
 import { BaseContract } from '../base';
 import { Subgraph } from '../subgraph';
 import { ERC20Instance } from './ERC20Instance';
+
+/**
+ * Represents an ERC720 contract instance with utility methods to create an ERC20 contract
+ *
+ * @class ERC20
+ * @extends BaseContract
+ */
 
 export class ERC20 extends BaseContract {
   contract: ERC20Factory;
@@ -23,24 +30,35 @@ export class ERC20 extends BaseContract {
     this.subgraph = new Subgraph(provider, appId, signer);
   }
 
-  async create(
-    params: Parameters<typeof this.contract.createERC20>,
-    transactionArgs?: Overrides
-  ) {
+  /**
+   * Creates a new ERC20 token contract and deploys it to the blockchain.
+   *
+   * @async
+   * @function create
+   * @param {string} params.name - The name of the token.
+   * @param {string} params.symbol - The symbol of the token.
+   * @param {number} params.decimal - The number of decimal places for the token.
+   * @param {BigNumberish} params.supply - The total supply of the token.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ERC20Instance>} - A promise that resolves to the new ERC20 token contract instance.
+   * @throws {Error} - Throws an error if the signer is undefined or the ERC20 token contract creation fails.
+   */
+
+  async create(params: ERC20CreateParams): Promise<ERC20Instance> {
     if (!this.signer) {
       throw new Error('Signer undefined');
     }
 
     await this.checkNetworksMatch();
 
-    validateBigNumbers([params[2], params[3]]);
+    validateBigNumbers([params.decimal, params.supply]);
     //@TODO: Check if there is a better way of doing this?
     const tx = await this.contract.createERC20(
-      params[0],
-      params[1],
-      params[2],
-      params[3],
-      { ...transactionArgs }
+      params.name,
+      params.symbol,
+      params.decimal,
+      params.supply,
+      { ...params.overrides }
     );
     const receipt = await tx.wait();
     const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
