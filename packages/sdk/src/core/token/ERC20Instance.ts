@@ -251,4 +251,15 @@ export class ERC20Instance extends BaseContract {
       throw new Error(parsedError);
     }
   }
+
+  /**
+   * Get the contract address.
+   *
+   * @async
+   * @function address
+   */
+
+  address(): string {
+    return this.contract.address;
+  }
 }

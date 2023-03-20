@@ -325,6 +325,17 @@ export class ERC721Instance extends BaseContract {
   }
 
   /**
+   * Get the contract address.
+   *
+   * @async
+   * @function address
+   */
+
+  address(): string {
+    return this.contract.address;
+  }
+
+  /**
    * Get the next token ID to be minted.
    * @returns {Promise<BigNumber>} The next token ID.
    */
