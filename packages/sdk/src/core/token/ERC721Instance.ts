@@ -60,6 +60,8 @@ export class ERC721Instance extends BaseContract {
 
   async mint(params: ERC721MintParams): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       validateWalletAndMetadata(params.to, params.tokenURI);
 
       const tx = await this.contract.mintTo(params.to, params.tokenURI, {
@@ -88,6 +90,8 @@ export class ERC721Instance extends BaseContract {
 
   async batchMint(params: ERC721BatchMintParams): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       validateWalletAndMetadata(params.to, params.baseURI);
 
       const tx = await this.contract.batchMintTo(
@@ -120,6 +124,8 @@ export class ERC721Instance extends BaseContract {
 
   async burn(params: ERC721BurnParams): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.burn(params.tokenId, {
         ...params.overrides,
       });
@@ -147,6 +153,8 @@ export class ERC721Instance extends BaseContract {
 
   async transfer(params: ERC721TransferParams): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.transferFrom(
         params.from,
         params.to,
@@ -178,6 +186,8 @@ export class ERC721Instance extends BaseContract {
 
   async approve(params: ERC721ApproveParams): Promise<ContractReceipt> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.approve(params.account, params.tokenId, {
         ...params.overrides,
       });
@@ -203,6 +213,8 @@ export class ERC721Instance extends BaseContract {
 
   async getApproved(params: ERC721GetApprovedParams): Promise<string> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.getApproved(params.tokenId, {
         ...params.overrides,
       });
@@ -226,6 +238,8 @@ export class ERC721Instance extends BaseContract {
 
   async totalSupply(params?: ERC721TotalSupplyParams): Promise<number> {
     try {
+      await this.checkNetworksMatch();
+
       const totalSupply = await this.contract.totalSupply({
         ...params?.overrides,
       });
@@ -249,6 +263,8 @@ export class ERC721Instance extends BaseContract {
 
   async balanceOf(params: ERC721BalanceOfParams): Promise<number> {
     try {
+      await this.checkNetworksMatch();
+
       validateWallet(params.owner);
       const balance = await this.contract.balanceOf(params.owner, {
         ...params.overrides,
@@ -274,6 +290,8 @@ export class ERC721Instance extends BaseContract {
 
   async ownerOf(params: ERC721OwnerOfParams): Promise<string> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.ownerOf(params.tokenId, {
         ...params.overrides,
       });
@@ -296,6 +314,8 @@ export class ERC721Instance extends BaseContract {
 
   async owner(params?: ERC721OwnerParams): Promise<string> {
     try {
+      await this.checkNetworksMatch();
+
       const tx = await this.contract.owner({ ...params?.overrides });
       return tx;
     } catch (error: any) {
