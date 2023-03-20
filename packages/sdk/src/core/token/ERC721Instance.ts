@@ -289,7 +289,7 @@ export class ERC721Instance extends BaseContract {
    * Returns the owner of the contract.
    * @async
    * @function owner
-   * @param {ERC721OwnerParams} [params] - Optional overrides for the transaction
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
    * @returns {Promise<string>} The address of the owner of the contract.
    * @throws {Error} If there was an error executing the transaction.
    */
