@@ -52,6 +52,8 @@ export class ERC721 extends BaseContract {
       throw new Error('Signer undefined');
     }
 
+    await this.checkNetworksMatch();
+
     validateWallet(params.royaltyRecipient);
     validateBigNumber(params.royaltyBps);
 
