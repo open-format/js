@@ -94,9 +94,7 @@ describe('ERC20', () => {
       }
 
       //@TODO update error when errors in contract are updated
-      await expect(burn).rejects.toThrow(
-        'no matching error (argument="sighash", value="0x08c379a0", code=INVALID_ARGUMENT, version=abi/5.7.0)'
-      );
+      await expect(burn).rejects.toThrow('ERC20Base_insufficientBalance');
     });
   });
 });
