@@ -1,3 +1,4 @@
+import { ERC20Instance } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useBurnToken, useContract, useMintToken } from '../src/hooks';
@@ -11,12 +12,12 @@ import {
 
 function Burn({ address }: { address: string }) {
   const { data: token } = useContract(address);
-  const { mint } = useMintToken(token);
-  const { data, burn } = useBurnToken(token);
+  const { mint } = useMintToken(token as ERC20Instance);
+  const { data, burn } = useBurnToken(token as ERC20Instance);
 
   async function handleMintAndBurn() {
-    await mint([WALLET_ADDRESS, 1]);
-    await burn([1]);
+    await mint({ to: WALLET_ADDRESS, amount: 1 });
+    await burn({ amount: 1 });
   }
 
   return (

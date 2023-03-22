@@ -1,3 +1,4 @@
+import { ERC20Instance } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useContract, useMintToken } from '../src/hooks';
@@ -10,16 +11,16 @@ import {
 } from './utilities';
 
 function MintToken({ address }: { address: string }) {
-  const { data: nft } = useContract(address);
-  const { data, mint } = useMintToken(nft);
+  const { data: token } = useContract(address);
+  const { data, mint } = useMintToken(token as ERC20Instance);
 
   async function handleMint() {
-    await mint([WALLET_ADDRESS, 1000]);
+    await mint({ to: WALLET_ADDRESS, amount: 1000 });
   }
 
   return (
     <>
-      {nft && (
+      {token && (
         <>
           <button onClick={handleMint} data-testid="mint">
             Mint

@@ -1,3 +1,4 @@
+import { ERC721Instance } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useBurnNFT, useContract, useMintNFT } from '../src/hooks';
@@ -11,15 +12,15 @@ import {
 
 function Burn({ address }: { address: string }) {
   const { data: nft } = useContract(address);
-  const { mint } = useMintNFT(nft);
-  const { data, burn } = useBurnNFT(nft);
+  const { mint } = useMintNFT(nft as ERC721Instance);
+  const { data, burn } = useBurnNFT(nft as ERC721Instance);
 
   async function handleMintAndBurn() {
-    const tokenId = await nft?.nextTokenIdToMint();
-    await mint([WALLET_ADDRESS, 'ipfs://']);
+    const tokenId = await (nft as ERC721Instance)?.nextTokenIdToMint();
+    await mint({ to: WALLET_ADDRESS, tokenURI: 'ipfs://' });
 
     if (tokenId) {
-      await burn([tokenId]);
+      await burn({ tokenId });
     }
   }
 

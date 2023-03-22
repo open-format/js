@@ -1,3 +1,4 @@
+import { ERC721Instance } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useContract, useMintNFT } from '../src/hooks';
@@ -11,10 +12,10 @@ import {
 
 function MintNFT({ address }: { address: string }) {
   const { data: nft } = useContract(address);
-  const { data, mint } = useMintNFT(nft);
+  const { data, mint } = useMintNFT(nft as ERC721Instance);
 
   async function handleMint() {
-    await mint([WALLET_ADDRESS, 'ipfs://']);
+    await mint({ to: WALLET_ADDRESS, tokenURI: 'ipfs://' });
   }
 
   return (

@@ -17,8 +17,8 @@ function Approve({ address }: { address: string }) {
   const { data, approve } = useApproveToken(token as ERC20Instance);
 
   async function handleMintAndApprove() {
-    await mint([WALLET_ADDRESS, 1]);
-    await approve([WALLET_ADDRESS2, 1]);
+    await mint({ to: WALLET_ADDRESS, amount: 1 });
+    await approve({ spender: WALLET_ADDRESS2, amount: 1 });
   }
 
   return (
