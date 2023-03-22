@@ -12,6 +12,16 @@ describe('sdk', () => {
     expect(network.chainId).toBe(80001);
   });
 
+  it('initializes the SDK on the aurora network', async () => {
+    const sdk = new OpenFormatSDK({
+      network: 'aurora',
+      appId: APP_ID,
+    });
+    const network = await sdk.provider.getNetwork();
+
+    expect(network.chainId).toBe(1313161554);
+  });
+
   it('initializes the SDK on a local network', async () => {
     const sdk = new OpenFormatSDK({
       network: 'localhost',

@@ -14,6 +14,8 @@ export function getProviderUrl(chain: Chain) {
       return Chains.mainnet.rpcUrl;
     case 'mumbai':
       return Chains.mumbai.rpcUrl;
+    case 'aurora':
+      return Chains.aurora.rpcUrl;
     case 'localhost':
       return Chains.localhost.rpcUrl;
     default:
@@ -31,6 +33,8 @@ export function getSubgraphUrlFromChainID(chainId: ChainId) {
       return Chains.mainnet.subgraph;
     case Chains.mumbai.chainId:
       return Chains.mumbai.subgraph;
+    case Chains.aurora.chainId:
+      return Chains.aurora.subgraph;
     case Chains.localhost.chainId:
       return Chains.localhost.subgraph;
     default:

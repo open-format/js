@@ -37,7 +37,12 @@ export enum ImplementationType {
 ///    CHAINS   ///
 ///////////////////
 
-export type Chain = 'mainnet' | 'mumbai' | 'localhost' | (string & {});
+export type Chain =
+  | 'mainnet'
+  | 'mumbai'
+  | 'localhost'
+  | 'aurora'
+  | (string & {});
 
 export type ChainId = number;
 

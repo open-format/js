@@ -10,7 +10,7 @@ export const Chains: {
     name: 'Polygon',
     token: 'MATIC',
     rpcUrl: 'https://matic-mainnet.chainstacklabs.com/',
-    subgraph: '',
+    subgraph: 'https://api.thegraph.com/subgraphs/name/open-format/polygon',
   },
   mumbai: {
     id: 'mumbai',
@@ -19,6 +19,14 @@ export const Chains: {
     token: 'MATIC',
     rpcUrl: 'https://matic-mumbai.chainstacklabs.com/',
     subgraph: 'https://api.thegraph.com/subgraphs/name/open-format/mumbai',
+  },
+  aurora: {
+    id: 'aurora',
+    chainId: 1313161554,
+    name: 'Aurora Mainnet',
+    token: 'ETH',
+    rpcUrl: 'https://mainnet.aurora.dev/',
+    subgraph: 'https://api.thegraph.com/subgraphs/name/open-format/aurora',
   },
   localhost: {
     id: 'localhost',
