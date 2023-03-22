@@ -177,7 +177,7 @@ export class ERC721Instance extends BaseContract {
    * Grants approval to another address to transfer ownership of an ERC721 token.
    * @async
    * @function approve
-   * @param {string} params.account - The address of the account to grant approval to.
+   * @param {string} params.spender - The address of the account to grant approval to.
    * @param {number} params.tokenId - The ID of the token to grant approval for.
    * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
    * @returns {Promise<ContractReceipt>} - The transaction receipt for the approval operation.
