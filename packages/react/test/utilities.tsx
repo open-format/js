@@ -19,17 +19,13 @@ export const WALLET_ADDRESS2 = address(
   '0x70997970c51812dc3a010c7d01b50e0d17dc79c8'
 );
 export const WALLET_ADDRESS3 = '0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc';
-export const APP_ID = '0x1ade2613adb6bafbc65d40eb9c1effbe3bfd8b81';
+export const APP_ID = address('0x5d82b25122a071513d45e84552913275d7e7e94f');
 export const ERC721_CONTRACT_ADDRESS =
-  '0x93998942b6a740da71faea1c4781965a5138b9aa';
+  '0xdf61ef41cb822f96c35d66c0b1099eef5b99a2cd';
 export const ERC721_CONTRACT_NAME = 'My collectionss';
 export const ERC20_CONTRACT_ADDRESS =
-  '0xde0ae9668f59e02f599d38e9cf2ff3b3d75a79e2';
+  '0xf858f5fa5bfaa12bd3e07ac49308ba86cee4c71a';
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
-
-export function generateRandomString(length: number): string {
-  return Math.random().toString(20).substring(2, length);
-}
 
 const signer = new ethers.Wallet(
   PRIVATE_KEY,

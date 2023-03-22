@@ -1,3 +1,4 @@
+import { ERC20Instance } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useContract, useMintToken, useTransferToken } from '../src/hooks';
@@ -12,12 +13,12 @@ import {
 
 function Transfer({ address }: { address: string }) {
   const { data: token } = useContract(address);
-  const { mint } = useMintToken(token);
-  const { data, transfer } = useTransferToken(token);
+  const { mint } = useMintToken(token as ERC20Instance);
+  const { data, transfer } = useTransferToken(token as ERC20Instance);
 
   async function handleMintAndTransfer() {
-    await mint([WALLET_ADDRESS, 1]);
-    await transfer([WALLET_ADDRESS2, 1]);
+    await mint({ to: WALLET_ADDRESS, amount: 1 });
+    await transfer({ to: WALLET_ADDRESS2, amount: 1 });
   }
 
   return (

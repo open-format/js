@@ -18,7 +18,9 @@ describe('useRawRequest', () => {
 
     await waitFor(() => screen.getByTestId('tokenId'));
 
-    expect(screen.getByTestId('tokenId')).toHaveTextContent(APP_ID);
+    expect(screen.getByTestId('tokenId')).toHaveTextContent(
+      APP_ID.toLowerCase()
+    );
   });
 
   it('allows you to pass variables and config to a query', async () => {
@@ -67,7 +69,7 @@ function TestVariables() {
       }
     `,
     variables: {
-      id: APP_ID,
+      id: APP_ID.toLowerCase(),
     },
   });
 
