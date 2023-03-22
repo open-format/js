@@ -1,5 +1,14 @@
 # @openformat/react
 
+## 0.1.0-dev-5829c32
+
+### Patch Changes
+
+- [#64](https://github.com/open-format/js/pull/64) [`d96f0ca`](https://github.com/open-format/js/commit/d96f0ca347e3e5ba24acf115ecaf6c8fe3460882) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Adds aurora as a compatible chain across the SDK and React Hooks SDK
+
+- Updated dependencies [[`c3f8df6`](https://github.com/open-format/js/commit/c3f8df62f05022674e58355c0ec97cff8ba51642), [`d96f0ca`](https://github.com/open-format/js/commit/d96f0ca347e3e5ba24acf115ecaf6c8fe3460882), [`2a54f8b`](https://github.com/open-format/js/commit/2a54f8bf6668fce10c96d2908b75ea729d07d3a7)]:
+  - @openformat/sdk@0.1.0-dev-5829c32
+
 ## 0.1.0-dev-04dcc8a
 
 ### Minor Changes
