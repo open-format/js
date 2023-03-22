@@ -4,6 +4,7 @@ import {
   ERC20Factory,
   ERC721Base,
   ERC721Factory,
+  SettingsFacet,
 } from '../contract-types';
 import { ERC20Instance } from '../core/token/ERC20Instance';
 import { ERC721Instance } from '../core/token/ERC721Instance';
@@ -27,6 +28,7 @@ export type OpenFormatContract = ERC721Instance | ERC20Instance;
 export enum ContractType {
   ERC721 = 'ERC721',
   ERC20 = 'ERC20',
+  Settings = 'Settings',
 }
 
 export enum ImplementationType {
@@ -53,7 +55,14 @@ export type ChainConfig = {
   token: string;
   rpcUrl: string;
   subgraph: string;
+  contracts: Contracts;
 };
+
+export interface Contracts {
+  [key: string]: {
+    address: string;
+  };
+}
 
 ///////////////////
 ///  SUBGRAPH   ///
@@ -151,10 +160,6 @@ export interface ERC721OwnerOfParams {
   overrides?: Parameters<ERC721Base['ownerOf']>[1];
 }
 
-export interface ERC721OwnerParams {
-  overrides?: Parameters<ERC721Base['owner']>[0];
-}
-
 export interface ERC721NextTokenIdToMintParams {
   overrides?: Parameters<ERC721Base['nextTokenIdToMint']>[0];
 }
@@ -236,4 +241,19 @@ enum ERC20Error {
   ERC20Base__TransferExceedsBalance,
   ERC20Base__TransferFromZeroAddress,
   ERC20Base__TransferToZeroAddress,
+}
+
+///////////////////
+////    App    ////
+///////////////////
+
+export interface AppSetCreatorAccessParams {
+  accounts: Parameters<SettingsFacet['setCreatorAccess']>[0];
+  approvals: Parameters<SettingsFacet['setCreatorAccess']>[1];
+  overrides?: Parameters<SettingsFacet['setCreatorAccess']>[2];
+}
+
+export interface AppHasCreatorAccessParams {
+  account: Parameters<SettingsFacet['hasCreatorAccess']>[0];
+  overrides?: Parameters<SettingsFacet['hasCreatorAccess']>[1];
 }
