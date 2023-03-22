@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@openformat/react": "0.1.0-dev-04dcc8a",
+    "@openformat/react": "0.1.0-dev-5829c32",
     "ethers": "^5",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
