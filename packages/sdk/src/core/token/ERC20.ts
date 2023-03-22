@@ -1,4 +1,4 @@
-import { providers, Signer } from 'ethers';
+import { ethers, providers, Signer } from 'ethers';
 import { ERC20Factory__factory } from '../../contract-types';
 import { ERC20Factory } from '../../contract-types/ERC20';
 import { poll } from '../../helpers/subgraph';
@@ -39,6 +39,7 @@ export class ERC20 extends BaseContract {
    * @param {string} params.symbol - The symbol of the token.
    * @param {number} params.decimal - The number of decimal places for the token.
    * @param {BigNumberish} params.supply - The total supply of the token.
+   * @param {ImplementationType} params.type - The implementation type. e.g. ImplementationType.BASE
    * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
    * @returns {Promise<ERC20Instance>} - A promise that resolves to the new ERC20 token contract instance.
    * @throws {Error} - Throws an error if the signer is undefined or the ERC20 token contract creation fails.
@@ -52,12 +53,13 @@ export class ERC20 extends BaseContract {
     await this.checkNetworksMatch();
 
     validateBigNumbers([params.decimal, params.supply]);
-    //@TODO: Check if there is a better way of doing this?
+
     const tx = await this.contract.createERC20(
       params.name,
       params.symbol,
       params.decimal,
       params.supply,
+      ethers.utils.formatBytes32String(params.type as string),
       { ...params.overrides }
     );
     const receipt = await tx.wait();

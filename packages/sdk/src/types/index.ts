@@ -29,6 +29,10 @@ export enum ContractType {
   ERC20 = 'ERC20',
 }
 
+export enum ImplementationType {
+  BASE = 'Base',
+}
+
 ///////////////////
 ///    CHAINS   ///
 ///////////////////
@@ -88,7 +92,8 @@ export interface ERC721CreateParams {
   symbol: Parameters<ERC721Factory['createERC721']>[1];
   royaltyRecipient: Parameters<ERC721Factory['createERC721']>[2];
   royaltyBps: Parameters<ERC721Factory['createERC721']>[3];
-  overrides?: Parameters<ERC721Factory['createERC721']>[4];
+  type: Parameters<ERC721Factory['createERC721']>[4];
+  overrides?: Parameters<ERC721Factory['createERC721']>[5];
 }
 
 export interface ERC721MintParams {
@@ -117,7 +122,7 @@ export interface ERC721TransferParams {
 }
 
 export interface ERC721ApproveParams {
-  account: Parameters<ERC721Base['approve']>[0];
+  spender: Parameters<ERC721Base['approve']>[0];
   tokenId: Parameters<ERC721Base['approve']>[1];
   overrides?: Parameters<ERC721Base['approve']>[2];
 }
@@ -174,7 +179,8 @@ export interface ERC20CreateParams {
   symbol: Parameters<ERC20Factory['createERC20']>[1];
   decimal: Parameters<ERC20Factory['createERC20']>[2];
   supply: Parameters<ERC20Factory['createERC20']>[3];
-  overrides?: Parameters<ERC20Factory['createERC20']>[4];
+  type: Parameters<ERC20Factory['createERC20']>[4];
+  overrides?: Parameters<ERC20Factory['createERC20']>[5];
 }
 
 export interface ERC20MintParams {

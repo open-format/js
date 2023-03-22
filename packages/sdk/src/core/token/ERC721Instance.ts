@@ -188,7 +188,7 @@ export class ERC721Instance extends BaseContract {
     try {
       await this.checkNetworksMatch();
 
-      const tx = await this.contract.approve(params.account, params.tokenId, {
+      const tx = await this.contract.approve(params.spender, params.tokenId, {
         ...params.overrides,
       });
 
@@ -296,27 +296,6 @@ export class ERC721Instance extends BaseContract {
         ...params.overrides,
       });
 
-      return tx;
-    } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
-      throw new Error(parsedError);
-    }
-  }
-
-  /**
-   * Returns the owner of the contract.
-   * @async
-   * @function owner
-   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
-   * @returns {Promise<string>} The address of the owner of the contract.
-   * @throws {Error} If there was an error executing the transaction.
-   */
-
-  async owner(params?: ERC721OwnerParams): Promise<string> {
-    try {
-      await this.checkNetworksMatch();
-
-      const tx = await this.contract.owner({ ...params?.overrides });
       return tx;
     } catch (error: any) {
       const parsedError = parseErrorData(error, ContractType.ERC721);
