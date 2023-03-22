@@ -20,6 +20,14 @@ export const Chains: {
     rpcUrl: 'https://matic-mumbai.chainstacklabs.com/',
     subgraph: 'https://api.thegraph.com/subgraphs/name/open-format/mumbai',
   },
+  aurora: {
+    id: 'aurora',
+    chainId: 1313161554,
+    name: 'Aurora Mainnet',
+    token: 'ETH',
+    rpcUrl: 'https://mainnet.aurora.dev/',
+    subgraph: 'https://api.thegraph.com/subgraphs/name/open-format/aurora',
+  },
   localhost: {
     id: 'localhost',
     chainId: 31337,

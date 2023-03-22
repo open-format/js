@@ -2181,25 +2181,6 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@openformat/react@*":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@openformat/react/-/react-0.0.9.tgz#b6df532092e427bc01249611045939334f9fb859"
-  integrity sha512-KoJdMVF8g8TCSuC7CC/JWGYJbONUya352c54yUynSNFe8ToSxcoQZfM/AwnprYfUCcI3/LesdjSsteFkXJai2w==
-  dependencies:
-    "@openformat/sdk" "^0.0.4"
-    "@tanstack/react-query" "^4.0.10"
-    connectkit "1.0.1"
-    wagmi "0.7.15"
-
-"@openformat/sdk@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@openformat/sdk/-/sdk-0.0.4.tgz#2159dfd0a38cf40d6d2c7faaa8a7fb4ce29915a0"
-  integrity sha512-3J5U79r0w9w+I+HyfltXB1SZF8ZKUwHya3ANQKS555uzg1av4cjDkBkP6EdC+Zt+8uT8jIx8dUr71t36QBFIGA==
-  dependencies:
-    graphql "^16.6.0"
-    graphql-request "^5.1.0"
-    lodash.merge "^4.6.2"
-
 "@pedrouid/environment@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@pedrouid/environment/-/environment-1.0.1.tgz#858f0f8a057340e0b250398b75ead77d6f4342ec"
