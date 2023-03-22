@@ -40,8 +40,8 @@ describe('ERC721', () => {
     it('approves another wallet to transfer a token', async () => {
       const tokenId = await contract.nextTokenIdToMint();
       await contract.mint(ERC721MintParams);
-      await contract.approve({ account: WALLET_ADDRESS2, tokenId });
-      const approved = await contract.getApproved([tokenId]);
+      await contract.approve({ spender: WALLET_ADDRESS2, tokenId });
+      const approved = await contract.getApproved({ tokenId });
       expect(approved.toString()).toBe(WALLET_ADDRESS2);
     });
 
@@ -51,7 +51,7 @@ describe('ERC721', () => {
 
       async function approve() {
         await contract.approve({
-          account: WALLET_ADDRESS2,
+          spender: WALLET_ADDRESS2,
           tokenId: tokenId.add(1),
         });
       }
@@ -69,7 +69,7 @@ describe('ERC721', () => {
       });
 
       async function approve() {
-        await contract.approve({ account: WALLET_ADDRESS2, tokenId });
+        await contract.approve({ spender: WALLET_ADDRESS2, tokenId });
       }
 
       await expect(approve).rejects.toThrow(

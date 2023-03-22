@@ -48,7 +48,7 @@ describe('ERC721', () => {
         tokenId: nextId,
       };
       await contract.transfer(params);
-      const ownerOf = await contract.ownerOf([nextId]);
+      const ownerOf = await contract.ownerOf({ tokenId: nextId });
       expect(ownerOf.toString()).toBe(WALLET_ADDRESS2);
     });
 

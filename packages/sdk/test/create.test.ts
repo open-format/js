@@ -1,5 +1,10 @@
-import { ERC721CreateParams, OpenFormatSDK } from '../src';
-import { APP_ID, generateRandomString, PRIVATE_KEY } from './utilities';
+import {
+  ERC20CreateParams,
+  ERC721CreateParams,
+  ImplementationType,
+  OpenFormatSDK,
+} from '../src';
+import { APP_ID, PRIVATE_KEY } from './utilities';
 
 describe('ERC721', () => {
   let sdk: OpenFormatSDK;
@@ -19,25 +24,25 @@ describe('ERC721', () => {
 
   it('creates an ERC721 contract and returns an instance of it', async () => {
     const params: ERC721CreateParams = {
-      name: generateRandomString(5),
+      name: 'TEST',
       symbol: 'NFT',
       royaltyRecipient: walletAddress,
       royaltyBps: 1000,
+      type: 'Base',
     };
     const contract = await sdk.ERC721.create(params);
+    const totalSupply = await contract.totalSupply();
 
-    if (contract) {
-      const ownerOf = await contract.owner();
-      expect(ownerOf.toString()).toBe(walletAddress);
-    }
+    expect(totalSupply.toString()).toBe('0');
   });
 
   it('throws an error if royaltyRecipient parameter is a not a BigNumber', async () => {
     const params: ERC721CreateParams = {
-      name: generateRandomString(5),
+      name: 'TEST',
       symbol: 'NFT',
       royaltyRecipient: 'InvalidRoyaltyRecipient',
       royaltyBps: 1000,
+      type: 'Base',
     };
 
     async function create() {
@@ -49,10 +54,11 @@ describe('ERC721', () => {
 
   it('throws an error if royaltyBps parameter is a not a BigNumber', async () => {
     const params: ERC721CreateParams = {
-      name: generateRandomString(5),
+      name: 'TEST',
       symbol: 'NFT',
       royaltyRecipient: walletAddress,
       royaltyBps: 'InvalidRoyaltyBps',
+      type: 'Base',
     };
 
     async function create() {
@@ -66,10 +72,11 @@ describe('ERC721', () => {
 
   it('throws an error if a signer is not passed', async () => {
     const params: ERC721CreateParams = {
-      name: generateRandomString(5),
+      name: 'TEST',
       symbol: 'NFT',
       royaltyRecipient: walletAddress,
       royaltyBps: 1000,
+      type: 'Base',
     };
 
     sdk = new OpenFormatSDK({
@@ -101,11 +108,12 @@ describe('ERC20', () => {
   });
 
   it('creates an ERC20 contract and returns an instance of it', async () => {
-    const params = {
-      name: generateRandomString(5),
+    const params: ERC20CreateParams = {
+      name: 'TEST',
       symbol: 'NFT',
       decimal: 18,
       supply: 1000,
+      type: 'Base',
     };
 
     const contract = await sdk.ERC20.create(params);
@@ -117,11 +125,12 @@ describe('ERC20', () => {
   });
 
   it('throws an error if decimals parameter is a not a BigNumber', async () => {
-    const params = {
-      name: generateRandomString(5),
+    const params: ERC20CreateParams = {
+      name: 'TEST',
       symbol: 'NFT',
       decimal: 'InvalidDecimals',
       supply: 1000,
+      type: ImplementationType.BASE,
     };
 
     async function create() {
@@ -134,11 +143,12 @@ describe('ERC20', () => {
   });
 
   it('throws an error if supply parameter is a not a BigNumber', async () => {
-    const params = {
-      name: generateRandomString(5),
+    const params: ERC20CreateParams = {
+      name: 'TEST',
       symbol: 'NFT',
       decimal: 18,
       supply: 'InvalidSupply',
+      type: ImplementationType.BASE,
     };
 
     async function create() {
@@ -151,11 +161,12 @@ describe('ERC20', () => {
   });
 
   it('throws an error if a signer is not passed', async () => {
-    const params = {
-      name: generateRandomString(5),
+    const params: ERC20CreateParams = {
+      name: 'TEST',
       symbol: 'NFT',
       decimal: 18,
       supply: 1000,
+      type: 'Base',
     };
 
     sdk = new OpenFormatSDK({

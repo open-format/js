@@ -1,4 +1,4 @@
-import { providers, Signer } from 'ethers';
+import { ethers, providers, Signer } from 'ethers';
 import { ERC721Factory__factory } from '../../contract-types';
 import { ERC721Factory } from '../../contract-types/ERC721';
 import { poll } from '../../helpers/subgraph';
@@ -41,13 +41,13 @@ export class ERC721 extends BaseContract {
    * @param {string} params.symbol - Symbol of the ERC721 token.
    * @param {string} params.royaltyRecipient - Address of the royalty recipient.
    * @param {BigNumber} params.royaltyBps - Royalty basis points.
+   * @param {ImplementationType} params.type - The implementation type. e.g. ImplementationType.BASE
    * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
    * @returns {Promise<ERC721Instance>} Promise that resolves to a new instance of the created ERC721 token.
    * @throws Will throw an error if the signer is undefined or if validation fails.
    */
 
   async create(params: ERC721CreateParams): Promise<ERC721Instance> {
-    //@TODO calculateERC721FactoryDeploymentAddress when ready
     if (!this.signer) {
       throw new Error('Signer undefined');
     }
@@ -62,6 +62,7 @@ export class ERC721 extends BaseContract {
       params.symbol,
       params.royaltyRecipient,
       params.royaltyBps,
+      ethers.utils.formatBytes32String(params.type as string),
       { ...params.overrides }
     );
     const receipt = await tx.wait();
