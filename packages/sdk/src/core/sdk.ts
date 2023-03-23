@@ -11,6 +11,7 @@ import {
   OpenFormatContract,
   SDKOptions,
 } from '../types';
+import { App } from './app';
 import { BaseContract } from './base';
 import { Factory } from './factory';
 import { Subgraph } from './subgraph';
@@ -38,6 +39,7 @@ export class OpenFormatSDK extends BaseContract {
   ERC20: ERC20;
   factory: Factory;
   subgraph: Subgraph;
+  App: App;
 
   static defaultOptions: SDKOptions = {
     network: 'http://localhost:8545',
@@ -61,6 +63,7 @@ export class OpenFormatSDK extends BaseContract {
     if (this.options.signer) {
       this.signer = getSigner(this.options.signer, this.provider);
     }
+    this.App = new App(this.provider, this.appId, this?.signer);
     this.ERC721 = new ERC721(this.provider, this.appId, this?.signer);
     this.ERC20 = new ERC20(this.provider, this.appId, this?.signer);
     this.factory = new Factory(this.provider, this.appId, this?.signer);

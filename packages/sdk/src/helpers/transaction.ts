@@ -1,6 +1,7 @@
 import { ContractReceipt, ContractTransaction, ethers } from 'ethers';
 import ERC20Base from '../../abis/ERC20/ERC20Base.json';
 import ERC721Base from '../../abis/ERC721/ERC721Base.json';
+import SettingsFacet from '../../abis/SettingsFacet/SettingsFacet.json';
 import { ContractType } from '../types';
 
 export async function processTransaction(
@@ -20,13 +21,16 @@ export function parseErrorData(error: any, contractType: ContractType) {
     case ContractType.ERC20:
       abi = ERC20Base.abi;
       break;
+    case ContractType.Settings:
+      abi = SettingsFacet.abi;
+      break;
   }
 
   if (!abi) throw new Error("Can't determine ABI");
 
   const iface = new ethers.utils.Interface(abi);
 
-  //@TODO: Needs a refactor.
+  //@TODO: Needs a refactor. What happens if the error is on the Proxy?
   // Must return: error signature, name, transaction data
 
   if (error?.data) {
