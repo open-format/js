@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.2.1-dev-b105321
+
+### Patch Changes
+
+- [#67](https://github.com/open-format/js/pull/67) [`98cda51`](https://github.com/open-format/js/commit/98cda516bf95ff27b9423b5f0809c1dc112b6d3f) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Adds an App class to access applications settings on contracts
+
 ## 0.1.0-dev-5829c32
 
 ### Patch Changes
