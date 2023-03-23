@@ -29,6 +29,7 @@ export enum ContractType {
   ERC721 = 'ERC721',
   ERC20 = 'ERC20',
   Settings = 'Settings',
+  Factory = 'Factory',
 }
 
 export enum ImplementationType {
