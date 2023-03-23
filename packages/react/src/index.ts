@@ -1,3 +1,3 @@
 export * from './components';
 export * from './hooks';
-export { OpenFormatProvider } from './provider';
+export { OpenFormatProvider, useOpenFormat } from './provider';
