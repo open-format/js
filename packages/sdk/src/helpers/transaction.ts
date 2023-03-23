@@ -1,6 +1,7 @@
 import { ContractReceipt, ContractTransaction, ethers } from 'ethers';
 import ERC20Base from '../../abis/ERC20/ERC20Base.json';
 import ERC721Base from '../../abis/ERC721/ERC721Base.json';
+import Factory from '../../abis/Factory/Factory.json';
 import SettingsFacet from '../../abis/SettingsFacet/SettingsFacet.json';
 import { ContractType } from '../types';
 
@@ -23,6 +24,9 @@ export function parseErrorData(error: any, contractType: ContractType) {
       break;
     case ContractType.Settings:
       abi = SettingsFacet.abi;
+      break;
+    case ContractType.Factory:
+      abi = Factory.abi;
       break;
   }
 

@@ -9,8 +9,9 @@ import {
   Factory as FactoryContract,
   Factory__factory,
 } from '../contract-types';
+import { parseErrorData } from '../helpers/transaction';
+import { ContractType } from '../types';
 import { BaseContract } from './base';
-
 /**
  * A class representing a Factory contract that extends the BaseContract class.
  *
@@ -73,10 +74,17 @@ export class Factory extends BaseContract {
    */
 
   async create(name: string): Promise<ContractReceipt> {
-    const tx = await this.contract.create(
-      ethers.utils.formatBytes32String(name)
-    );
-    const receipt = await this.processTransaction(tx);
-    return receipt;
+    try {
+      this.checkNetworksMatch();
+
+      const tx = await this.contract.create(
+        ethers.utils.formatBytes32String(name)
+      );
+      const receipt = await this.processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ContractType.Factory);
+      throw new Error(parsedError);
+    }
   }
 }
