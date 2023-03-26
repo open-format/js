@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.2.1-dev-92a665c
+
+### Patch Changes
+
+- [#70](https://github.com/open-format/js/pull/70) [`dbee955`](https://github.com/open-format/js/commit/dbee955afa22e0f0ef0bbdecc8303752ec8c6f8f) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Checks the network of the signer is correct when creating apps
+
 ## 0.2.1-dev-b105321
 
 ### Patch Changes
