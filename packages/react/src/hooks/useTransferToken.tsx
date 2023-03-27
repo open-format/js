@@ -1,9 +1,9 @@
-import { ERC20Instance } from '@openformat/sdk';
+import { ERC20Base } from '@openformat/sdk';
 import { useMutation } from '@tanstack/react-query';
 
 /**
  * Hook to transfer tokens
- * @param {ERC20Instance} token ERC721Instance
+ * @param {ERC20Base} token ERC721Base
  *
  * @example
  * ```tsx
@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query';
  * ```
  *
  */
-export function useTransferToken(token: ERC20Instance) {
+export function useTransferToken(token: ERC20Base) {
   const { mutateAsync, ...mutation } = useMutation<
     Awaited<ReturnType<typeof token.transfer>>,
     unknown,
