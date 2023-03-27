@@ -1,8 +1,10 @@
 import { ContractReceipt, ContractTransaction, ethers } from 'ethers';
-import ERC20Base from '../../abis/ERC20/ERC20Base.json';
-import ERC721Base from '../../abis/ERC721/ERC721Base.json';
+import ERC721LazyDropFacet from '../../abis/facet/ERC721LazyDropFacet.json';
+import SettingsFacet from '../../abis/facet/SettingsFacet.json';
 import Factory from '../../abis/Factory/Factory.json';
-import SettingsFacet from '../../abis/SettingsFacet/SettingsFacet.json';
+import ERC20Base from '../../abis/tokens/ERC20/ERC20Base.json';
+import ERC721Base from '../../abis/tokens/ERC721/ERC721Base.json';
+import ERC721LazyMint from '../../abis/tokens/ERC721/ERC721LazyMint.json';
 import { ContractType } from '../types';
 
 export async function processTransaction(
@@ -16,10 +18,16 @@ export function parseErrorData(error: any, contractType: ContractType) {
   let abi: any;
 
   switch (contractType) {
-    case ContractType.ERC721:
+    case ContractType.NFT:
       abi = ERC721Base.abi;
       break;
-    case ContractType.ERC20:
+    case ContractType.NFTLazyMint:
+      abi = ERC721LazyMint.abi;
+      break;
+    case ContractType.NFTDrop:
+      abi = ERC721LazyDropFacet.abi;
+      break;
+    case ContractType.Token:
       abi = ERC20Base.abi;
       break;
     case ContractType.Settings:

@@ -1,13 +1,16 @@
 import { Signer } from 'ethers';
 import {
-  ERC20Base,
-  ERC20Factory,
-  ERC721Base,
-  ERC721Factory,
+  ERC20Base as ERC20BaseContract,
+  ERC20FactoryFacet,
+  ERC721Base as ERC721BaseContract,
+  ERC721FactoryFacet,
+  ERC721LazyDropFacet,
+  ERC721LazyMint as ERC721LazyMintContract,
   SettingsFacet,
 } from '../contract-types';
-import { ERC20Instance } from '../core/token/ERC20Instance';
-import { ERC721Instance } from '../core/token/ERC721Instance';
+import { ERC20Base } from '../core/token/ERC20/ERC20Base';
+import { ERC721Base } from '../core/token/ERC721/ERC721Base';
+import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 
 ///////////////////
 ///     SDK     ///
@@ -23,18 +26,35 @@ export interface SDKOptions {
 ///  CONTRACTS  ///
 ///////////////////
 
-export type OpenFormatContract = ERC721Instance | ERC20Instance;
+export type OpenFormatContract = ERC20Base | ERC721Base | ERC721LazyMint;
 
 export enum ContractType {
-  ERC721 = 'ERC721',
-  ERC20 = 'ERC20',
+  NFT = 'NFT',
+  NFTDrop = 'NFTDrop',
+  NFTLazyMint = 'NFTLazyMint',
+  Token = 'Token',
   Settings = 'Settings',
   Factory = 'Factory',
 }
 
 export enum ImplementationType {
   BASE = 'Base',
+  LAZY_MINT = 'LazyMint',
 }
+
+export enum Roles {
+  ADMIN_ROLE = '0',
+  MINTER_ROLE = '1',
+}
+
+export type ClaimCondition = {
+  startTimestamp: number;
+  supplyClaimed: number;
+  maxClaimableSupply: number;
+  quantityLimitPerWallet: number;
+  pricePerToken: number;
+  currency: string;
+};
 
 ///////////////////
 ///    CHAINS   ///
@@ -103,67 +123,165 @@ export type GetContractParameters = AtLeastOne<{
 ///////////////////
 
 export interface ERC721CreateParams {
-  name: Parameters<ERC721Factory['createERC721']>[0];
-  symbol: Parameters<ERC721Factory['createERC721']>[1];
-  royaltyRecipient: Parameters<ERC721Factory['createERC721']>[2];
-  royaltyBps: Parameters<ERC721Factory['createERC721']>[3];
-  type: Parameters<ERC721Factory['createERC721']>[4];
-  overrides?: Parameters<ERC721Factory['createERC721']>[5];
+  name: Parameters<ERC721FactoryFacet['createERC721']>[0];
+  symbol: Parameters<ERC721FactoryFacet['createERC721']>[1];
+  royaltyRecipient: Parameters<ERC721FactoryFacet['createERC721']>[2];
+  royaltyBps: Parameters<ERC721FactoryFacet['createERC721']>[3];
+  overrides?: Parameters<ERC721FactoryFacet['createERC721']>[5];
 }
 
 export interface ERC721MintParams {
-  to: Parameters<ERC721Base['mintTo']>[0];
-  tokenURI: Parameters<ERC721Base['mintTo']>[1];
-  overrides?: Parameters<ERC721Base['mintTo']>[2];
+  to: Parameters<ERC721BaseContract['mintTo']>[0];
+  tokenURI: Parameters<ERC721BaseContract['mintTo']>[1];
+  overrides?: Parameters<ERC721BaseContract['mintTo']>[2];
+}
+
+export interface ERC721SetMinterRoleParams {
+  role: Parameters<ERC721BaseContract['grantRole']>[0];
+  account: Parameters<ERC721BaseContract['grantRole']>[1];
+  overrides?: Parameters<ERC721BaseContract['grantRole']>[2];
 }
 
 export interface ERC721BatchMintParams {
-  to: Parameters<ERC721Base['batchMintTo']>[0];
-  quantity: Parameters<ERC721Base['batchMintTo']>[1];
-  baseURI: Parameters<ERC721Base['batchMintTo']>[2];
-  overrides?: Parameters<ERC721Base['batchMintTo']>[3];
+  to: Parameters<ERC721BaseContract['batchMintTo']>[0];
+  quantity: Parameters<ERC721BaseContract['batchMintTo']>[1];
+  baseURI: Parameters<ERC721BaseContract['batchMintTo']>[2];
+  overrides?: Parameters<ERC721BaseContract['batchMintTo']>[3];
 }
 
 export interface ERC721BurnParams {
-  tokenId: Parameters<ERC721Base['burn']>[0];
-  overrides?: Parameters<ERC721Base['burn']>[1];
+  tokenId: Parameters<ERC721BaseContract['burn']>[0];
+  overrides?: Parameters<ERC721BaseContract['burn']>[1];
 }
 
 export interface ERC721TransferParams {
-  from: Parameters<ERC721Base['transferFrom']>[0];
-  to: Parameters<ERC721Base['transferFrom']>[1];
-  tokenId: Parameters<ERC721Base['transferFrom']>[2];
-  overrides?: Parameters<ERC721Base['transferFrom']>[3];
+  from: Parameters<ERC721BaseContract['transferFrom']>[0];
+  to: Parameters<ERC721BaseContract['transferFrom']>[1];
+  tokenId: Parameters<ERC721BaseContract['transferFrom']>[2];
+  overrides?: Parameters<ERC721BaseContract['transferFrom']>[3];
 }
 
 export interface ERC721ApproveParams {
-  spender: Parameters<ERC721Base['approve']>[0];
-  tokenId: Parameters<ERC721Base['approve']>[1];
-  overrides?: Parameters<ERC721Base['approve']>[2];
+  spender: Parameters<ERC721BaseContract['approve']>[0];
+  tokenId: Parameters<ERC721BaseContract['approve']>[1];
+  overrides?: Parameters<ERC721BaseContract['approve']>[2];
 }
 
 export interface ERC721GetApprovedParams {
-  tokenId: Parameters<ERC721Base['getApproved']>[0];
-  overrides?: Parameters<ERC721Base['getApproved']>[1];
+  tokenId: Parameters<ERC721BaseContract['getApproved']>[0];
+  overrides?: Parameters<ERC721BaseContract['getApproved']>[1];
 }
 
 export interface ERC721TotalSupplyParams {
-  overrides?: Parameters<ERC721Base['totalSupply']>[0];
+  overrides?: Parameters<ERC721BaseContract['totalSupply']>[0];
 }
 
 export interface ERC721BalanceOfParams {
-  owner: Parameters<ERC721Base['balanceOf']>[0];
-  overrides?: Parameters<ERC721Base['balanceOf']>[1];
+  owner: Parameters<ERC721BaseContract['balanceOf']>[0];
+  overrides?: Parameters<ERC721BaseContract['balanceOf']>[1];
 }
 
 export interface ERC721OwnerOfParams {
-  tokenId: Parameters<ERC721Base['ownerOf']>[0];
-  overrides?: Parameters<ERC721Base['ownerOf']>[1];
+  tokenId: Parameters<ERC721BaseContract['ownerOf']>[0];
+  overrides?: Parameters<ERC721BaseContract['ownerOf']>[1];
 }
 
 export interface ERC721NextTokenIdToMintParams {
-  overrides?: Parameters<ERC721Base['nextTokenIdToMint']>[0];
+  overrides?: Parameters<ERC721BaseContract['nextTokenIdToMint']>[0];
 }
+
+export interface ERC721LazyMint_LazyMintParams {
+  amount: Parameters<ERC721LazyMintContract['lazyMint']>[0];
+  baseURIForTokens: Parameters<ERC721LazyMintContract['lazyMint']>[1];
+  data: Parameters<ERC721LazyMintContract['lazyMint']>[2];
+  overrides?: Parameters<ERC721LazyMintContract['lazyMint']>[3];
+}
+
+export interface ERC721LazyMint_MintParams {
+  to: Parameters<ERC721LazyMintContract['mintTo']>[0];
+  overrides?: Parameters<ERC721LazyMintContract['mintTo']>[1];
+}
+
+export interface ERC721LazyMint_BatchMintParams {
+  to: Parameters<ERC721LazyMintContract['batchMintTo']>[0];
+  quantity: Parameters<ERC721LazyMintContract['batchMintTo']>[1];
+  overrides?: Parameters<ERC721LazyMintContract['batchMintTo']>[2];
+}
+
+export interface ERC721LazyMint_BurnParams {
+  tokenId: Parameters<ERC721LazyMintContract['burn']>[0];
+  overrides?: Parameters<ERC721LazyMintContract['burn']>[1];
+}
+
+export interface ERC721LazyMint_TransferParams {
+  from: Parameters<ERC721LazyMintContract['transferFrom']>[0];
+  to: Parameters<ERC721LazyMintContract['transferFrom']>[1];
+  tokenId: Parameters<ERC721LazyMintContract['transferFrom']>[2];
+  overrides?: Parameters<ERC721LazyMintContract['transferFrom']>[3];
+}
+
+export interface ERC721LazyMint_SetMinterRoleParams {
+  role: Parameters<ERC721LazyMintContract['grantRole']>[0];
+  account: Parameters<ERC721LazyMintContract['grantRole']>[1];
+  overrides?: Parameters<ERC721LazyMintContract['grantRole']>[2];
+}
+
+export interface ERC721LazyMint_SetClaimConditionParams {
+  condition: Parameters<
+    ERC721LazyDropFacet['ERC721LazyDrop_setClaimCondition']
+  >[1];
+  resetClaimEligibility: Parameters<
+    ERC721LazyDropFacet['ERC721LazyDrop_setClaimCondition']
+  >[2];
+  overrides?: Parameters<
+    ERC721LazyDropFacet['ERC721LazyDrop_setClaimCondition']
+  >[3];
+}
+
+export interface ERC721LazyMint_RemoveClaimConditionParams {
+  overrides?: Parameters<
+    ERC721LazyDropFacet['ERC721LazyDrop_removeClaimCondition']
+  >[1];
+}
+
+export interface ERC721LazyMint_GetClaimConditionParams {
+  overrides?: Parameters<
+    ERC721LazyDropFacet['ERC721LazyDrop_getClaimCondition']
+  >[1];
+}
+
+export interface ERC721LazyMint_ClaimParams {
+  receiver: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_claim']>[1];
+  quantity: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_claim']>[2];
+  currency: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_claim']>[3];
+  pricePerToken: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_claim']>[4];
+  overrides?: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_claim']>[5];
+}
+
+export interface ERC721LazyMint_VerifyClaimParams {
+  claimer: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_verifyClaim']>[1];
+  quantity: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_verifyClaim']>[2];
+  currency: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_verifyClaim']>[3];
+  pricePerToken: Parameters<
+    ERC721LazyDropFacet['ERC721LazyDrop_verifyClaim']
+  >[4];
+  overrides?: Parameters<ERC721LazyDropFacet['ERC721LazyDrop_verifyClaim']>[5];
+}
+
+export interface ERC721LazyDrop_SetClaimConditionParams
+  extends ERC721LazyMint_SetClaimConditionParams {}
+
+export interface ERC721LazyDrop_RemoveClaimConditionParams
+  extends ERC721LazyMint_RemoveClaimConditionParams {}
+
+export interface ERC721LazyDrop_GetClaimConditionParams
+  extends ERC721LazyMint_GetClaimConditionParams {}
+
+export interface ERC721LazyDrop_ClaimParams
+  extends ERC721LazyMint_ClaimParams {}
+
+export interface ERC721LazyDrop_VerifyClaimParams
+  extends ERC721LazyMint_VerifyClaimParams {}
 
 enum ERC721Error {
   ApprovalCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
@@ -186,50 +304,49 @@ enum ERC721Error {
 ///////////////////
 
 export interface ERC20CreateParams {
-  name: Parameters<ERC20Factory['createERC20']>[0];
-  symbol: Parameters<ERC20Factory['createERC20']>[1];
-  decimal: Parameters<ERC20Factory['createERC20']>[2];
-  supply: Parameters<ERC20Factory['createERC20']>[3];
-  type: Parameters<ERC20Factory['createERC20']>[4];
-  overrides?: Parameters<ERC20Factory['createERC20']>[5];
+  name: Parameters<ERC20FactoryFacet['createERC20']>[0];
+  symbol: Parameters<ERC20FactoryFacet['createERC20']>[1];
+  decimal: Parameters<ERC20FactoryFacet['createERC20']>[2];
+  supply: Parameters<ERC20FactoryFacet['createERC20']>[3];
+  overrides?: Parameters<ERC20FactoryFacet['createERC20']>[5];
 }
 
 export interface ERC20MintParams {
-  to: Parameters<ERC20Base['mintTo']>[0];
-  amount: Parameters<ERC20Base['mintTo']>[1];
-  overrides?: Parameters<ERC20Base['mintTo']>[2];
+  to: Parameters<ERC20BaseContract['mintTo']>[0];
+  amount: Parameters<ERC20BaseContract['mintTo']>[1];
+  overrides?: Parameters<ERC20BaseContract['mintTo']>[2];
 }
 
 export interface ERC20BurnParams {
-  amount: Parameters<ERC20Base['burn']>[0];
-  overrides?: Parameters<ERC20Base['burn']>[1];
+  amount: Parameters<ERC20BaseContract['burn']>[0];
+  overrides?: Parameters<ERC20BaseContract['burn']>[1];
 }
 
 export interface ERC20TransferParams {
-  to: Parameters<ERC20Base['transfer']>[0];
-  amount: Parameters<ERC20Base['transfer']>[1];
-  overrides?: Parameters<ERC20Base['transfer']>[2];
+  to: Parameters<ERC20BaseContract['transfer']>[0];
+  amount: Parameters<ERC20BaseContract['transfer']>[1];
+  overrides?: Parameters<ERC20BaseContract['transfer']>[2];
 }
 
 export interface ERC20ApproveParams {
-  spender: Parameters<ERC20Base['approve']>[0];
-  amount: Parameters<ERC20Base['approve']>[1];
-  overrides?: Parameters<ERC20Base['approve']>[2];
+  spender: Parameters<ERC20BaseContract['approve']>[0];
+  amount: Parameters<ERC20BaseContract['approve']>[1];
+  overrides?: Parameters<ERC20BaseContract['approve']>[2];
 }
 
 export interface ERC20AllowanceParams {
-  holder: Parameters<ERC20Base['allowance']>[0];
-  spender: Parameters<ERC20Base['allowance']>[1];
-  overrides?: Parameters<ERC20Base['allowance']>[2];
+  holder: Parameters<ERC20BaseContract['allowance']>[0];
+  spender: Parameters<ERC20BaseContract['allowance']>[1];
+  overrides?: Parameters<ERC20BaseContract['allowance']>[2];
 }
 
 export interface ERC20TotalSupplyParams {
-  overrides?: Parameters<ERC20Base['totalSupply']>[0];
+  overrides?: Parameters<ERC20BaseContract['totalSupply']>[0];
 }
 
 export interface ERC20BalanceOfParams {
-  account: Parameters<ERC20Base['balanceOf']>[0];
-  overrides?: Parameters<ERC20Base['balanceOf']>[1];
+  account: Parameters<ERC20BaseContract['balanceOf']>[0];
+  overrides?: Parameters<ERC20BaseContract['balanceOf']>[1];
 }
 
 enum ERC20Error {
@@ -257,4 +374,10 @@ export interface AppSetCreatorAccessParams {
 export interface AppHasCreatorAccessParams {
   account: Parameters<SettingsFacet['hasCreatorAccess']>[0];
   overrides?: Parameters<SettingsFacet['hasCreatorAccess']>[1];
+}
+
+export interface AppSetAcceptedCurrenciesParams {
+  currencies: Parameters<SettingsFacet['setAcceptedCurrencies']>[0];
+  approvals: Parameters<SettingsFacet['setAcceptedCurrencies']>[1];
+  overrides?: Parameters<SettingsFacet['setAcceptedCurrencies']>[2];
 }
