@@ -1,4 +1,4 @@
-import { ERC20Instance } from '@openformat/sdk';
+import { ERC20Base } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useContract, useMintToken } from '../src/hooks';
@@ -12,7 +12,7 @@ import {
 
 function MintToken({ address }: { address: string }) {
   const { data: token } = useContract(address);
-  const { data, mint } = useMintToken(token as ERC20Instance);
+  const { data, mint } = useMintToken(token as ERC20Base);
 
   async function handleMint() {
     await mint({ to: WALLET_ADDRESS, amount: 1000 });

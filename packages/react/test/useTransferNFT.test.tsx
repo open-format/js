@@ -1,4 +1,4 @@
-import { ERC721Instance } from '@openformat/sdk';
+import { ERC721Base } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useContract, useMintNFT, useTransferNFT } from '../src/hooks';
@@ -13,11 +13,11 @@ import {
 
 function Transfer({ address }: { address: string }) {
   const { data: nft } = useContract(address);
-  const { mint } = useMintNFT(nft as ERC721Instance);
-  const { data, transfer } = useTransferNFT(nft as ERC721Instance);
+  const { mint } = useMintNFT(nft as ERC721Base);
+  const { data, transfer } = useTransferNFT(nft as ERC721Base);
 
   async function handleMintAndTransfer() {
-    const tokenId = await (nft as ERC721Instance)?.nextTokenIdToMint();
+    const tokenId = await (nft as ERC721Base)?.nextTokenIdToMint();
     await mint({ to: WALLET_ADDRESS, tokenURI: 'ipfs://' });
 
     if (tokenId) {
