@@ -15,10 +15,9 @@ import { App } from './app';
 import { BaseContract } from './base';
 import { Factory } from './factory';
 import { Subgraph } from './subgraph';
-import { ERC20 } from './token/ERC20';
-import { ERC20Instance } from './token/ERC20Instance';
-import { ERC721 } from './token/ERC721';
-import { ERC721Instance } from './token/ERC721Instance';
+import { ERC20Base } from './token/ERC20/ERC20Base';
+import { ERC721Base } from './token/ERC721/ERC721Base';
+import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
 
 /**
  * Creates a new instance of the Open Format SDK
@@ -35,8 +34,6 @@ import { ERC721Instance } from './token/ERC721Instance';
  */
 export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
-  ERC721: ERC721;
-  ERC20: ERC20;
   factory: Factory;
   subgraph: Subgraph;
   App: App;
@@ -64,8 +61,6 @@ export class OpenFormatSDK extends BaseContract {
       this.signer = getSigner(this.options.signer, this.provider);
     }
     this.App = new App(this.provider, this.appId, this?.signer);
-    this.ERC721 = new ERC721(this.provider, this.appId, this?.signer);
-    this.ERC20 = new ERC20(this.provider, this.appId, this?.signer);
     this.factory = new Factory(this.provider, this.appId, this?.signer);
     this.subgraph = new Subgraph(this.provider, this.appId, this?.signer);
   }
@@ -90,14 +85,14 @@ export class OpenFormatSDK extends BaseContract {
       throw new Error('Invalid contract address');
     }
 
-    if (!contract.id) {
+    if (!contract?.id) {
       throw new Error('Contract does not not exist');
     }
 
     if (subgraphResponse.contracts.length > 1) {
       const contractList = subgraphResponse.contracts.map((contract) =>
         JSON.stringify([
-          { name, contractAddress: contract.id, type: contract.type },
+          { name, contractAddress: contract.id, type: ContractType },
         ])
       );
       throw new Error(
@@ -105,22 +100,32 @@ export class OpenFormatSDK extends BaseContract {
       );
     }
 
-    if (contract.type === ContractType.ERC721) {
-      return new ERC721Instance(
-        this.provider,
-        this.appId,
-        contract.id,
-        this.signer
-      );
-    } else if (contract.type === ContractType.ERC20) {
-      return new ERC20Instance(
-        this.provider,
-        this.appId,
-        contract.id,
-        this.signer
-      );
-    } else {
-      throw new Error('Error getting contract');
+    switch (contract.type) {
+      case ContractType.NFT:
+        return new ERC721Base(
+          this.provider,
+          this.appId,
+          contract.id,
+          this.signer
+        );
+
+      case ContractType.NFTDrop:
+        return new ERC721LazyMint(
+          this.provider,
+          this.appId,
+          contract.id,
+          this.signer
+        );
+
+      case ContractType.Token:
+        return new ERC20Base(
+          this.provider,
+          this.appId,
+          contract.id,
+          this.signer
+        );
+      default:
+        throw new Error('Error getting contract');
     }
   }
 }

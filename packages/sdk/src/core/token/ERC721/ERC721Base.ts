@@ -1,10 +1,18 @@
 import { BigNumber, ContractReceipt, ethers, providers, Signer } from 'ethers';
-import { ERC721Base, ERC721Base__factory } from '../../contract-types';
-import { parseErrorData, processTransaction } from '../../helpers/transaction';
+import {
+  ERC721Base as ERC721BaseContract,
+  ERC721Base__factory,
+  SettingsFacet,
+  SettingsFacet__factory,
+} from '../../../contract-types';
+import {
+  parseErrorData,
+  processTransaction,
+} from '../../../helpers/transaction';
 import {
   validateWallet,
   validateWalletAndMetadata,
-} from '../../helpers/validation';
+} from '../../../helpers/validation';
 import {
   ContractType,
   ERC721ApproveParams,
@@ -12,13 +20,16 @@ import {
   ERC721BatchMintParams,
   ERC721BurnParams,
   ERC721GetApprovedParams,
+  ERC721LazyMintParams,
   ERC721MintParams,
   ERC721OwnerOfParams,
-  ERC721OwnerParams,
+  ERC721SetMinterRoleParams,
   ERC721TotalSupplyParams,
   ERC721TransferParams,
-} from '../../types';
-import { BaseContract } from '../base';
+  Roles,
+} from '../../../types';
+import { App } from '../../app';
+import { BaseContract } from '../../base';
 
 /**
  * Represents an ERC721 contract instance with utility methods to interact with an ERC721 contract
@@ -26,8 +37,9 @@ import { BaseContract } from '../base';
  * @extends BaseContract
  */
 
-export class ERC721Instance extends BaseContract {
-  private contract: ERC721Base;
+export class ERC721Base extends BaseContract {
+  private contract: ERC721BaseContract;
+  private app: App;
 
   constructor(
     provider: providers.Provider,
@@ -42,6 +54,8 @@ export class ERC721Instance extends BaseContract {
         contractAddress,
         signer || provider
       );
+
+      this.app = new App(provider, appId, signer);
     } else {
       throw new Error('Failed to get contract');
     }
@@ -71,7 +85,35 @@ export class ERC721Instance extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   *
+   * Grants the MINTER_ROLE to the specified account for the current ERC721 contract.
+   * @async
+   * @function setMinterRole
+   * @param {BytesLike} params.role - The role to grant to the account.
+   * @param {string} params.account - The account to be granted the MINTER_ROLE.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - A Promise that resolves to a ContractReceipt object that contains information about the transaction.
+   * @throws {Error} - Throws an error if the network check fails or if there is an error during the grantRole transaction.
+   */
+
+  async grantRole(params: ERC721SetMinterRoleParams): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.contract.grantRole(params.role, params.account, {
+        ...params.overrides,
+      });
+
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -107,7 +149,7 @@ export class ERC721Instance extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -134,7 +176,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -168,7 +210,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -196,7 +238,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -221,7 +263,7 @@ export class ERC721Instance extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -246,7 +288,7 @@ export class ERC721Instance extends BaseContract {
 
       return totalSupply.toNumber();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -273,7 +315,7 @@ export class ERC721Instance extends BaseContract {
       return balance.toNumber();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
@@ -298,7 +340,7 @@ export class ERC721Instance extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error, ContractType.NFT);
       throw new Error(parsedError);
     }
   }
