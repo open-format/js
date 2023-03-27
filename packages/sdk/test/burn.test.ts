@@ -1,9 +1,4 @@
-import {
-  ERC20Instance,
-  ERC721Instance,
-  ERC721MintParams,
-  OpenFormatSDK,
-} from '../src';
+import { ERC20Base, ERC721Base, ERC721MintParams, OpenFormatSDK } from '../src';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -14,7 +9,7 @@ import {
 describe('ERC721', () => {
   describe('burn()', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC721Instance;
+    let contract: ERC721Base;
     let walletAddress: string;
     let ERC721MintParams: ERC721MintParams;
 
@@ -27,7 +22,7 @@ describe('ERC721', () => {
 
       contract = (await sdk.getContract({
         contractAddress: ERC721_CONTRACT_ADDRESS,
-      })) as ERC721Instance;
+      })) as ERC721Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
@@ -58,7 +53,7 @@ describe('ERC721', () => {
 describe('ERC20', () => {
   describe('burn()', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC20Instance;
+    let contract: ERC20Base;
     let walletAddress: string;
 
     beforeAll(async () => {
@@ -70,7 +65,7 @@ describe('ERC20', () => {
 
       contract = (await sdk.getContract({
         contractAddress: ERC20_CONTRACT_ADDRESS,
-      })) as ERC20Instance;
+      })) as ERC20Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();

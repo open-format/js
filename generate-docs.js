@@ -25,8 +25,8 @@ const files = [
     output: "docs/api",
   },
   {
-    name: "ERC721Instance",
-    input: "packages/sdk/src/core/token/ERC721Instance.ts",
+    name: "ERC721Base",
+    input: "packages/sdk/src/core/token/ERC721Base.ts",
     output: "docs/api",
   },
   {
