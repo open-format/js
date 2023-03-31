@@ -1,0 +1,462 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "AddressUtils__NotContract",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ApplicationFee_currenciesAndApprovalsMustBeTheSameLength",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ApplicationFee_currencyNotAccepted",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ApplicationFee_exceedsMaxPercentBPS",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "CurrencyTransferLib_insufficientValue",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "CurrencyTransferLib_nativeTokenTransferFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDropFacet_EIP2981NotSupported",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDropFacet_royaltyRecipientNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDrop_cantClaimYet",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDrop_exceededMaxSupply",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDrop_invalidPriceOrCurrency",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDrop_maxSupplyClaimed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDrop_notAuthorised",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ERC721LazyDrop_quantityZeroOrExceededWalletLimit",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuard__ReentrantCall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SafeERC20__OperationFailed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "tokenContract",
+          "type": "address"
+        }
+      ],
+      "name": "ClaimConditionRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "tokenContract",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "startTimestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "supplyClaimed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxClaimableSupply",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "quantityLimitPerWallet",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "pricePerToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "currency",
+              "type": "address"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct ERC721LazyDropStorage.ClaimCondition",
+          "name": "condition",
+          "type": "tuple"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "resetEligibility",
+          "type": "bool"
+        }
+      ],
+      "name": "ClaimConditionUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "currency",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PaidApplicationFee",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "currency",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PaidPlatformFee",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "tokenContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "claimer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "quantityClaimed",
+          "type": "uint256"
+        }
+      ],
+      "name": "TokensClaimed",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenContract",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_receiver",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_quantity",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currency",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_pricePerToken",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC721LazyDrop_claim",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenContract",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721LazyDrop_getClaimCondition",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "startTimestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "supplyClaimed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxClaimableSupply",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "quantityLimitPerWallet",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "pricePerToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "currency",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct ERC721LazyDropStorage.ClaimCondition",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenContract",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721LazyDrop_removeClaimCondition",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenContract",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "startTimestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "supplyClaimed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxClaimableSupply",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "quantityLimitPerWallet",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "pricePerToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "currency",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct ERC721LazyDropStorage.ClaimCondition",
+          "name": "_condition",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bool",
+          "name": "_resetClaimEligibility",
+          "type": "bool"
+        }
+      ],
+      "name": "ERC721LazyDrop_setClaimCondition",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenContract",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_claimer",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_quantity",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currency",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_pricePerToken",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC721LazyDrop_verifyClaim",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_price",
+          "type": "uint256"
+        }
+      ],
+      "name": "applicationFeeInfo",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_price",
+          "type": "uint256"
+        }
+      ],
+      "name": "platformFeeInfo",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

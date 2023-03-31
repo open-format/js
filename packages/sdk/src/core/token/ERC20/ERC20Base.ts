@@ -1,12 +1,18 @@
 import { ContractReceipt, ethers, providers, Signer } from 'ethers';
-import { ERC20Base, ERC20Base__factory } from '../../contract-types';
-import { parseErrorData, processTransaction } from '../../helpers/transaction';
+import {
+  ERC20Base as ERC20BaseContract,
+  ERC20Base__factory,
+} from '../../../contract-types';
+import {
+  parseErrorData,
+  processTransaction,
+} from '../../../helpers/transaction';
 import {
   validateBigNumber,
   validateWallet,
   validateWalletAndAmount,
   validateWallets,
-} from '../../helpers/validation';
+} from '../../../helpers/validation';
 import {
   ContractType,
   ERC20AllowanceParams,
@@ -16,8 +22,8 @@ import {
   ERC20MintParams,
   ERC20TotalSupplyParams,
   ERC20TransferParams,
-} from '../../types';
-import { BaseContract } from '../base';
+} from '../../../types';
+import { BaseContract } from '../../base';
 
 /**
  * Represents an ERC20 contract instance with utility methods to interact with an ERC20 contract
@@ -26,8 +32,8 @@ import { BaseContract } from '../base';
  * @extends BaseContract
  */
 
-export class ERC20Instance extends BaseContract {
-  private contract: ERC20Base;
+export class ERC20Base extends BaseContract {
+  private contract: ERC20BaseContract;
 
   constructor(
     provider: providers.Provider,
@@ -71,7 +77,7 @@ export class ERC20Instance extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error, ContractType.Token);
 
       throw new Error(parsedError);
     }
@@ -101,7 +107,7 @@ export class ERC20Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error, ContractType.Token);
       throw new Error(parsedError);
     }
   }
@@ -130,7 +136,7 @@ export class ERC20Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error, ContractType.Token);
       throw new Error(parsedError);
     }
   }
@@ -161,7 +167,7 @@ export class ERC20Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error, ContractType.Token);
       throw new Error(parsedError);
     }
   }
@@ -193,7 +199,7 @@ export class ERC20Instance extends BaseContract {
 
       return allowance.toNumber();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error, ContractType.Token);
       throw new Error(parsedError);
     }
   }
@@ -218,7 +224,7 @@ export class ERC20Instance extends BaseContract {
 
       return totalSupply.toNumber();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error, ContractType.Token);
       throw new Error(parsedError);
     }
   }
@@ -247,7 +253,7 @@ export class ERC20Instance extends BaseContract {
       return balance.toNumber();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error, ContractType.Token);
       throw new Error(parsedError);
     }
   }
