@@ -8,6 +8,7 @@ export * from './useFactory';
 export * from './useMintNFT';
 export * from './useMintToken';
 export * from './useRawRequest';
+export * from './useSigner';
 export * from './useTransferNFT';
 export * from './useTransferToken';
 export * from './useWallet';
