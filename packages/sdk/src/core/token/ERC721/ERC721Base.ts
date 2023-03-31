@@ -2,8 +2,6 @@ import { BigNumber, ContractReceipt, ethers, providers, Signer } from 'ethers';
 import {
   ERC721Base as ERC721BaseContract,
   ERC721Base__factory,
-  SettingsFacet,
-  SettingsFacet__factory,
 } from '../../../contract-types';
 import {
   parseErrorData,
@@ -20,7 +18,6 @@ import {
   ERC721BatchMintParams,
   ERC721BurnParams,
   ERC721GetApprovedParams,
-  ERC721LazyMintParams,
   ERC721MintParams,
   ERC721OwnerOfParams,
   ERC721SetMinterRoleParams,
@@ -92,11 +89,11 @@ export class ERC721Base extends BaseContract {
 
   /**
    *
-   * Grants the MINTER_ROLE to the specified account for the current ERC721 contract.
+   * Grants a give role to the specified account for the current ERC721 contract.
    * @async
-   * @function setMinterRole
+   * @function grantRole
    * @param {BytesLike} params.role - The role to grant to the account.
-   * @param {string} params.account - The account to be granted the MINTER_ROLE.
+   * @param {string} params.account - The account to be granted the given role.
    * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
    * @returns {Promise<ContractReceipt>} - A Promise that resolves to a ContractReceipt object that contains information about the transaction.
    * @throws {Error} - Throws an error if the network check fails or if there is an error during the grantRole transaction.
@@ -122,7 +119,7 @@ export class ERC721Base extends BaseContract {
    * Mint multiple tokens and transfer them to the specified address.
    * @async
    * @function batchMint
-   * @param {string} params.to - The array of address to mint the tokens to.
+   * @param {string} params.to - The address to mint the tokens to.
    * @param {number} params.quantity - The number of tokens to mint.
    * @param {string} params.baseURI - The base URI of the token metadata.
    * @param {Overrides} [params.overrides] - Optional overrides for the contract call.

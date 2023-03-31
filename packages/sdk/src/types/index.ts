@@ -65,6 +65,7 @@ export type Chain =
   | 'mumbai'
   | 'localhost'
   | 'aurora'
+  | 'auroraTestnet'
   | (string & {});
 
 export type ChainId = number;
