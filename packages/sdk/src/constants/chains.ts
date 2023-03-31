@@ -28,6 +28,15 @@ export const Chains: {
     rpcUrl: 'https://mainnet.aurora.dev/',
     subgraph: 'https://api.thegraph.com/subgraphs/name/open-format/aurora',
   },
+  auroraTestnet: {
+    id: 'auroraTestnet',
+    chainId: 1313161555,
+    name: 'Aurora Testnet',
+    token: 'ETH',
+    rpcUrl: 'https://testnet.aurora.dev/',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/open-format/aurora-testnet',
+  },
   localhost: {
     id: 'localhost',
     chainId: 31337,
