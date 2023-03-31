@@ -1,5 +1,18 @@
 # @openformat/react
 
+## 0.2.1-dev-ad9a567
+
+### Patch Changes
+
+- [#76](https://github.com/open-format/js/pull/76) [`672890f`](https://github.com/open-format/js/commit/672890f1551ec2f3a37fb8452cdf555ad9c73fc8) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Add support for aurora testnet
+
+- [#74](https://github.com/open-format/js/pull/74) [`c312be1`](https://github.com/open-format/js/commit/c312be18c1403b87cf862bd940786c131b98d296) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Update React Hooks SDK to conform to new Typescript SDK structure
+
+- [#78](https://github.com/open-format/js/pull/78) [`a960c97`](https://github.com/open-format/js/commit/a960c977e1a75f9e7283ddcf7989a0d958986e59) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Add useSigner hook
+
+- Updated dependencies [[`e13f26c`](https://github.com/open-format/js/commit/e13f26ca2d8e3e0e055d00e22ac6fb2238f7b869), [`672890f`](https://github.com/open-format/js/commit/672890f1551ec2f3a37fb8452cdf555ad9c73fc8), [`c312be1`](https://github.com/open-format/js/commit/c312be18c1403b87cf862bd940786c131b98d296), [`7d3d09a`](https://github.com/open-format/js/commit/7d3d09af3c06e2b95f84448f64fa72b1a26abe11)]:
+  - @openformat/sdk@0.2.1-dev-ad9a567
+
 ## 0.2.1-dev-92a665c
 
 ### Patch Changes
