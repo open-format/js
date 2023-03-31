@@ -109,7 +109,7 @@ export class OpenFormatSDK extends BaseContract {
           this.signer
         );
 
-      case ContractType.NFTDrop:
+      case ContractType.NFTLazyMint:
         return new ERC721LazyMint(
           this.provider,
           this.appId,

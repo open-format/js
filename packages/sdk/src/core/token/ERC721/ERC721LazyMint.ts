@@ -95,7 +95,7 @@ export class ERC721LazyMint extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -118,7 +118,7 @@ export class ERC721LazyMint extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -150,7 +150,7 @@ export class ERC721LazyMint extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -177,7 +177,7 @@ export class ERC721LazyMint extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -213,7 +213,7 @@ export class ERC721LazyMint extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -243,7 +243,7 @@ export class ERC721LazyMint extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -346,7 +346,7 @@ export class ERC721LazyMint extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -371,7 +371,7 @@ export class ERC721LazyMint extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -396,7 +396,7 @@ export class ERC721LazyMint extends BaseContract {
 
       return totalSupply.toNumber();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -423,7 +423,7 @@ export class ERC721LazyMint extends BaseContract {
       return balance.toNumber();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }
@@ -448,7 +448,7 @@ export class ERC721LazyMint extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error, ContractType.NFTLazyMint);
       throw new Error(parsedError);
     }
   }

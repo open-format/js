@@ -230,7 +230,7 @@ export class App extends BaseContract {
       await this.subgraph.getContractByTimestamp({
         appId: this.appId.toString(),
         createdAt: txTimestamp.toString(),
-        type: ContractType.NFTDrop,
+        type: ContractType.NFTLazyMint,
       });
 
     const validate = (response: ContractResponse) =>
