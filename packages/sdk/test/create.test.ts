@@ -31,7 +31,7 @@ describe('NFT', () => {
     expect(totalSupply.toString()).toBe('0');
   });
 
-  it('throws an error if royaltyRecipient parameter is a not a BigNumber', async () => {
+  it('throws an error if royaltyRecipient parameter is a not an address', async () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
@@ -114,7 +114,7 @@ describe('NFTDrop', () => {
     expect(totalSupply.toString()).toBe('0');
   });
 
-  it('throws an error if royaltyRecipient parameter is a not a BigNumber', async () => {
+  it('throws an error if royaltyRecipient parameter is a not an address', async () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',

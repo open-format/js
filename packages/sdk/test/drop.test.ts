@@ -1,9 +1,5 @@
 import { ethers } from 'ethers';
 import {
-  ERC20Base,
-  ERC20MintParams,
-  ERC721Base,
-  ERC721CreateParams,
   ERC721LazyMint,
   ERC721LazyMint_ClaimParams,
   ERC721LazyMint_LazyMintParams,
@@ -16,7 +12,6 @@ import {
   APP_ID,
   NFT_DROP_CONTRACT_ADDRESS,
   PRIVATE_KEY,
-  WALLET_ADDRESS,
   ZERO_ADDRESS,
 } from './utilities';
 
@@ -113,7 +108,7 @@ describe('NFTDrop', () => {
 
       const params: ERC721LazyMint_ClaimParams = {
         receiver: walletAddress,
-        quantity: 5,
+        quantity: 1,
         currency: ZERO_ADDRESS,
         pricePerToken: 0,
       };
