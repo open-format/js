@@ -75,4 +75,15 @@ describe('App', () => {
       expect(hasCreatorAccess).toBe(true);
     });
   });
+
+  describe('setAcceptedCurrencies()', () => {
+    it('should accept ETH as acceptedCurrencies', async () => {
+      const tx = await sdk.App.setAcceptedCurrencies({
+        currencies: [ZERO_ADDRESS],
+        approvals: [true],
+      });
+
+      expect(tx.status).toBe(1);
+    });
+  });
 });
