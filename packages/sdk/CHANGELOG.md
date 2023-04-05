@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.2.1-dev-37ea060
+
+### Patch Changes
+
+- [#79](https://github.com/open-format/js/pull/79) [`e9b9bbb`](https://github.com/open-format/js/commit/e9b9bbbfefc9892f42b2bd2cb830ef839f82ac41) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Bump release to fix dependancy versioning
+
 ## 0.2.1-dev-ad9a567
 
 ### Patch Changes
