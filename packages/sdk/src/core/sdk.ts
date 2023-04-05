@@ -14,6 +14,7 @@ import {
 import { App } from './app';
 import { BaseContract } from './base';
 import { Factory } from './factory';
+import { Reward } from './reward';
 import { Subgraph } from './subgraph';
 import { ERC20Base } from './token/ERC20/ERC20Base';
 import { ERC721Base } from './token/ERC721/ERC721Base';
@@ -36,6 +37,7 @@ export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
   factory: Factory;
   subgraph: Subgraph;
+  Reward: Reward;
   App: App;
 
   static defaultOptions: SDKOptions = {
@@ -61,6 +63,7 @@ export class OpenFormatSDK extends BaseContract {
       this.signer = getSigner(this.options.signer, this.provider);
     }
     this.App = new App(this.provider, this.appId, this?.signer);
+    this.Reward = new Reward(this.provider, this.appId, this?.signer);
     this.factory = new Factory(this.provider, this.appId, this?.signer);
     this.subgraph = new Subgraph(this.provider, this.appId, this?.signer);
   }

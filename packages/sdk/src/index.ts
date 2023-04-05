@@ -3,6 +3,7 @@ export * from './constants';
 export * from './core/app';
 export { BaseContract } from './core/base';
 export * from './core/factory';
+export * from './core/reward';
 export { OpenFormatSDK } from './core/sdk';
 export * from './core/subgraph';
 export { ERC20Base } from './core/token/ERC20/ERC20Base';

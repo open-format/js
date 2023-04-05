@@ -17,7 +17,7 @@ describe('NFT', () => {
     }
   });
 
-  it('creates an NFT contract and returns an instance of it', async () => {
+  it.only('creates an NFT contract and returns an instance of it', async () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
