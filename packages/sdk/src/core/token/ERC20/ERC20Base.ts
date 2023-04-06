@@ -21,6 +21,7 @@ import {
   ERC20BurnParams,
   ERC20MintParams,
   ERC20TotalSupplyParams,
+  ERC20TransferFromParams,
   ERC20TransferParams,
 } from '../../../types';
 import { BaseContract } from '../../base';
@@ -131,6 +132,42 @@ export class ERC20Base extends BaseContract {
       const tx = await this.contract.transfer(params.to, params.amount, {
         ...params.overrides,
       });
+
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error, ContractType.Token);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   * Transfers tokens from the current account to the provided account.
+   *
+   * @async
+   * @function transfer
+   * @param {string} params.to - The address of the account to receive the tokens.
+   * @param {BigNumberish} params.amount - The amount of tokens to transfer.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - A Promise that resolves to the transaction receipt object.
+   * @throws {Error} - If there is an error with the Ethereum transaction, a new Error object is thrown with a message containing the error details.
+   */
+  async transferFrom(
+    params: ERC20TransferFromParams
+  ): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+      validateWalletAndAmount(params.to, params.amount);
+
+      const tx = await this.contract.transferFrom(
+        params.from,
+        params.to,
+        params.amount,
+        {
+          ...params.overrides,
+        }
+      );
 
       const receipt = await processTransaction(tx);
 
