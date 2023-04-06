@@ -77,7 +77,6 @@ export type ChainConfig = {
   token: string;
   rpcUrl: string;
   subgraph: string;
-  contracts: Contracts;
 };
 
 export interface Contracts {
@@ -329,6 +328,13 @@ export interface ERC20TransferParams {
   overrides?: Parameters<ERC20BaseContract['transfer']>[2];
 }
 
+export interface ERC20TransferFromParams {
+  from: Parameters<ERC20BaseContract['transferFrom']>[0];
+  to: Parameters<ERC20BaseContract['transferFrom']>[1];
+  amount: Parameters<ERC20BaseContract['transferFrom']>[2];
+  overrides?: Parameters<ERC20BaseContract['transferFrom']>[3];
+}
+
 export interface ERC20ApproveParams {
   spender: Parameters<ERC20BaseContract['approve']>[0];
   amount: Parameters<ERC20BaseContract['approve']>[1];
@@ -381,4 +387,40 @@ export interface AppSetAcceptedCurrenciesParams {
   currencies: Parameters<SettingsFacet['setAcceptedCurrencies']>[0];
   approvals: Parameters<SettingsFacet['setAcceptedCurrencies']>[1];
   overrides?: Parameters<SettingsFacet['setAcceptedCurrencies']>[2];
+}
+
+///////////////////
+////  Reward   ////
+///////////////////
+
+export enum RewardType {
+  XP = 'XP',
+  BADGE = 'BADGE',
+  REWARD_CURRENCY = 'REWARD_CURRENCY',
+}
+
+export enum ActivityType {
+  ACTION = 'ACTION',
+  MISSION = 'MISSION',
+}
+
+export interface RewardTriggerParams {
+  receiver: string;
+  tokens: RewardToken[];
+}
+
+export interface RewardToken {
+  amount: number;
+  address: string;
+  type: RewardType;
+  id: string;
+  activityType: ActivityType;
+  tokenURI?: string;
+  holderAddress?: string;
+}
+
+export interface Reward_CreateBadgeParams {
+  name: string;
+  symbol: string;
+  tokenURI: string;
 }
