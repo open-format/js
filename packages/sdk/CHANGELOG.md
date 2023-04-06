@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.3.0-dev-1e51dda
+
+### Minor Changes
+
+- [#81](https://github.com/open-format/js/pull/81) [`a24081e`](https://github.com/open-format/js/commit/a24081e804440ad2f74690cbe1144bb777c902ea) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Adds functionality to interact with the Reward contract
+
 ## 0.2.1-dev-37ea060
 
 ### Patch Changes
