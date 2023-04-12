@@ -1,4 +1,5 @@
 import {
+  Chains,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
@@ -23,7 +24,7 @@ describe('ERC721', () => {
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });
@@ -99,7 +100,7 @@ describe('ERC20', () => {
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });

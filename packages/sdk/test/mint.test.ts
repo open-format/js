@@ -1,9 +1,8 @@
-import { BigNumberish } from 'ethers';
 import {
+  Chains,
   ERC20Base,
   ERC20MintParams,
   ERC721Base,
-  ERC721LazyMint,
   OpenFormatSDK,
 } from '../src';
 import {
@@ -20,7 +19,7 @@ describe('ERC721', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });
@@ -147,7 +146,7 @@ describe('ERC20', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });

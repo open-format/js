@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import {
+  Chains,
   ERC721LazyMint,
   ERC721LazyMint_ClaimParams,
   ERC721LazyMint_LazyMintParams,
@@ -23,7 +24,7 @@ describe('NFTDrop', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });

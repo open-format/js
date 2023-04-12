@@ -1,4 +1,4 @@
-import { AppSetCreatorAccessParams, OpenFormatSDK } from '../src';
+import { AppSetCreatorAccessParams, Chains, OpenFormatSDK } from '../src';
 import {
   APP_ID,
   PRIVATE_KEY,
@@ -13,7 +13,7 @@ describe('App', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });

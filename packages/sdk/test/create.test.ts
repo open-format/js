@@ -1,4 +1,9 @@
-import { ERC20CreateParams, ERC721CreateParams, OpenFormatSDK } from '../src';
+import {
+  Chains,
+  ERC20CreateParams,
+  ERC721CreateParams,
+  OpenFormatSDK,
+} from '../src';
 import { APP_ID, PRIVATE_KEY } from './utilities';
 
 describe('NFT', () => {
@@ -7,7 +12,7 @@ describe('NFT', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });
@@ -17,7 +22,7 @@ describe('NFT', () => {
     }
   });
 
-  it.only('creates an NFT contract and returns an instance of it', async () => {
+  it('creates an NFT contract and returns an instance of it', async () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
@@ -72,7 +77,7 @@ describe('NFT', () => {
     };
 
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
     });
 
@@ -90,7 +95,7 @@ describe('NFTDrop', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });
@@ -155,7 +160,7 @@ describe('NFTDrop', () => {
     };
 
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
     });
 
@@ -173,7 +178,7 @@ describe('Token', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });
@@ -242,7 +247,7 @@ describe('Token', () => {
     };
 
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
     });
 

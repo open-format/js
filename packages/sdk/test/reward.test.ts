@@ -1,5 +1,6 @@
 import {
   ActivityType,
+  Chains,
   ERC20CreateParams,
   OpenFormatSDK,
   RewardTriggerParams,
@@ -20,7 +21,7 @@ describe('Reward', () => {
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });
@@ -56,7 +57,7 @@ describe('Reward', () => {
     //@TODO add expect
   });
 
-  it.only('trigger a Badge and XP', async () => {
+  it('trigger a Badge and XP', async () => {
     const params: RewardTriggerParams = {
       receiver: WALLET_ADDRESS2,
       tokens: [
