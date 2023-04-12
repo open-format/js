@@ -1,10 +1,7 @@
 import { ethers } from 'ethers';
 import merge from 'lodash.merge';
-import {
-  getProviderFromUrl,
-  getProviderUrl,
-  getSigner,
-} from '../helpers/providers';
+import { Chains } from '../constants/chains';
+import { getProviderFromUrl, getSigner } from '../helpers/providers';
 import {
   ContractType,
   GetContractParameters,
@@ -29,7 +26,7 @@ import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
  * const sdk = new OpenFormatSDK({
  *  signer: "0x....",
  *  appId: "0x1ade2613adb6bafbc65d40eb9c1effbe3bfd8b81",
- *  network: "mumbai",
+ *  network: Chains.polygonMumbai
  * });
  * ```
  */
@@ -41,22 +38,23 @@ export class OpenFormatSDK extends BaseContract {
   App: App;
 
   static defaultOptions: SDKOptions = {
-    network: 'http://localhost:8545',
+    network: Chains.polygonMumbai,
     appId: '',
   };
 
-  constructor(options?: SDKOptions) {
+  constructor(options: SDKOptions) {
     super(
-      getProviderFromUrl(
-        getProviderUrl(merge({}, OpenFormatSDK.defaultOptions, options).network)
-      ),
-      ''
+      getProviderFromUrl(options.network.rpcUrls.default?.http?.[0]),
+      options.appId,
+      options.signer
     );
 
     this.options = merge({}, OpenFormatSDK.defaultOptions, options);
 
-    const providerUrl = getProviderUrl(this.options.network);
-    this.provider = getProviderFromUrl(providerUrl);
+    this.provider = getProviderFromUrl(
+      this.options.network.rpcUrls.default?.http?.[0]
+    );
+
     this.appId = this.options.appId;
 
     if (this.options.signer) {
