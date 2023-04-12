@@ -1,8 +1,17 @@
-import { OpenFormatSDK, SDKOptions } from '@openformat/sdk';
+import { Chains, OpenFormatSDK, SDKOptions } from '@openformat/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Chain } from '@wagmi/chains';
 import { ConnectKitProvider } from 'connectkit';
+import { Signer } from 'ethers';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { Connector, useConnect, useSigner, WagmiConfig } from 'wagmi';
+import {
+  Connector,
+  useConnect,
+  useNetwork,
+  useSigner,
+  WagmiConfig,
+} from 'wagmi';
+import { getNetworkByChainId } from './helpers';
 import { wagmiClient } from './wagmi-client';
 
 const OpenFormatContext = createContext<{ sdk: OpenFormatSDK } | undefined>(
@@ -23,15 +32,19 @@ const queryClient = new QueryClient({
 export function OpenFormatProvider({
   children,
   config = {
-    network: 'localhost',
+    networks: [Chains.polygonMumbai],
     appId: '',
   },
 }: {
   children: React.ReactNode;
-  config?: SDKOptions;
+  config?: {
+    networks: Chain[];
+    appId: string;
+    signer?: Signer | string;
+  };
 }) {
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig client={wagmiClient(config.networks)}>
       <InnerProvider config={config}>{children}</InnerProvider>
     </WagmiConfig>
   );
@@ -40,7 +53,7 @@ export function OpenFormatProvider({
 function InnerProvider({
   children,
   config = {
-    network: 'localhost',
+    network: Chains.polygonMumbai,
     appId: '',
   },
 }: {
@@ -49,14 +62,22 @@ function InnerProvider({
 }) {
   const { connect, connectors } = useConnect();
   const { data: signer } = useSigner();
-  const sdk = useMemo(
-    () =>
-      new OpenFormatSDK({
-        signer,
+  const { chain } = useNetwork();
+
+  const sdk = useMemo(() => {
+    const network = getNetworkByChainId(chain?.id);
+
+    if (network) {
+      return new OpenFormatSDK({
+        signer: signer as Signer,
         ...config,
-      }),
-    [signer]
-  );
+        network,
+      });
+    } else {
+      // Return null or a default instance if the chain ID is not valid.
+      return null;
+    }
+  }, [signer, chain]);
 
   useEffect(() => {
     const wallet = JSON.parse(localStorage.getItem('wagmi.wallet') ?? '""');

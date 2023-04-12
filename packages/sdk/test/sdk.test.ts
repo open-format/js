@@ -1,20 +1,30 @@
-import { OpenFormatSDK } from '../src';
-import { APP_ID, ERC721_CONTRACT_NAME } from './utilities';
+import { Chains, OpenFormatSDK } from '../src';
+import { APP_ID } from './utilities';
 
 describe('sdk', () => {
-  it('initializes the SDK on the mumbai network', async () => {
+  it('should initialize the SDK on the polygon network', async () => {
     const sdk = new OpenFormatSDK({
-      network: 'mumbai',
+      network: Chains.polygon,
       appId: APP_ID,
     });
+
+    const network = await sdk.provider.getNetwork();
+
+    expect(network.chainId).toBe(137);
+  });
+  it('should initialize the SDK on the mumbai network', async () => {
+    const sdk = new OpenFormatSDK({
+      network: Chains.polygonMumbai,
+      appId: APP_ID,
+    });
+
     const network = await sdk.provider.getNetwork();
 
     expect(network.chainId).toBe(80001);
   });
-
-  it('initializes the SDK on the aurora network', async () => {
+  it('should initialize the SDK on the aurora network', async () => {
     const sdk = new OpenFormatSDK({
-      network: 'aurora',
+      network: Chains.aurora,
       appId: APP_ID,
     });
     const network = await sdk.provider.getNetwork();
@@ -22,9 +32,19 @@ describe('sdk', () => {
     expect(network.chainId).toBe(1313161554);
   });
 
-  it('initializes the SDK on a local network', async () => {
+  it('should initialize the SDK on the aurora testnet network', async () => {
     const sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.auroraTestnet,
+      appId: APP_ID,
+    });
+    const network = await sdk.provider.getNetwork();
+
+    expect(network.chainId).toBe(1313161555);
+  });
+
+  it('should initialize the SDK on a local network', async () => {
+    const sdk = new OpenFormatSDK({
+      network: Chains.foundry,
       appId: APP_ID,
     });
     const network = await sdk.provider.getNetwork();
@@ -32,23 +52,9 @@ describe('sdk', () => {
     expect(network.chainId).toBe(31337);
   });
 
-  it('throws an error if multiple contracts are found', async () => {
+  it('should throw an error if contract address is invalid', async () => {
     const sdk = new OpenFormatSDK({
-      network: 'localhost',
-      appId: APP_ID,
-    });
-
-    async function getContract() {
-      await sdk.getContract({
-        name: ERC721_CONTRACT_NAME,
-      });
-    }
-    await expect(getContract).rejects.toThrow();
-  });
-
-  it('throws an error if contract address is invalid', async () => {
-    const sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
     });
 

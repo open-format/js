@@ -1,3 +1,4 @@
+import { Chains } from '@openformat/sdk';
 import { render, RenderOptions } from '@testing-library/react';
 import { ethers } from 'ethers';
 import React, { FC, ReactElement } from 'react';
@@ -39,7 +40,7 @@ const App: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <OpenFormatProvider
       config={{
-        network: 'localhost',
+        networks: [Chains.foundry],
         appId: APP_ID,
         signer,
       }}

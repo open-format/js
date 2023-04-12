@@ -1,3 +1,4 @@
+import { Chain } from '@wagmi/chains';
 import { Signer } from 'ethers';
 import {
   ERC20Base as ERC20BaseContract,
@@ -56,28 +57,7 @@ export type ClaimCondition = {
   currency: string;
 };
 
-///////////////////
-///    CHAINS   ///
-///////////////////
-
-export type Chain =
-  | 'mainnet'
-  | 'mumbai'
-  | 'localhost'
-  | 'aurora'
-  | 'auroraTestnet'
-  | (string & {});
-
 export type ChainId = number;
-
-export type ChainConfig = {
-  id: Chain;
-  chainId: number;
-  name: string;
-  token: string;
-  rpcUrl: string;
-  subgraph: string;
-};
 
 export interface Contracts {
   [key: string]: {

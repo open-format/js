@@ -33,7 +33,7 @@ export class BaseContract {
       const providerNetwork = await this.provider.getNetwork();
 
       if (signerNetwork?.chainId !== providerNetwork.chainId) {
-        throw new Error(`Chains don't match`);
+        throw new Error(`Chains don't match or not supported.`);
       }
     }
   }

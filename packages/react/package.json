@@ -83,6 +83,7 @@
   "dependencies": {
     "@openformat/sdk": "0.3.0-dev-1e51dda",
     "@tanstack/react-query": "^4.0.10",
+    "@wagmi/chains": "^0.2.18",
     "connectkit": "1.0.1",
     "wagmi": "0.7.15"
   }
