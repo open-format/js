@@ -1,5 +1,12 @@
 # @openformat/sdk
 
+## 0.3.0-dev-12bf41b
+
+### Minor Changes
+
+- [#83](https://github.com/open-format/js/pull/83) [`cd62ad0`](https://github.com/open-format/js/commit/cd62ad010c2eb320cbc8421be36c848015c247c8) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - - Update the network config to accept a Chain object instead of a string
+  - Enable multi-chain use in React Hooks SDK
+
 ## 0.3.0-dev-1e51dda
 
 ### Minor Changes
