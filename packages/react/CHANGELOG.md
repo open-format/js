@@ -1,5 +1,11 @@
 # @openformat/react
 
+## 0.3.0-dev-854232e
+
+### Minor Changes
+
+- [#91](https://github.com/open-format/js/pull/91) [`b2785cf`](https://github.com/open-format/js/commit/b2785cf2d29eea4a394ed85efc3952ef4f0fce3b) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Export all types from @openformat/sdk in @openformat/react
+
 ## 0.3.0-dev-12bf41b
 
 ### Minor Changes
