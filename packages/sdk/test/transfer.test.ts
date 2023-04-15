@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import {
   Chains,
   ERC20Base,
@@ -6,6 +7,7 @@ import {
   ERC721TransferParams,
   OpenFormatSDK,
 } from '../src';
+import { toWei } from '../src/helpers';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -93,6 +95,8 @@ describe('ERC721', () => {
 
 // @TODO Increase test coverage for ERC20 transfer
 describe('ERC20', () => {
+  const AMOUNT = toWei('1');
+
   describe('transfer()', () => {
     let sdk: OpenFormatSDK;
     let contract: ERC20Base;
@@ -118,12 +122,15 @@ describe('ERC20', () => {
       const receiverBalance = await contract.balanceOf({
         account: WALLET_ADDRESS2,
       });
-      await contract.transfer({ to: WALLET_ADDRESS2, amount: 100 });
+
+      await contract.transfer({ to: WALLET_ADDRESS2, amount: AMOUNT });
       const newReceiverBalance = await contract.balanceOf({
         account: WALLET_ADDRESS2,
       });
 
-      expect(newReceiverBalance).toBe(receiverBalance + 100);
+      expect(newReceiverBalance).toBe(
+        BigNumber.from(receiverBalance).add(AMOUNT).toString()
+      );
     });
   });
 });

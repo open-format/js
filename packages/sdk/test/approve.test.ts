@@ -5,6 +5,7 @@ import {
   ERC721MintParams,
   OpenFormatSDK,
 } from '../src';
+import { toWei } from '../src/helpers';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -80,7 +81,7 @@ describe('NFT', () => {
   });
 });
 describe('ERC20', () => {
-  const AMOUNT = 100;
+  const AMOUNT = toWei('100');
 
   describe('approve()', () => {
     let sdk: OpenFormatSDK;
@@ -112,7 +113,7 @@ describe('ERC20', () => {
         spender: WALLET_ADDRESS2,
       });
 
-      expect(approved).toBe(AMOUNT);
+      expect(approved).toBe(AMOUNT.toString());
     });
 
     it('throws an error when to address is not a valid address', async () => {
