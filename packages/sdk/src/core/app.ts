@@ -11,11 +11,7 @@ import {
 } from '../contract-types';
 import { poll } from '../helpers/subgraph';
 import { parseErrorData, processTransaction } from '../helpers/transaction';
-import {
-  validateBigNumber,
-  validateBigNumbers,
-  validateWallet,
-} from '../helpers/validation';
+import { validateBigNumbers, validateWallet } from '../helpers/validation';
 import {
   AppHasCreatorAccessParams,
   AppSetAcceptedCurrenciesParams,
@@ -163,7 +159,7 @@ export class App extends BaseContract {
     await this.checkNetworksMatch();
 
     validateWallet(params.royaltyRecipient);
-    validateBigNumber(params.royaltyBps);
+    validateBigNumbers([params.royaltyBps]);
 
     const tx = await this.ERC721Factory.createERC721(
       params.name,
@@ -211,7 +207,7 @@ export class App extends BaseContract {
     await this.checkNetworksMatch();
 
     validateWallet(params.royaltyRecipient);
-    validateBigNumber(params.royaltyBps);
+    validateBigNumbers([params.royaltyBps]);
 
     const tx = await this.ERC721Factory.createERC721(
       params.name,
@@ -259,12 +255,12 @@ export class App extends BaseContract {
 
     await this.checkNetworksMatch();
 
-    validateBigNumbers([params.decimal, params.supply]);
+    validateBigNumbers([params.supply]);
 
     const tx = await this.ERC20Factory.createERC20(
       params.name,
       params.symbol,
-      params.decimal,
+      18,
       params.supply,
       ethers.utils.formatBytes32String(ImplementationType.BASE),
       { ...params.overrides }
