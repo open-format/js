@@ -1,5 +1,14 @@
 # @openformat/react
 
+## 0.3.0-dev-094b3d3
+
+### Patch Changes
+
+- [#94](https://github.com/open-format/js/pull/94) [`3bca926`](https://github.com/open-format/js/commit/3bca92659a99048bf4ee5351e8099b95d8b3b9d0) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Handle default network in React Hook package provider
+
+- Updated dependencies [[`3bca926`](https://github.com/open-format/js/commit/3bca92659a99048bf4ee5351e8099b95d8b3b9d0)]:
+  - @openformat/sdk@0.3.0-dev-094b3d3
+
 ## 0.3.0-dev-854232e
 
 ### Minor Changes
