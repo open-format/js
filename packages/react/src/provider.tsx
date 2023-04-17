@@ -1,4 +1,4 @@
-import { Chains, OpenFormatSDK, SDKOptions } from '@openformat/sdk';
+import { Chains, OpenFormatSDK } from '@openformat/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Chain } from '@wagmi/chains';
 import { ConnectKitProvider } from 'connectkit';
@@ -53,30 +53,29 @@ export function OpenFormatProvider({
 function InnerProvider({
   children,
   config = {
-    network: Chains.polygonMumbai,
+    networks: [Chains.polygonMumbai],
     appId: '',
   },
 }: {
   children: React.ReactNode;
-  config?: SDKOptions;
+  config?: {
+    networks: Chain[];
+    appId: string;
+    signer?: Signer | string;
+  };
 }) {
   const { connect, connectors } = useConnect();
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
+  const network = getNetworkByChainId(chain?.id);
 
   const sdk = useMemo(() => {
-    const network = getNetworkByChainId(chain?.id);
-
-    if (network) {
-      return new OpenFormatSDK({
-        signer: signer as Signer,
-        ...config,
-        network,
-      });
-    } else {
-      // Return null or a default instance if the chain ID is not valid.
-      return null;
-    }
+    return new OpenFormatSDK({
+      signer: signer as Signer,
+      ...config,
+      //@dev first network in the array of networks is the classed as the default chain.
+      network: network ?? config.networks?.[0],
+    });
   }, [signer, chain]);
 
   useEffect(() => {
