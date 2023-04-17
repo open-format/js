@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.3.0-dev-39bb3fa
+
+### Patch Changes
+
+- [#96](https://github.com/open-format/js/pull/96) [`de229bb`](https://github.com/open-format/js/commit/de229bb53844c0aa91f3ae4e0824acaeed9dc595) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - set autoConnect to true in wagmi client
+
 ## 0.3.0-dev-094b3d3
 
 ### Patch Changes
