@@ -69,6 +69,7 @@
     "@preconstruct/cli": "^2.3.0",
     "@size-limit/preset-small-lib": "^7.0.8",
     "@typechain/ethers-v5": "^10.1.0",
+    "@types/lodash": "^4.14.194",
     "@types/lodash.merge": "^4.6.7",
     "casual": "^1.6.2",
     "ethers": "^5",
@@ -86,6 +87,9 @@
     "@wagmi/chains": "^0.2.17",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
-    "lodash.merge": "^4.6.2"
+    "lodash.forown": "^4.4.0",
+    "lodash.isobject": "^3.0.2",
+    "lodash.merge": "^4.6.2",
+    "lodash.unionby": "^4.8.0"
   }
 }
