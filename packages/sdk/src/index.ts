@@ -9,4 +9,5 @@ export * from './core/subgraph';
 export { ERC20Base } from './core/token/ERC20/ERC20Base';
 export { ERC721Base } from './core/token/ERC721/ERC721Base';
 export { ERC721LazyMint } from './core/token/ERC721/ERC721LazyMint';
+export { fromWei, toWei } from './helpers/transaction';
 export * from './types';

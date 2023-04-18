@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import {
   Chains,
   ERC20Base,
@@ -6,6 +6,7 @@ import {
   ERC721MintParams,
   OpenFormatSDK,
 } from '../src';
+import { toWei } from '../src/helpers';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -88,7 +89,7 @@ describe('ERC721', () => {
 });
 
 describe('ERC20', () => {
-  const AMOUNT = 100;
+  const AMOUNT = toWei('100');
 
   describe('State', () => {
     let sdk: OpenFormatSDK;
@@ -115,7 +116,10 @@ describe('ERC20', () => {
         const totalSupply = await contract.totalSupply();
         await contract.mint({ to: walletAddress, amount: AMOUNT });
         const newTotalSupply = await contract.totalSupply();
-        expect(newTotalSupply).toBe(totalSupply + AMOUNT);
+
+        expect(newTotalSupply).toBe(
+          BigNumber.from(totalSupply).add(AMOUNT).toString()
+        );
       });
     });
     describe('balanceOf()', () => {
@@ -128,7 +132,9 @@ describe('ERC20', () => {
           account: WALLET_ADDRESS2,
         });
 
-        expect(newBalanceOf).toBe(balanceOf + AMOUNT);
+        expect(newBalanceOf).toBe(
+          BigNumber.from(balanceOf).add(AMOUNT).toString()
+        );
       });
 
       it('throws an error if the attempted wallet to be checked is not valid', async () => {
@@ -151,7 +157,7 @@ describe('ERC20', () => {
           spender: WALLET_ADDRESS2,
         });
 
-        expect(allowance).toBe(AMOUNT);
+        expect(allowance).toBe(AMOUNT.toString());
       });
 
       it('throws an error if the attempted wallet to be checked is not valid', async () => {

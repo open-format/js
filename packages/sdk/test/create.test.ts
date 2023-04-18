@@ -4,6 +4,7 @@ import {
   ERC721CreateParams,
   OpenFormatSDK,
 } from '../src';
+import { toWei } from '../src/helpers';
 import { APP_ID, PRIVATE_KEY } from './utilities';
 
 describe('NFT', () => {
@@ -189,36 +190,19 @@ describe('Token', () => {
   });
 
   it('creates an Token contract and returns an instance of it', async () => {
+    const AMOUNT = toWei('0.001');
     const params: ERC20CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      decimal: 18,
-      supply: 1000,
+      supply: AMOUNT,
     };
 
     const contract = await sdk.App.createToken(params);
 
     if (contract) {
       const balanceOf = await contract.balanceOf({ account: walletAddress });
-      expect(balanceOf).toBe(1000);
+      expect(balanceOf).toBe(AMOUNT.toString());
     }
-  });
-
-  it('throws an error if decimals parameter is a not a BigNumber', async () => {
-    const params: ERC20CreateParams = {
-      name: 'TEST',
-      symbol: 'NFT',
-      decimal: 'InvalidDecimals',
-      supply: 1000,
-    };
-
-    async function create() {
-      await sdk.App.createToken(params);
-    }
-
-    await expect(create).rejects.toThrow(
-      'Invalid amount. Please check you are passing a valid number'
-    );
   });
 
   it('throws an error if supply parameter is a not a BigNumber', async () => {

@@ -1,4 +1,10 @@
-import { ContractReceipt, ContractTransaction, ethers } from 'ethers';
+import {
+  BigNumber,
+  BigNumberish,
+  ContractReceipt,
+  ContractTransaction,
+  ethers,
+} from 'ethers';
 import ERC721LazyDropFacet from '../../abis/facet/ERC721LazyDropFacet.json';
 import SettingsFacet from '../../abis/facet/SettingsFacet.json';
 import Factory from '../../abis/Factory/Factory.json';
@@ -12,6 +18,36 @@ export async function processTransaction(
 ): Promise<ContractReceipt> {
   const receipt = await tx.wait();
   return receipt;
+}
+
+/**
+ * Convert a decimal Ether amount (ETH) to its smallest unit (wei) as a BigNumber.
+ *
+ * @param {string} amount - The decimal Ether amount to be converted to wei.
+ * @returns {BigNumber} The converted wei amount as a BigNumber instance.
+ *
+ * @example
+ * const decimalAmount = "0.01";
+ * const weiAmount = toWei(decimalAmount);
+ * console.log(weiAmount.toString()); // "10000000000000000"
+ */
+export function toWei(amount: string): BigNumber {
+  return ethers.utils.parseEther(amount);
+}
+
+/**
+ * Convert a wei amount as a BigNumber to its decimal Ether representation (ETH) as a string.
+ *
+ * @param {BigNumberish} amount - The wei amount to be converted to decimal Ether.
+ * @returns {string} The converted decimal Ether amount as a string.
+ *
+ * @example
+ * const weiAmount = "10000000000000000"
+ * const decimalAmount = fromWei(weiAmount);
+ * console.log(decimalAmount); // "0.01"
+ */
+export function fromWei(amount: BigNumberish): string {
+  return ethers.utils.formatEther(amount);
 }
 
 export function parseErrorData(error: any, contractType: ContractType) {
