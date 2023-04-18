@@ -6,13 +6,12 @@ import {
 import {
   parseErrorData,
   processTransaction,
-} from '../../../helpers/transaction';
-import {
-  validateBigNumber,
+  validateBigNumbers,
   validateWallet,
   validateWalletAndAmount,
   validateWallets,
-} from '../../../helpers/validation';
+} from '../../../helpers';
+
 import {
   ContractType,
   ERC20AllowanceParams,
@@ -98,7 +97,7 @@ export class ERC20Base extends BaseContract {
   async burn(params: ERC20BurnParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
-      validateBigNumber(params.amount);
+      validateBigNumbers([params.amount]);
 
       const tx = await this.contract.burn(params.amount, {
         ...params.overrides,
@@ -221,7 +220,7 @@ export class ERC20Base extends BaseContract {
    * @returns {Promise<number>} Returns the allowance amount as a number
    */
 
-  async allowance(params: ERC20AllowanceParams): Promise<number> {
+  async allowance(params: ERC20AllowanceParams): Promise<string> {
     try {
       await this.checkNetworksMatch();
       validateWallets([params.holder, params.spender]);
@@ -234,7 +233,7 @@ export class ERC20Base extends BaseContract {
         }
       );
 
-      return allowance.toNumber();
+      return allowance.toString();
     } catch (error: any) {
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);
@@ -251,7 +250,7 @@ export class ERC20Base extends BaseContract {
    * @throws {Error} - If the method call fails, an error is thrown with the relevant error message.
    */
 
-  async totalSupply(params?: ERC20TotalSupplyParams): Promise<number> {
+  async totalSupply(params?: ERC20TotalSupplyParams): Promise<string> {
     try {
       await this.checkNetworksMatch();
 
@@ -259,7 +258,7 @@ export class ERC20Base extends BaseContract {
         ...params?.overrides,
       });
 
-      return totalSupply.toNumber();
+      return totalSupply.toString();
     } catch (error: any) {
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);
@@ -277,7 +276,7 @@ export class ERC20Base extends BaseContract {
    * @throws {Error} Throws an error if the account address is invalid or the balanceOf call fails.
    */
 
-  async balanceOf(params: ERC20BalanceOfParams): Promise<number> {
+  async balanceOf(params: ERC20BalanceOfParams): Promise<string> {
     try {
       await this.checkNetworksMatch();
 
@@ -287,7 +286,7 @@ export class ERC20Base extends BaseContract {
         ...params.overrides,
       });
 
-      return balance.toNumber();
+      return balance.toString();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
       const parsedError = parseErrorData(error);

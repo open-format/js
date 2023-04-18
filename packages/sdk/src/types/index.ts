@@ -268,7 +268,6 @@ export interface ERC721LazyDrop_VerifyClaimParams
 export interface ERC20CreateParams {
   name: Parameters<ERC20FactoryFacet['createERC20']>[0];
   symbol: Parameters<ERC20FactoryFacet['createERC20']>[1];
-  decimal: Parameters<ERC20FactoryFacet['createERC20']>[2];
   supply: Parameters<ERC20FactoryFacet['createERC20']>[3];
   overrides?: Parameters<ERC20FactoryFacet['createERC20']>[5];
 }

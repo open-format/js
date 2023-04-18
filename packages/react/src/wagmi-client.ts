@@ -28,7 +28,7 @@ export function wagmiClient(acceptedChains: Chain[]) {
   const injected = new InjectedConnector({ chains });
 
   return createClient({
-    autoConnect: false,
+    autoConnect: true,
     connectors: [injected, metamask, walletconnect],
     provider,
     webSocketProvider,
