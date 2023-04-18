@@ -78,7 +78,7 @@ export class ERC20Base extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
 
       throw new Error(parsedError);
     }
@@ -108,7 +108,7 @@ export class ERC20Base extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -137,7 +137,7 @@ export class ERC20Base extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -173,7 +173,7 @@ export class ERC20Base extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -204,7 +204,7 @@ export class ERC20Base extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -236,7 +236,7 @@ export class ERC20Base extends BaseContract {
 
       return allowance.toNumber();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -261,7 +261,7 @@ export class ERC20Base extends BaseContract {
 
       return totalSupply.toNumber();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -290,7 +290,7 @@ export class ERC20Base extends BaseContract {
       return balance.toNumber();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
-      const parsedError = parseErrorData(error, ContractType.Token);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
