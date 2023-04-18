@@ -1,5 +1,6 @@
 import {
   Chains,
+  ContractErrors,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
@@ -57,7 +58,9 @@ describe('NFT', () => {
         });
       }
 
-      await expect(approve).rejects.toThrow('OwnerQueryForNonexistentToken');
+      await expect(approve).rejects.toThrow(
+        ContractErrors.OwnerQueryForNonexistentToken
+      );
     });
 
     it('throws an error if token attempted to be approved is not owned by signer', async () => {
@@ -74,7 +77,7 @@ describe('NFT', () => {
       }
 
       await expect(approve).rejects.toThrow(
-        'ApprovalCallerNotOwnerNorApproved'
+        ContractErrors.ApprovalCallerNotOwnerNorApproved
       );
     });
   });
@@ -130,7 +133,9 @@ describe('ERC20', () => {
         await contract.approve({ spender: ZERO_ADDRESS, amount: AMOUNT });
       }
 
-      await expect(approve).rejects.toThrow('ERC20Base__ApproveToZeroAddress');
+      await expect(approve).rejects.toThrow(
+        ContractErrors.ERC20Base__ApproveToZeroAddress
+      );
     });
   });
 });

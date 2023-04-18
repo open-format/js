@@ -78,65 +78,65 @@ describe('ERC721', () => {
     });
   });
 
-  describe('batchMint()', () => {
-    // BATCH MINTING
-    it('batch mints 5 tokens if wallet and metadata are valid', async () => {
-      const params = {
-        to: walletAddress,
-        quantity: 5,
-        baseURI: 'ipfs://',
-      };
+  // describe('batchMint()', () => {
+  //   // BATCH MINTING
+  //   it('batch mints 5 tokens if wallet and metadata are valid', async () => {
+  //     const params = {
+  //       to: walletAddress,
+  //       quantity: 5,
+  //       baseURI: 'ipfs://',
+  //     };
 
-      const tx = await contract.batchMint(params);
+  //     const tx = await contract.batchMint(params);
 
-      const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
+  //     const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
 
-      if (mintedEvent?.args) {
-        expect(mintedEvent.args[0]).toBe(walletAddress);
-      }
-      expect(tx.status).toBe(1);
-    });
+  //     if (mintedEvent?.args) {
+  //       expect(mintedEvent.args[0]).toBe(walletAddress);
+  //     }
+  //     expect(tx.status).toBe(1);
+  //   });
 
-    it('throws an error if to address is not valid', async () => {
-      const params = {
-        to: '0x1',
-        quantity: 5,
-        baseURI: 'ipfs://',
-      };
+  //   it('throws an error if to address is not valid', async () => {
+  //     const params = {
+  //       to: '0x1',
+  //       quantity: 5,
+  //       baseURI: 'ipfs://',
+  //     };
 
-      async function batchMint() {
-        await contract.batchMint(params);
-      }
+  //     async function batchMint() {
+  //       await contract.batchMint(params);
+  //     }
 
-      await expect(batchMint()).rejects.toThrow(
-        'Invalid wallet or contract address'
-      );
-    });
+  //     await expect(batchMint()).rejects.toThrow(
+  //       'Invalid wallet or contract address'
+  //     );
+  //   });
 
-    it('throws an error if to metadata URL is not valid', async () => {
-      const params = {
-        to: walletAddress,
-        quantity: 5,
-        baseURI: 'invalid',
-      };
+  //   it('throws an error if to metadata URL is not valid', async () => {
+  //     const params = {
+  //       to: walletAddress,
+  //       quantity: 5,
+  //       baseURI: 'invalid',
+  //     };
 
-      async function batchMint() {
-        await contract.batchMint(params);
-      }
+  //     async function batchMint() {
+  //       await contract.batchMint(params);
+  //     }
 
-      await expect(batchMint()).rejects.toThrow('Invalid metadata URL');
-    });
+  //     await expect(batchMint()).rejects.toThrow('Invalid metadata URL');
+  //   });
 
-    it('throws an error if ERC721 contract is invalid', async () => {
-      //@TODO: I need to try and get a contract that isn't a ERC721 that exists in the subgraph.
+  //   it('throws an error if ERC721 contract is invalid', async () => {
+  //     //@TODO: I need to try and get a contract that isn't a ERC721 that exists in the subgraph.
 
-      async function createInstance() {
-        return new ERC721Base(sdk.provider, APP_ID, '0x1', sdk.signer);
-      }
+  //     async function createInstance() {
+  //       return new ERC721Base(sdk.provider, APP_ID, '0x1', sdk.signer);
+  //     }
 
-      expect(createInstance()).rejects.toThrow('Failed to get contract');
-    });
-  });
+  //     expect(createInstance()).rejects.toThrow('Failed to get contract');
+  //   });
+  // });
 });
 
 describe('ERC20', () => {

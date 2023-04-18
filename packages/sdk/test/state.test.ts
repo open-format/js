@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import {
   Chains,
+  ContractErrors,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
@@ -62,7 +63,9 @@ describe('ERC721', () => {
           await contract.ownerOf({ tokenId: tokenId.add(1) });
         }
 
-        await expect(ownerOf).rejects.toThrow('OwnerQueryForNonexistentToken');
+        await expect(ownerOf).rejects.toThrow(
+          ContractErrors.OwnerQueryForNonexistentToken
+        );
       });
     });
     describe('balanceOf()', () => {

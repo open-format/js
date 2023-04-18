@@ -1,5 +1,6 @@
 import {
   Chains,
+  ContractErrors,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
@@ -67,7 +68,9 @@ describe('ERC721', () => {
         await contract.transfer(params);
       }
 
-      await expect(transfer).rejects.toThrow('OwnerQueryForNonexistentToken');
+      await expect(transfer).rejects.toThrow(
+        ContractErrors.OwnerQueryForNonexistentToken
+      );
     });
 
     it('throws an error if token transferred is not owned by signer', async () => {
@@ -86,7 +89,9 @@ describe('ERC721', () => {
         await contract.transfer(params);
       }
 
-      await expect(transfer).rejects.toThrow('TransferFromIncorrectOwner');
+      await expect(transfer).rejects.toThrow(
+        ContractErrors.TransferFromIncorrectOwner
+      );
     });
   });
 });
