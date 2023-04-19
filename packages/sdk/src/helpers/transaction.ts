@@ -1,27 +1,15 @@
 import {
-<<<<<<< HEAD
-  BytesLike,
-=======
   BigNumber,
   BigNumberish,
->>>>>>> main
+  BytesLike,
   ContractReceipt,
   ContractTransaction,
   ethers,
 } from 'ethers';
-<<<<<<< HEAD
-import { forOwn, isObject } from 'lodash';
+import forOwn from 'lodash.forown';
+import isObject from 'lodash.isobject';
 import { abis } from '../constants/contracts';
 import { ContractErrors } from '../types';
-=======
-import ERC721LazyDropFacet from '../../abis/facet/ERC721LazyDropFacet.json';
-import SettingsFacet from '../../abis/facet/SettingsFacet.json';
-import Factory from '../../abis/Factory/Factory.json';
-import ERC20Base from '../../abis/tokens/ERC20/ERC20Base.json';
-import ERC721Base from '../../abis/tokens/ERC721/ERC721Base.json';
-import ERC721LazyMint from '../../abis/tokens/ERC721/ERC721LazyMint.json';
-import { ContractType } from '../types';
->>>>>>> main
 
 export async function processTransaction(
   tx: ContractTransaction
@@ -30,7 +18,6 @@ export async function processTransaction(
   return receipt;
 }
 
-<<<<<<< HEAD
 export function parseErrorData(error: any) {
   const iface = new ethers.utils.Interface(abis);
   let result: BytesLike = '';
@@ -45,7 +32,34 @@ export function parseErrorData(error: any) {
         }
       }
     });
-=======
+  }
+
+  getSignatureHash(error);
+
+  interface ContractErrorsInterface {
+    [key: string]: number;
+  }
+
+  const contractErrorsObj =
+    ContractErrors as unknown as ContractErrorsInterface;
+
+  try {
+    if (result) {
+      const SigName = iface.parseError(result).name;
+
+      if (SigName in contractErrorsObj) {
+        return contractErrorsObj[SigName];
+      } else {
+        return 'SigHash not found in ContractErrors type';
+      }
+    } else {
+      return error;
+    }
+  } catch (e: any) {
+    throw Error(e);
+  }
+}
+
 /**
  * Convert a decimal Ether amount (ETH) to its smallest unit (wei) as a BigNumber.
  *
@@ -74,55 +88,4 @@ export function toWei(amount: string): BigNumber {
  */
 export function fromWei(amount: BigNumberish): string {
   return ethers.utils.formatEther(amount);
-}
-
-export function parseErrorData(error: any, contractType: ContractType) {
-  let abi: any;
-
-  switch (contractType) {
-    case ContractType.NFT:
-      abi = ERC721Base.abi;
-      break;
-    case ContractType.NFTLazyMint:
-      abi = ERC721LazyMint.abi;
-      break;
-    case ContractType.NFTDrop:
-      abi = ERC721LazyDropFacet.abi;
-      break;
-    case ContractType.Token:
-      abi = ERC20Base.abi;
-      break;
-    case ContractType.Settings:
-      abi = SettingsFacet.abi;
-      break;
-    case ContractType.Factory:
-      abi = Factory.abi;
-      break;
->>>>>>> main
-  }
-
-  getSignatureHash(error);
-
-  interface ContractErrorsInterface {
-    [key: string]: number;
-  }
-
-  const contractErrorsObj =
-    ContractErrors as unknown as ContractErrorsInterface;
-
-  try {
-    if (result) {
-      const SigName = iface.parseError(result).name;
-
-      if (SigName in contractErrorsObj) {
-        return contractErrorsObj[SigName];
-      } else {
-        return 'SigHash not found in ContractErrors type';
-      }
-    } else {
-      return error;
-    }
-  } catch (e: any) {
-    throw Error(e);
-  }
 }

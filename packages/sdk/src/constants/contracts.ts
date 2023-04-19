@@ -1,4 +1,4 @@
-import { unionBy } from 'lodash';
+import unionBy from 'lodash.unionby';
 import ERC721LazyDropFacet from '../../abis/facet/ERC721LazyDropFacet.json';
 import RewardFacet from '../../abis/facet/RewardFacet.json';
 import SettingsFacet from '../../abis/facet/SettingsFacet.json';
