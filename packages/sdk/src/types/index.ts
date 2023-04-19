@@ -338,6 +338,12 @@ export interface AppSetAcceptedCurrenciesParams {
   overrides?: Parameters<SettingsFacet['setAcceptedCurrencies']>[2];
 }
 
+export interface AppSetApplicationFeeParams {
+  percentageBPS: Parameters<SettingsFacet['setApplicationFee']>[0];
+  recipient: Parameters<SettingsFacet['setApplicationFee']>[1];
+  overrides?: Parameters<SettingsFacet['setApplicationFee']>[2];
+}
+
 ///////////////////
 ////  Reward   ////
 ///////////////////
@@ -403,4 +409,5 @@ export enum ContractErrors {
   MintERC2309QuantityExceedsLimit = 'The `quantity` minted with ERC2309 exceeds the safety limit.',
   OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
   Factory_nameAlreadyUsed = 'Factory name already used',
+  CurrencyTransferLib_insufficientValue = 'Transaction value is not set or too low.',
 }

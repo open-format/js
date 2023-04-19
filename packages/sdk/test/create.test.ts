@@ -209,7 +209,6 @@ describe('Token', () => {
     const params: ERC20CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      decimal: 18,
       supply: 'InvalidSupply',
     };
 
@@ -226,7 +225,6 @@ describe('Token', () => {
     const params: ERC20CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      decimal: 18,
       supply: 1000,
     };
 

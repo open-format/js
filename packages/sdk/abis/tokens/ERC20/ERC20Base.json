@@ -6,6 +6,16 @@
   },
   {
     "inputs": [],
+    "name": "CurrencyTransferLib_insufficientValue",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CurrencyTransferLib_nativeTokenTransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ECDSA__InvalidS",
     "type": "error"
   },
@@ -121,6 +131,11 @@
   },
   {
     "inputs": [],
+    "name": "ReentrancyGuard__ReentrantCall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "UintUtils__InsufficientHexLength",
     "type": "error"
   },
@@ -179,6 +194,25 @@
       }
     ],
     "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PaidPlatformFee",
     "type": "event"
   },
   {
@@ -562,7 +596,7 @@
     ],
     "name": "mintTo",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -657,6 +691,30 @@
     "name": "permit",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_price",
+        "type": "uint256"
+      }
+    ],
+    "name": "platformFeeInfo",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
