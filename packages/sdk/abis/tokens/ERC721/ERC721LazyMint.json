@@ -41,6 +41,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "CurrencyTransferLib_insufficientValue",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CurrencyTransferLib_nativeTokenTransferFailed",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -99,6 +109,11 @@
   {
     "inputs": [],
     "name": "OwnershipNotInitializedForExtraData",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuard__ReentrantCall",
     "type": "error"
   },
   {
@@ -302,6 +317,25 @@
       }
     ],
     "name": "Minted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PaidPlatformFee",
     "type": "event"
   },
   {
@@ -531,7 +565,7 @@
     ],
     "name": "batchMintTo",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -841,11 +875,11 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "batchId",
         "type": "uint256"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -858,7 +892,7 @@
     ],
     "name": "mintTo",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -920,6 +954,30 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_price",
+        "type": "uint256"
+      }
+    ],
+    "name": "platformFeeInfo",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
