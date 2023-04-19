@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 0.6.0-dev-bbe4859
+
+### Patch Changes
+
+- [#100](https://github.com/open-format/js/pull/100) [`2cfe657`](https://github.com/open-format/js/commit/2cfe657edc5d7e495f3d54306f83bc0d28214a15) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Fix SDK dependency versioning
+
 ## 0.6.0-dev-a2abedd
 
 ### Minor Changes
