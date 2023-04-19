@@ -75,8 +75,11 @@ export class ERC721Base extends BaseContract {
 
       validateWalletAndMetadata(params.to, params.tokenURI);
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.mintTo(params.to, params.tokenURI, {
         ...params.overrides,
+        value: platformFee,
       });
 
       const receipt = await processTransaction(tx);

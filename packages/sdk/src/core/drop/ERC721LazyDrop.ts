@@ -1,4 +1,4 @@
-import { ContractReceipt, providers, Signer } from 'ethers';
+import { BigNumber, ContractReceipt, providers, Signer } from 'ethers';
 import {
   ERC721LazyDropFacet as ERC721LazyDropFacetContract,
   ERC721LazyDropFacet__factory,
@@ -8,13 +8,13 @@ import { ERC721LazyDropStorage } from '../../contract-types/facet/ERC721LazyDrop
 import { parseErrorData, processTransaction } from '../../helpers/transaction';
 
 import {
-  ContractType,
   ERC721LazyDrop_ClaimParams,
   ERC721LazyDrop_GetClaimConditionParams,
   ERC721LazyDrop_RemoveClaimConditionParams,
   ERC721LazyDrop_SetClaimConditionParams,
   ERC721LazyDrop_VerifyClaimParams,
 } from '../../types';
+import { App } from '../app';
 import { BaseContract } from '../base';
 
 /**
@@ -27,6 +27,7 @@ import { BaseContract } from '../base';
 export class ERC721LazyDrop extends BaseContract {
   private contract: ERC721LazyDropFacetContract;
   private tokenContractAddress: string;
+  private app: App;
 
   /**
    * Create a new instance of the App class.
@@ -51,6 +52,8 @@ export class ERC721LazyDrop extends BaseContract {
       signer || provider
     );
 
+    this.app = new App(provider, this.appId, signer);
+
     this.tokenContractAddress = contractAddress;
   }
 
@@ -70,11 +73,13 @@ export class ERC721LazyDrop extends BaseContract {
     try {
       await this.checkNetworksMatch();
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.ERC721LazyDrop_setClaimCondition(
         this.tokenContractAddress,
         params.condition,
         params.resetClaimEligibility,
-        { ...params.overrides }
+        { ...params.overrides, value: platformFee }
       );
 
       const receipt = await processTransaction(tx);
@@ -98,13 +103,19 @@ export class ERC721LazyDrop extends BaseContract {
   async claim(params: ERC721LazyDrop_ClaimParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+
+      const { platformFee } = await this.app.platformFeeInfo(0);
+      const { applicationFee } = await this.app.applicationFeeInfo(
+        BigNumber.from(params.pricePerToken).mul(params.quantity as BigNumber)
+      );
+
       const tx = await this.contract.ERC721LazyDrop_claim(
         this.tokenContractAddress,
         params.receiver,
         params.quantity,
         params.currency,
         params.pricePerToken,
-        { ...params.overrides }
+        { ...params.overrides, value: platformFee.add(applicationFee) }
       );
 
       const receipt = await processTransaction(tx);

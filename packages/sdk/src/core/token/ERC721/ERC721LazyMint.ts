@@ -1,11 +1,4 @@
-import {
-  BigNumber,
-  ContractReceipt,
-  ethers,
-  Overrides,
-  providers,
-  Signer,
-} from 'ethers';
+import { BigNumber, ContractReceipt, ethers, providers, Signer } from 'ethers';
 import {
   ERC721LazyMint as ERC721LazyMintContract,
   ERC721LazyMint__factory,
@@ -20,7 +13,6 @@ import {
   validateWalletAndAmount,
 } from '../../../helpers/validation';
 import {
-  ContractType,
   ERC721ApproveParams,
   ERC721BalanceOfParams,
   ERC721GetApprovedParams,
@@ -38,6 +30,7 @@ import {
   ERC721OwnerOfParams,
   ERC721TotalSupplyParams,
 } from '../../../types';
+import { App } from '../../app';
 import { BaseContract } from '../../base';
 import { ERC721LazyDrop } from '../../drop/ERC721LazyDrop';
 
@@ -50,6 +43,7 @@ import { ERC721LazyDrop } from '../../drop/ERC721LazyDrop';
 export class ERC721LazyMint extends BaseContract {
   private contract: ERC721LazyMintContract;
   private drop: ERC721LazyDrop;
+  private app: App;
 
   constructor(
     provider: providers.Provider,
@@ -66,6 +60,7 @@ export class ERC721LazyMint extends BaseContract {
       );
 
       this.drop = new ERC721LazyDrop(provider, contractAddress, appId, signer);
+      this.app = new App(provider, appId, signer);
     } else {
       throw new Error('Failed to get contract');
     }
@@ -88,8 +83,11 @@ export class ERC721LazyMint extends BaseContract {
 
       validateWallet(params.to);
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.mintTo(params.to, {
         ...params.overrides,
+        value: platformFee,
       });
 
       const receipt = await processTransaction(tx);
@@ -106,12 +104,15 @@ export class ERC721LazyMint extends BaseContract {
     try {
       await this.checkNetworksMatch();
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.lazyMint(
         params.amount,
         params.baseURIForTokens,
         ethers.utils.formatBytes32String(params.data as string),
         {
           ...params.overrides,
+          value: platformFee,
         }
       );
 

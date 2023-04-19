@@ -1,4 +1,11 @@
-import { ContractReceipt, ethers, providers, Signer } from 'ethers';
+import {
+  BigNumber,
+  BigNumberish,
+  ContractReceipt,
+  ethers,
+  providers,
+  Signer,
+} from 'ethers';
 import {
   ERC20FactoryFacet as ERC20FactoryContract,
   ERC20FactoryFacet__factory,
@@ -15,6 +22,7 @@ import { validateBigNumbers, validateWallet } from '../helpers/validation';
 import {
   AppHasCreatorAccessParams,
   AppSetAcceptedCurrenciesParams,
+  AppSetApplicationFeeParams,
   AppSetCreatorAccessParams,
   ContractResponse,
   ContractType,
@@ -151,147 +159,220 @@ export class App extends BaseContract {
     }
   }
 
-  async createNFT(params: ERC721CreateParams): Promise<ERC721Base> {
-    if (!this.signer) {
-      throw new Error('Signer undefined');
+  async setApplicationFee(params: AppSetApplicationFeeParams) {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.settings.setApplicationFee(
+        params.percentageBPS,
+        params.recipient,
+        {
+          ...params.overrides,
+        }
+      );
+
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
     }
+  }
 
-    await this.checkNetworksMatch();
+  async platformFeeInfo(
+    _amount: BigNumberish
+  ): Promise<{ recipient: string; platformFee: BigNumber }> {
+    try {
+      await this.checkNetworksMatch();
 
-    validateWallet(params.royaltyRecipient);
-    validateBigNumbers([params.royaltyBps]);
+      const { recipient, amount: platformFee } =
+        await this.settings.platformFeeInfo(_amount);
 
-    const tx = await this.ERC721Factory.createERC721(
-      params.name,
-      params.symbol,
-      params.royaltyRecipient,
-      params.royaltyBps,
-      ethers.utils.formatBytes32String(ImplementationType.BASE),
-      { ...params.overrides }
-    );
-    const receipt = await tx.wait();
-    const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
-      .timestamp;
+      return { recipient, platformFee };
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
 
-    const subgraphCall = async () =>
-      await this.subgraph.getContractByTimestamp({
-        appId: this.appId.toString(),
-        createdAt: txTimestamp.toString(),
-        type: ContractType.NFT,
-      });
+  async applicationFeeInfo(
+    _amount: BigNumberish
+  ): Promise<{ recipient: string; applicationFee: BigNumber }> {
+    try {
+      await this.checkNetworksMatch();
 
-    const validate = (response: ContractResponse) =>
-      !!response.contracts.length;
+      const { recipient, amount: applicationFee } =
+        await this.settings.applicationFeeInfo(_amount);
 
-    return await poll({
-      fn: subgraphCall,
-      validate,
-      interval: 1000,
-      maxAttempts: 20,
-    }).then(
-      (response) =>
-        new ERC721Base(
-          this.provider,
-          this.appId,
-          (response as ContractResponse).contracts[0].id,
-          this.signer
-        )
-    );
+      return { recipient, applicationFee };
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  async createNFT(params: ERC721CreateParams): Promise<ERC721Base> {
+    try {
+      if (!this.signer) {
+        throw new Error('Signer undefined');
+      }
+
+      await this.checkNetworksMatch();
+
+      validateWallet(params.royaltyRecipient);
+      validateBigNumbers([params.royaltyBps]);
+
+      const { platformFee } = await this.platformFeeInfo(0);
+
+      const tx = await this.ERC721Factory.createERC721(
+        params.name,
+        params.symbol,
+        params.royaltyRecipient,
+        params.royaltyBps,
+        ethers.utils.formatBytes32String(ImplementationType.BASE),
+        { ...params.overrides, value: platformFee }
+      );
+      const receipt = await tx.wait();
+      const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
+        .timestamp;
+
+      const subgraphCall = async () =>
+        await this.subgraph.getContractByTimestamp({
+          appId: this.appId.toString(),
+          createdAt: txTimestamp.toString(),
+          type: ContractType.NFT,
+        });
+
+      const validate = (response: ContractResponse) =>
+        !!response.contracts.length;
+
+      return await poll({
+        fn: subgraphCall,
+        validate,
+        interval: 1000,
+        maxAttempts: 20,
+      }).then(
+        (response) =>
+          new ERC721Base(
+            this.provider,
+            this.appId,
+            (response as ContractResponse).contracts[0].id,
+            this.signer
+          )
+      );
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
   }
 
   async createNFTDrop(params: ERC721CreateParams): Promise<ERC721LazyMint> {
-    if (!this.signer) {
-      throw new Error('Signer undefined');
+    try {
+      if (!this.signer) {
+        throw new Error('Signer undefined');
+      }
+
+      await this.checkNetworksMatch();
+
+      validateWallet(params.royaltyRecipient);
+      validateBigNumbers([params.royaltyBps]);
+
+      const { platformFee } = await this.platformFeeInfo(0);
+
+      const tx = await this.ERC721Factory.createERC721(
+        params.name,
+        params.symbol,
+        params.royaltyRecipient,
+        params.royaltyBps,
+        ethers.utils.formatBytes32String(ImplementationType.LAZY_MINT),
+
+        { ...params.overrides, value: platformFee }
+      );
+      const receipt = await tx.wait();
+      const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
+        .timestamp;
+
+      const subgraphCall = async () =>
+        await this.subgraph.getContractByTimestamp({
+          appId: this.appId.toString(),
+          createdAt: txTimestamp.toString(),
+          type: ContractType.NFTLazyMint,
+        });
+
+      const validate = (response: ContractResponse) =>
+        !!response.contracts.length;
+
+      return await poll({
+        fn: subgraphCall,
+        validate,
+        interval: 1000,
+        maxAttempts: 20,
+      }).then(
+        (response) =>
+          new ERC721LazyMint(
+            this.provider,
+            this.appId,
+            (response as ContractResponse).contracts[0].id,
+            this.signer
+          )
+      );
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
     }
-
-    await this.checkNetworksMatch();
-
-    validateWallet(params.royaltyRecipient);
-    validateBigNumbers([params.royaltyBps]);
-
-    const tx = await this.ERC721Factory.createERC721(
-      params.name,
-      params.symbol,
-      params.royaltyRecipient,
-      params.royaltyBps,
-      ethers.utils.formatBytes32String(ImplementationType.LAZY_MINT),
-
-      { ...params.overrides }
-    );
-    const receipt = await tx.wait();
-    const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
-      .timestamp;
-
-    const subgraphCall = async () =>
-      await this.subgraph.getContractByTimestamp({
-        appId: this.appId.toString(),
-        createdAt: txTimestamp.toString(),
-        type: ContractType.NFTLazyMint,
-      });
-
-    const validate = (response: ContractResponse) =>
-      !!response.contracts.length;
-
-    return await poll({
-      fn: subgraphCall,
-      validate,
-      interval: 1000,
-      maxAttempts: 20,
-    }).then(
-      (response) =>
-        new ERC721LazyMint(
-          this.provider,
-          this.appId,
-          (response as ContractResponse).contracts[0].id,
-          this.signer
-        )
-    );
   }
 
   async createToken(params: ERC20CreateParams): Promise<ERC20Base> {
-    if (!this.signer) {
-      throw new Error('Signer undefined');
+    try {
+      if (!this.signer) {
+        throw new Error('Signer undefined');
+      }
+
+      await this.checkNetworksMatch();
+
+      validateBigNumbers([params.supply]);
+
+      const { platformFee } = await this.platformFeeInfo(0);
+
+      const tx = await this.ERC20Factory.createERC20(
+        params.name,
+        params.symbol,
+        18,
+        params.supply,
+        ethers.utils.formatBytes32String(ImplementationType.BASE),
+        { ...params.overrides, value: platformFee }
+      );
+      const receipt = await tx.wait();
+      const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
+        .timestamp;
+
+      const subgraphCall = async () =>
+        await this.subgraph.getContractByTimestamp({
+          appId: this.appId.toString(),
+          createdAt: txTimestamp.toString(),
+          type: ContractType.Token,
+        });
+
+      const validate = (response: ContractResponse) =>
+        !!response.contracts.length;
+
+      return await poll({
+        fn: subgraphCall,
+        validate,
+        interval: 1000,
+        maxAttempts: 20,
+      }).then(
+        (response) =>
+          new ERC20Base(
+            this.provider,
+            this.appId,
+            (response as ContractResponse).contracts[0].id,
+            this.signer
+          )
+      );
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
     }
-
-    await this.checkNetworksMatch();
-
-    validateBigNumbers([params.supply]);
-
-    const tx = await this.ERC20Factory.createERC20(
-      params.name,
-      params.symbol,
-      18,
-      params.supply,
-      ethers.utils.formatBytes32String(ImplementationType.BASE),
-      { ...params.overrides }
-    );
-    const receipt = await tx.wait();
-    const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
-      .timestamp;
-
-    const subgraphCall = async () =>
-      await this.subgraph.getContractByTimestamp({
-        appId: this.appId.toString(),
-        createdAt: txTimestamp.toString(),
-        type: ContractType.Token,
-      });
-
-    const validate = (response: ContractResponse) =>
-      !!response.contracts.length;
-
-    return await poll({
-      fn: subgraphCall,
-      validate,
-      interval: 1000,
-      maxAttempts: 20,
-    }).then(
-      (response) =>
-        new ERC20Base(
-          this.provider,
-          this.appId,
-          (response as ContractResponse).contracts[0].id,
-          this.signer
-        )
-    );
   }
 }

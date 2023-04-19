@@ -23,6 +23,7 @@ import {
   ERC20TransferFromParams,
   ERC20TransferParams,
 } from '../../../types';
+import { App } from '../../app';
 import { BaseContract } from '../../base';
 
 /**
@@ -34,6 +35,7 @@ import { BaseContract } from '../../base';
 
 export class ERC20Base extends BaseContract {
   private contract: ERC20BaseContract;
+  private app: App;
 
   constructor(
     provider: providers.Provider,
@@ -48,6 +50,8 @@ export class ERC20Base extends BaseContract {
         contractAddress,
         signer || provider
       );
+
+      this.app = new App(provider, this.appId, signer);
     } else {
       throw new Error('Failed to get contract');
     }
@@ -70,8 +74,11 @@ export class ERC20Base extends BaseContract {
       await this.checkNetworksMatch();
       validateWalletAndAmount(params.to, params.amount);
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.mintTo(params.to, params.amount, {
         ...params.overrides,
+        value: platformFee,
       });
 
       const receipt = await processTransaction(tx);
