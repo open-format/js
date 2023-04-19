@@ -1,5 +1,16 @@
 # @openformat/react
 
+## 0.3.0-dev-49b851b
+
+### Minor Changes
+
+- [#102](https://github.com/open-format/js/pull/102) [`f0105b4`](https://github.com/open-format/js/commit/f0105b4b1cd1614ca1db465010ddb0729f3267fe) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - add functionality that handles platform and appplication fees
+
+### Patch Changes
+
+- Updated dependencies [[`f0105b4`](https://github.com/open-format/js/commit/f0105b4b1cd1614ca1db465010ddb0729f3267fe)]:
+  - @openformat/sdk@0.6.0-dev-49b851b
+
 ## 0.3.0-dev-bbe4859
 
 ### Patch Changes
