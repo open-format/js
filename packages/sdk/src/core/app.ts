@@ -109,7 +109,7 @@ export class App extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Settings);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -124,7 +124,7 @@ export class App extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Settings);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -146,7 +146,7 @@ export class App extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Settings);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }

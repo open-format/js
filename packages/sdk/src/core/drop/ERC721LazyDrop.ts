@@ -80,7 +80,7 @@ export class ERC721LazyDrop extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -110,7 +110,7 @@ export class ERC721LazyDrop extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -142,7 +142,7 @@ export class ERC721LazyDrop extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -170,7 +170,7 @@ export class ERC721LazyDrop extends BaseContract {
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -200,7 +200,7 @@ export class ERC721LazyDrop extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.NFTDrop);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }

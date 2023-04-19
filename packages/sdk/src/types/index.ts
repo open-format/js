@@ -34,8 +34,6 @@ export enum ContractType {
   NFTDrop = 'NFTDrop',
   NFTLazyMint = 'NFTLazyMint',
   Token = 'Token',
-  Settings = 'Settings',
-  Factory = 'Factory',
 }
 
 export enum ImplementationType {
@@ -263,22 +261,6 @@ export interface ERC721LazyDrop_ClaimParams
 export interface ERC721LazyDrop_VerifyClaimParams
   extends ERC721LazyMint_VerifyClaimParams {}
 
-enum ERC721Error {
-  ApprovalCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
-  ApprovalQueryForNonexistentToken = 'The token does not exist.',
-  BalanceQueryForZeroAddress = 'Cannot query the balance for the zero address',
-  MintToZeroAddress = 'Cannot mint to the zero address',
-  MintZeroQuantity = 'The quantity of tokens minted must be more than zero',
-  OwnerQueryForNonexistentToken = 'The token does not exist',
-  TransferCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
-  TransferFromIncorrectOwner = 'The token must be owned by `from`',
-  TransferToNonERC721ReceiverImplementer = 'Cannot safely transfer to a contract that does not implement the ERC721Receiver interface',
-  TransferToZeroAddress = 'Cannot transfer to the zero address.',
-  URIQueryForNonexistentToken = 'The token does not exist',
-  MintERC2309QuantityExceedsLimit = 'The `quantity` minted with ERC2309 exceeds the safety limit.',
-  OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
-}
-
 ///////////////////
 ////   ERC20   ////
 ///////////////////
@@ -333,18 +315,6 @@ export interface ERC20TotalSupplyParams {
 export interface ERC20BalanceOfParams {
   account: Parameters<ERC20BaseContract['balanceOf']>[0];
   overrides?: Parameters<ERC20BaseContract['balanceOf']>[1];
-}
-
-enum ERC20Error {
-  ERC20Base__ApproveFromZeroAddress,
-  ERC20Base__ApproveToZeroAddress,
-  ERC20Base__BurnExceedsBalance,
-  ERC20Base__BurnFromZeroAddress,
-  ERC20Base__InsufficientAllowance,
-  ERC20Base__MintToZeroAddress,
-  ERC20Base__TransferExceedsBalance,
-  ERC20Base__TransferFromZeroAddress,
-  ERC20Base__TransferToZeroAddress,
 }
 
 ///////////////////
@@ -402,4 +372,35 @@ export interface Reward_CreateBadgeParams {
   name: string;
   symbol: string;
   tokenURI: string;
+}
+
+///////////////////
+////  Errors   ////
+///////////////////
+
+export enum ContractErrors {
+  ERC20Base__ApproveFromZeroAddress = 'Cannot approve from zero address',
+  ERC20Base__ApproveToZeroAddress = 'Cannot approve to zero address',
+  ERC20Base__BurnExceedsBalance = 'Burn amount exceeds balance',
+  ERC20Base__BurnFromZeroAddress = 'Cannot burn from zero address',
+  ERC20Base__MintToZeroAddress = 'Cannot mint to zero address',
+  ERC20Base__TransferExceedsBalance = 'Transfer amount exceeds balance',
+  ERC20Base__TransferFromZeroAddress = 'Cannot transfer from zero address',
+  ERC20Base__TransferToZeroAddress = 'Cannot transfer to zero address',
+  ERC20Base_insufficientBalance = 'The caller does not have enough balance to burn the tokens',
+  ERC20Base__InsufficientAllowance = 'The caller does not have enough allowance the transfer the tokens',
+  ApprovalCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
+  ApprovalQueryForNonexistentToken = 'The token does not exist.',
+  BalanceQueryForZeroAddress = 'Cannot query the balance for the zero address',
+  MintToZeroAddress = 'Cannot mint to the zero address',
+  MintZeroQuantity = 'The quantity of tokens minted must be more than zero',
+  OwnerQueryForNonexistentToken = 'The token does not exist',
+  TransferCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
+  TransferFromIncorrectOwner = 'The token must be owned by `from`',
+  TransferToNonERC721ReceiverImplementer = 'Cannot safely transfer to a contract that does not implement the ERC721Receiver interface',
+  TransferToZeroAddress = 'Cannot transfer to the zero address.',
+  URIQueryForNonexistentToken = 'The token does not exist',
+  MintERC2309QuantityExceedsLimit = 'The `quantity` minted with ERC2309 exceeds the safety limit.',
+  OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
+  Factory_nameAlreadyUsed = 'Factory name already used',
 }

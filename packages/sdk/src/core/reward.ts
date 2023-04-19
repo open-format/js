@@ -4,6 +4,7 @@ import {
   RewardFacet__factory,
 } from '../contract-types';
 import { PromiseOrValue } from '../contract-types/common';
+import { parseErrorData } from '../helpers/transaction';
 
 import {
   ERC20CreateParams,
@@ -44,23 +45,37 @@ export class Reward extends BaseContract {
   }
 
   async createRewardToken(params: ERC20CreateParams): Promise<ERC20Base> {
-    const token = await this.app.createToken({ ...params });
-    return token;
+    try {
+      this.checkNetworksMatch();
+
+      const token = await this.app.createToken({ ...params });
+      return token;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
   }
 
   async createBadge(params: Reward_CreateBadgeParams): Promise<string> {
-    const ownerAddress = await this.signer?.getAddress();
+    try {
+      this.checkNetworksMatch();
+      const ownerAddress = await this.signer?.getAddress();
 
-    const token = await this.app.createNFT({
-      name: params.name,
-      symbol: params.symbol,
-      //@ts-ignore
-      royaltyRecipient: ownerAddress,
-      royaltyBps: 0,
-    });
+      const token = await this.app.createNFT({
+        name: params.name,
+        symbol: params.symbol,
+        //@ts-ignore
+        royaltyRecipient: ownerAddress,
+        royaltyBps: 0,
+      });
 
-    return token.address();
+      return token.address();
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
   }
+
   async trigger(params: RewardTriggerParams) {
     let tx;
     let transactions: PromiseOrValue<BytesLike>[] = [];
@@ -125,15 +140,17 @@ export class Reward extends BaseContract {
     }
 
     try {
+      this.checkNetworksMatch();
+
       if (transactions?.length) {
         const tx = await this.contract.multicall(transactions);
-        const receipt = tx.wait();
-        return receipt;
+        return tx;
       } else {
         throw new Error('No transactions found.');
       }
-    } catch (e) {
-      throw new Error(e);
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
     }
   }
 }

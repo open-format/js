@@ -1,5 +1,6 @@
 import {
   Chains,
+  ContractErrors,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
@@ -52,7 +53,9 @@ describe('ERC721', () => {
         await contract.burn({ tokenId: nextId.add(1) });
       }
 
-      await expect(burn).rejects.toThrow('OwnerQueryForNonexistentToken');
+      await expect(burn).rejects.toThrow(
+        ContractErrors.OwnerQueryForNonexistentToken
+      );
     });
   });
 });
@@ -95,7 +98,9 @@ describe('ERC20', () => {
       }
 
       //@TODO update error when errors in contract are updated
-      await expect(burn).rejects.toThrow('ERC20Base_insufficientBalance');
+      await expect(burn).rejects.toThrow(
+        ContractErrors.ERC20Base_insufficientBalance
+      );
     });
   });
 });

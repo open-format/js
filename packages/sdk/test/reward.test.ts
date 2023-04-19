@@ -1,6 +1,8 @@
 import {
   ActivityType,
   Chains,
+  ContractErrors,
+  ERC20Base,
   ERC20CreateParams,
   OpenFormatSDK,
   RewardTriggerParams,
@@ -18,6 +20,7 @@ import {
 describe('Reward', () => {
   let sdk: OpenFormatSDK;
   let walletAddress: string;
+  let rewardCurrency: ERC20Base;
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
@@ -26,12 +29,16 @@ describe('Reward', () => {
       signer: PRIVATE_KEY,
     });
 
+    rewardCurrency = (await sdk.getContract({
+      contractAddress: ERC20_CONTRACT_ADDRESS,
+    })) as ERC20Base;
+
     if (sdk.signer) {
       walletAddress = await sdk.signer?.getAddress();
     }
   });
 
-  it('creates a reward token with 1000 supply', async () => {
+  it('should create a reward token with 1000 supply', async () => {
     const params: ERC20CreateParams = {
       name: 'REWARD',
       symbol: 'RWRD',
@@ -45,19 +52,23 @@ describe('Reward', () => {
     expect(totalSupply).toBe(1000);
   });
 
-  it('creates a Badge', async () => {
+  it('should create a Badge', async () => {
     const params: Reward_CreateBadgeParams = {
       name: 'REWARD',
       symbol: 'RWRD',
       tokenURI: 'ipfs://',
     };
 
-    const tokenAddress = await sdk.Reward.createBadge(params);
+    const badge = await sdk.Reward.createBadge(params);
 
     //@TODO add expect
   });
 
-  it('trigger a Badge and XP', async () => {
+  it('should trigger XP, Reward currency and a badge', async () => {
+    const TRANSFER_AMOUNT = 20;
+
+    await rewardCurrency.approve({ spender: APP_ID, amount: TRANSFER_AMOUNT });
+
     const params: RewardTriggerParams = {
       receiver: WALLET_ADDRESS2,
       tokens: [
@@ -71,7 +82,7 @@ describe('Reward', () => {
         {
           id: 'connect_mission',
           address: ERC20_CONTRACT_ADDRESS,
-          amount: 20,
+          amount: TRANSFER_AMOUNT,
           type: RewardType.REWARD_CURRENCY,
           activityType: ActivityType.MISSION,
         },
@@ -89,5 +100,30 @@ describe('Reward', () => {
     const receipt = await sdk.Reward.trigger(params);
 
     expect(receipt.status).toBe(1);
+  });
+
+  it('should throw an error if app does not have the allowance to transfer reward currency', async () => {
+    const TRANSFER_AMOUNT = 20;
+    await rewardCurrency.approve({ spender: APP_ID, amount: 0 });
+
+    const params: RewardTriggerParams = {
+      receiver: WALLET_ADDRESS2,
+      tokens: [
+        {
+          id: 'connect_mission',
+          address: ERC20_CONTRACT_ADDRESS,
+          amount: TRANSFER_AMOUNT,
+          type: RewardType.REWARD_CURRENCY,
+          activityType: ActivityType.MISSION,
+        },
+      ],
+    };
+    async function trigger() {
+      await sdk.Reward.trigger(params);
+    }
+
+    await expect(trigger).rejects.toThrow(
+      ContractErrors.ERC20Base__InsufficientAllowance
+    );
   });
 });

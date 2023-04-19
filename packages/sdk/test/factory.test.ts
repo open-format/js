@@ -1,5 +1,10 @@
 import { word } from 'casual';
-import { Chains, factoryContracts, OpenFormatSDK } from '../src';
+import {
+  Chains,
+  ContractErrors,
+  factoryContracts,
+  OpenFormatSDK,
+} from '../src';
 import { PRIVATE_KEY } from './utilities';
 
 describe('Factory', () => {
@@ -107,6 +112,8 @@ describe('Factory', () => {
       await sdk.factory.create(name);
     }
 
-    await expect(handleCreate).rejects.toThrow('Factory_nameAlreadyUsed');
+    await expect(handleCreate).rejects.toThrow(
+      ContractErrors.Factory_nameAlreadyUsed
+    );
   });
 });

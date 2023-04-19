@@ -92,7 +92,7 @@ export class Factory extends BaseContract {
       const receipt = await this.processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.Factory);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }

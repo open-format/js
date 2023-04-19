@@ -1,6 +1,6 @@
 {
   "name": "@openformat/sdk",
-  "version": "0.3.0-dev-39bb3fa",
+  "version": "0.5.0",
   "repository": "https://github.com/open-format/js/tree/main/packages/sdk",
   "author": "OpenFormat Dev <dev@openformat.tech>",
   "license": "Apache-2.0",
@@ -69,7 +69,10 @@
     "@preconstruct/cli": "^2.3.0",
     "@size-limit/preset-small-lib": "^7.0.8",
     "@typechain/ethers-v5": "^10.1.0",
+    "@types/lodash.forown": "^4.4.7",
+    "@types/lodash.isobject": "^3.0.7",
     "@types/lodash.merge": "^4.6.7",
+    "@types/lodash.unionby": "^4.8.7",
     "casual": "^1.6.2",
     "ethers": "^5",
     "ganache": "^7.2.0",
@@ -86,6 +89,9 @@
     "@wagmi/chains": "^0.2.17",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
-    "lodash.merge": "^4.6.2"
+    "lodash.forown": "^4.4.0",
+    "lodash.isobject": "^3.0.2",
+    "lodash.merge": "^4.6.2",
+    "lodash.unionby": "^4.8.0"
   }
 }
