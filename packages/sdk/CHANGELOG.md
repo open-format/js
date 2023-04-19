@@ -1,5 +1,15 @@
 # @openformat/sdk
 
+## 0.6.0-dev-a2abedd
+
+### Minor Changes
+
+- [#98](https://github.com/open-format/js/pull/98) [`3a8d68c`](https://github.com/open-format/js/commit/3a8d68c8d3d3959d9c86d6545184cc4041762db7) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Improve contract error handling
+
+### Patch Changes
+
+- [#93](https://github.com/open-format/js/pull/93) [`5f010d6`](https://github.com/open-format/js/commit/5f010d68121259135b2c807aab1fc199f7cfc51c) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Add and export wei helpers
+
 ## 0.3.0-dev-39bb3fa
 
 ### Patch Changes
