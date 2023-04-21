@@ -1,7 +1,7 @@
 const { OpenFormatSDK, toWei, Chains } = require("@openformat/sdk");
 const { gql } = require("graphql-request");
 
-// Visit https://apps.openformat.tech/ to generate App on Polygon Mumbai.
+// Visit https://apps.openformat.tech/ to generate an App ID on Polygon Mumbai.
 const APP_ID = "INSERT_APP_ID";
 
 const sdk = new OpenFormatSDK({

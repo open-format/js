@@ -1,133 +1,133 @@
-import { useCreateApp, useWallet } from "@openformat/react";
-import { NextPage } from "next";
+import {
+  ERC20Base,
+  fromWei,
+  toWei,
+  useContract,
+  useMintToken,
+  useOpenFormat,
+  useRawRequest,
+  useWallet,
+} from "@openformat/react";
+import { gql } from "graphql-request";
 
-const Home: NextPage = () => {
-  const { isConnected } = useWallet();
+type Metadata = {
+  name: string;
+  symbol: string;
+  totalSupply: string;
+};
 
-  const {
-    deploy,
-    isLoading: isDeploying,
-    data: deployedContract
-  } = useCreateApp();
+type Contract = {
+  id: string;
+  type: string;
+  metadata: Metadata;
+};
 
-  async function handleDeploy() {
+type SubgraphData = {
+  contracts: Contract[];
+};
+
+const Home = () => {
+  const { address } = useWallet();
+  const { sdk } = useOpenFormat();
+  // Once you've created your token, it will appear in the Created Tokens table.
+  const { data: token } = useContract("INSERT_CREATED_TOKEN_CONTRACT_ADDRESS");
+
+  // All our hooks use `react-query` under the hood.
+  const { mint, isLoading: isMinting } = useMintToken(token as ERC20Base);
+
+  // This hook fetches blockchain data via our subgraph. See - https://api.thegraph.com/subgraphs/name/open-format/mumbai
+  const { data: subgraphData, isLoading: loadingContracts } = useRawRequest<
+    SubgraphData,
+    any
+  >({
+    query: gql`
+      query contractByAppId($appId: String!) {
+        contracts(where: { app_contains_nocase: $appId }) {
+          id
+          type
+          metadata {
+            name
+            symbol
+            totalSupply
+          }
+        }
+      }
+    `,
+    variables: {
+      appId: process.env.NEXT_PUBLIC_APP_ID,
+    },
+    config: {
+      refetchInterval: 2000,
+    },
+  });
+
+  // This function create a fungible (ERC20) token
+  // contract and mints 1000 tokens.
+  async function handleCreateToken() {
     try {
-      await deploy();
+      if (address) {
+        await sdk.App.createToken({
+          name: "My First Token",
+          symbol: "MFT",
+          supply: toWei("1000"),
+        });
+      }
     } catch (error) {
       console.log("handleDeploy", error);
     }
   }
 
+  // This function mints 1000 fungible tokens from
+  // the token contract used in the useContract hook
+  async function handleMint() {
+    try {
+      if (token && address) {
+        mint({ to: address, amount: toWei("1000") });
+      }
+    } catch (error) {
+      console.log("handleDeploy", error);
+    }
+  }
+
+  if (loadingContracts) return "Loading created contracts...";
+
   return (
     <div>
-      <h1>Open Format React</h1>
-      {isConnected && (
+      {address && (
         <div>
-          <button onClick={handleDeploy}>
-            {isDeploying ? "Deploying..." : "Deploy"}
+          <button onClick={handleCreateToken}>
+            Create Fungible Token Contract
+          </button>
+          <button onClick={handleMint}>
+            {isMinting ? "Minting..." : "Mint 1000 tokens"}{" "}
           </button>
         </div>
       )}
 
-      {deployedContract && <div>{JSON.stringify(deployedContract)}</div>}
+      <h1>Created Tokens</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Total Supply</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {subgraphData &&
+            subgraphData.contracts.map((contract) => (
+              <tr key={contract.id}>
+                <td>{contract.metadata.name}</td>
+                <td>{contract.id}</td>
+                <td>{fromWei(contract.metadata.totalSupply)}</td>
+                <td>{contract.type}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export default Home;
-
-// import { useDeploy } from "@openformat/react";
-// import { gql } from "graphql-request";
-// import { NextPage } from "next";
-
-// const Home: NextPage = () => {
-//   const { isConnected } = useWallet();
-
-//   const saleData = useSaleData({
-//     tokenId: "0x021d35cd4849596f1013cf92f718ec7bf5541bc2",
-//   });
-
-//   const rawData = useRawRequest({
-//     query: gql`
-//       {
-//         tokens {
-//           id
-//         }
-//       }
-//     `,
-//   });
-
-//   const {
-//     deploy,
-//     isLoading: isDeploying,
-//     data: deployedContract,
-//   } = useDeploy();
-
-//   async function handleDeploy() {
-//     try {
-//       await deploy({
-//         maxSupply: 100,
-//         mintingPrice: 0.01,
-//         name: "Test",
-//         symbol: "TEST",
-//         url: "ipfs://",
-//       });
-//     } catch (error) {
-//       console.log("handleDeploy", error);
-//     }
-//   }
-
-//   return (
-//     <div>
-//       <h1>Open Format React</h1>
-
-//       {isConnected && (
-//         <div>
-//           <button onClick={handleDeploy}>
-//             {isDeploying ? "Deploying..." : "Deploy"}
-//           </button>
-//         </div>
-//       )}
-
-//       {deployedContract && (
-//         <>
-//           <Nft address={deployedContract.contractAddress} />
-//         </>
-//       )}
-
-//       {saleData.isLoading ? (
-//         <p>Loading...</p>
-//       ) : (
-//         <pre>{JSON.stringify(saleData.data, null, 2)}</pre>
-//       )}
-
-//       {rawData.isLoading ? (
-//         <p>Loading...</p>
-//       ) : (
-//         <pre>{JSON.stringify(rawData.data, null, 2)}</pre>
-//       )}
-//     </div>
-//   );
-// };
-
-// function Nft({ address }: { address: string }) {
-//   const nft = useNFT(address);
-
-//   const { mint } = useMint(nft);
-
-//   async function handleMint() {
-//     try {
-//       await mint();
-//     } catch (error) {
-//       console.log("handleDeploy", error);
-//     }
-//   }
-//   return (
-//     <>
-//       <p>NFT: {address}</p>
-//       <button onClick={handleMint}>Mint</button>
-//     </>
-//   );
-// }
-
-// export default Home;
