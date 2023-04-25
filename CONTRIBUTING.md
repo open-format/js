@@ -1,116 +1,75 @@
-## Getting setup
+# Contributing to Open Format
 
-Open Format uses a monorepo structure using [Yarn workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/) and [Turborepo](https://turborepo.org/). To get setup you'll need,
+First of all, thank you for considering contributing to Open Format! Your time and effort are greatly appreciated. Whether you're reporting bugs, suggesting improvements, working on bounties, or submitting code changes, your contribution helps make this project better for everyone.
 
-- [Node.js](https://nodejs.org/en/),
-- and [Yarn Classic](https://classic.yarnpkg.com/) to get started.
+This document serves as a guide to help you get started and ensure a smooth contribution process. By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
 
-First clone down the repository...
+## Table of Contents
 
-```shell
-git clone git@github.com:open-format/js.git
-```
+1. [Getting Started](#getting-started)
+   - [Setting Up the Development Environment](#setting-up-the-development-environment)
+2. [How to Contribute](#how-to-contribute)
+   - [Reporting Bugs and Suggesting Improvements](#reporting-bugs-and-suggesting-improvements)
+   - [Bounties](#bounties)
+   - [Submitting Code Changes](#submitting-code-changes)
+3. [Style Guide](#style-guide)
+4. [License](#license)
 
-and then install dependencies from the root directory. This will install dependencies for _all_ packages.
+## Getting Started
 
-```
-yarn
-```
+Before you start contributing, it's a good idea to familiarize yourself with the project by reading the documentation, exploring the codebase, and understanding the project's architecture.
 
-## Building
+### Setting Up the Development Environment
 
-You can build all packges with Turborepo by running...
+1. Fork the repository on GitHub.
+2. Clone the forked repository to your local machine.
+3. Follow the instructions in the [README.md](README.md) file to set up the required dependencies and build the project.
+4. Run the test suite to ensure everything is working correctly.
 
-```shell
-yarn run build
-```
+## How to Contribute
 
-To rebuild packages on every change, run...
+### Reporting Bugs and Suggesting Improvements
 
-```shell
-yarn run start
-```
+If you find a bug or have a suggestion for improvement, please create a new issue in the GitHub repository, following these guidelines:
 
-## Testing
+1. Check if the bug or suggestion has already been reported by searching the existing issues.
+2. If it hasn't been reported, create a new issue with a clear title and description.
+3. For bug reports, provide detailed information, including:
+   - Steps to reproduce the issue
+   - Expected behavior
+   - Actual behavior
+   - Version of the software you're using
+   - Any relevant error messages or logs
+4. For improvement suggestions, provide a clear and detailed explanation of your suggestion, describing the current behavior (if applicable) and how your suggestion would improve the project.
 
-You can run tests across all packages by running...
+### Bounties
 
-```shell
-yarn run test
-```
+Our bounty program provides developers with a chance to earn by contributing to the Open Format ecosystem through completing bounties for new features and templates on our product roadmap. If you're interested in getting involved, check out our [current bounties](https://github.com/orgs/open-format/projects) to see if there are any projects that match your skills and interests.
 
-## Making a contribution
+### Submitting Code Changes
 
-Whether you are adding a feature or fixing a bug, here's how you can go about it.
+Ready to contribute code? Please follow these steps:
 
-Create a new branch off of `main` with a descriptive name.
+1. Create a new branch in your forked repository for the changes you want to make.
+2. Implement your changes, following any guidelines specific to the issue you're working on.
+3. Write tests to cover your changes, ensuring that the test suite passes.
+4. Commit your changes with a clear and descriptive commit message.
+5. Push your branch to your fork on GitHub.
+6. Create a pull request to the original repository, providing a clear description of your changes and linking to the issue or bounty you're addressing.
 
-```shell
-git branch feature/name
-```
+## Style Guide
 
-Do what you need to do code wise and then add a new `changeset` (we use [Changesets](https://github.com/changesets/changesets) to help version multiple packages consistently).
+To ensure consistency and readability throughout the codebase, please follow our style guide:
 
-```shell
-yarn changegset
-```
+1. Write clean and self-explanatory code, using descriptive variable and function names.
+2. Comment your code when necessary, providing explanations for complex or non-obvious sections.
+3. Keep functions and classes focused on a single responsibility.
+4. Follow the established coding conventions for the programming languages used in the project.
+5. Organize your code logically, making use of appropriate design patterns when necessary.
+6. If you're unsure about the preferred coding style for a specific language or aspect of the project, refer to the existing codebase or consult the project maintainers.
 
-Once you've completed adding your `changeset`, create a new pull request.
+## License
 
-```shell
-gh pr create
-```
+By contributing to Open Format, you agree that your contributions will be licensed under the project's open-source license. For more information, please see the [LICENSE](LICENSE) file.
 
-Afer you've followed all the checks in the pull request it'll be tested and merged in.
-
-## Releasing
-
-After new features and fixes have been merged in with their `changset` we can now publish new versions.
-
-From the `main` branch create a new `release` branch.
-
-```shell
-git branch release
-```
-
-Now use Changests to version any changed packages and update their respective changelog and package version.
-
-```shell
-yarn changeset version
-```
-
-While not crucial, you may want to amend the branch name based on the version that Changeset has calculated.
-
-```shell
-git branch -m v1.0.10
-```
-
-Create a new pull request with the package(s) having been bumped. Changesets will have created these commits for you.
-
-```shell
-gh pr create
-```
-
-Once this pull request is approved and merged in, we can now release things!
-
-On Github, create a new release for each package that has been bumped.
-
-- [Create a new release](https://github.com/open-format/js/releases/new).
-- Name the release and the tag after the package and version, e.g. "@openformat/sdk@0.1.2".
-- Pull the release notes from the package's respective `CHANGELOG.md`.
-- If releasing multiple packages, repeat this exact process.
-
-Now a release has been created it can be pulished to NPM.
-
-Checkout the tag you've just created.
-
-```shell
-git checkout @openformat/sdk@0.1.2
-```
-
-Move into the directory of the package you want to publish and use NPM to release it.
-
-```shell
-cd packages/sdk
-npm publish
-```
+Thank you once again for your interest in contributing to Open Format! Your participation helps us build a better project and fosters a welcoming and inclusive community. If you have any questions or concerns, please don't hesitate to reach out to the project maintainers.
