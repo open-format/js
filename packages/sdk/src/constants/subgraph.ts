@@ -18,7 +18,7 @@ export const Subgraphs: SubgraphData = {
     url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora',
   },
   [Chains.auroraTestnet.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/auroraTestnet',
+    url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora-testnet',
   },
   [Chains.foundry.id]: {
     url: 'http://0.0.0.0:8000/subgraphs/name/open-format/mumbai',
