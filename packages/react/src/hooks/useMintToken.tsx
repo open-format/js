@@ -2,7 +2,7 @@ import { ERC20Base } from '@openformat/sdk';
 import { useMutation } from '@tanstack/react-query';
 
 /**
- * Hook to mint an ERC20 token
+ * Hook to mint ERC20 tokens
  * @param {ERC20Base} token ERC20Base
  *
  * @example
