@@ -1,6 +1,6 @@
 {
   "name": "node",
-  "type": "module",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "nodemon index.js"
@@ -9,6 +9,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "@openformat/sdk": "0.1.0-dev-5829c32"
+    "@openformat/sdk": "^0.6.0-dev-49b851b",
+    "graphql-request": "^6.0.0"
   }
 }
