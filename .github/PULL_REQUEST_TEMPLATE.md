@@ -8,7 +8,7 @@ Before going any further:
 
 -->
 
-Thank you for contributing to OPENFORMAT! Please follow this template to ensure a smooth pull request process. Make sure you have read and followed the guidelines in CONTRIBUTING.md before submitting your pull request.
+Thank you for contributing to Open Format! Please follow this template to ensure a smooth pull request process. Make sure you have read and followed the guidelines in CONTRIBUTING.md before submitting your pull request.
 
 ## Summary
 
@@ -60,4 +60,4 @@ Please describe the tests you've added or updated to cover your changes, and pro
 
 ---
 
-Once again, thank you for your contribution! We appreciate your effort and dedication to improving the OPENFORMAT.
+Once again, thank you for your contribution! We appreciate your effort and dedication to improving the Open Format.
