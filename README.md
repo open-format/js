@@ -98,7 +98,7 @@ Our bounty program provides developers with a chance to earn by contributing to 
 
 We're building a community of talented developers who are passionate about shaping the future of the internet. We believe that collaboration and shared knowledge are absolutely essential to creating amazing things that will impact people's lives in profound ways. If you share our vision, we invite you to come be a part of something amazing on [Discord](https://discord.gg/BgkbC7Dkuf).
 
-## Local Development
+## Setting Up Your Local Development Environment
 
 ### Clone the repository:
 
@@ -114,6 +114,26 @@ NPM
 
 `npm install`
 
-### Testing:
+To get started with your local development environment, you have two options: using a testnet version or setting up a local version. Both options have their advantages and drawbacks, so choose the one that best suits your needs.
 
-For local testing, set up a local version of both our contracts and our subgraph, which will enable you to test and interact with them locally. If you don't want to get setup locally, you can test with Polygon Mumbai or Aurora Testnet.
+### Option 1: Testnet Version
+
+The testnet version allows you to quickly set up your development environment but may result in slower test execution times. To use the testnet version, follow these steps:
+
+1. Open the test file where the `network` is specified.
+2. Replace `Chains.foundry` with either `Chains.polygonMumbai` or `Chains.auroraTestnet`.
+3. Save the changes and proceed with running the tests.
+
+### Option 2: Local Version
+
+The local version involves running a local Ethereum network and setting up the subgraph locally using the Graph Node. This option requires more setup but offers several advantages, such as faster test execution times, easier debugging, greater control over the development environment, and no dependency on external testnets. However, it also has some drawbacks, including the need for multiple services running, a more complex setup, a deeper understanding of contracts and subgraphs, additional system resources, and an initial time investment for setup and configuration.
+
+To set up the local version, follow these steps:
+
+1. Set up the contracts by following the instructions the [Open Format contracts repository](https://github.com/open-format/contracts).
+
+2. Set up the Graph Node by following the instructions in the [Graph Node repository](https://github.com/graphprotocol/graph-node). We recommend using Docker for ease of setup.
+
+3. Set up the Open Format subgraph by following the instructions in the [Open Format subgraph repository](https://github.com/open-format/subgraph).
+
+After completing these steps, you will have a fully functional local development environment that includes the contracts, the Graph Node, and the subgraph. You can now proceed with running the tests.
