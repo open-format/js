@@ -1,10 +1,10 @@
 # What is Open Format?
 
-Open Format is a suite of developer tools designed to assist web2 developers in creating Web3 applications on multiple EVM blockchains. With Open Format, developers can easily build decentralized applications that leverage the unique features of Web3 while enjoying a familiar development experience.
+Open Format is a suite of developer tools designed to assist web2 developers in creating Web3 applications on multiple EVM blockchains. With Open Format, developers can easily build decentralised applications that leverage the unique features of Web3 while enjoying a familiar development experience.
 
-Open Format also incorporates a social consensus layer that dedicates a portion of its transaction fees to good causes, making it a socially responsible choice for developers who care about giving back to the community.
+Open Format also incorporates a social conscious layer that dedicates a portion of its transaction fees to good causes, making it a socially responsible choice for developers who care about giving back to the community.
 
-Whether you're a seasoned Web3 developer or just getting started, Open Format makes it easy to build powerful decentralized applications.
+Whether you're a seasoned Web3 developer or just getting started, Open Format makes it easy to build powerful decentralised applications.
 
 ## Features
 
@@ -36,7 +36,7 @@ Whether you're a seasoned Web3 developer or just getting started, Open Format ma
 
 ### Javascript
 
-Create a fungible (ERC20) token on the Polygon Mumbai network, mint 1000 tokens and send to to a wallet address:
+Create a fungible (ERC20) token on the Polygon Mumbai network, mint 1000 tokens and send to a wallet address:
 
 ```ts
 const sdk = new OpenFormatSDK({
