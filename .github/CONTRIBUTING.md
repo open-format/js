@@ -70,6 +70,6 @@ To ensure consistency and readability throughout the codebase, please follow our
 
 ## License
 
-By contributing to Open Format, you agree that your contributions will be licensed under the project's open-source license. For more information, please see the [LICENSE](LICENSE) file.
+By contributing to Open Format, you agree that your contributions will be licensed under the project's open-source license. For more information, please see the [LICENSE](../LICENSE) file.
 
 Thank you once again for your interest in contributing to Open Format! Your participation helps us build a better project and fosters a welcoming and inclusive community. If you have any questions or concerns, please don't hesitate to reach out to the project maintainers.
