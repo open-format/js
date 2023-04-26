@@ -90,14 +90,6 @@ Hello new world is an introduction into a new decentralised world and what we be
 
 Visit [https://docs.openformat.tech](https://docs.openformat.tech) to view documentation.
 
-## Contributing
-
-Our bounty program provides developers with a chance to earn by contributing to the Open Format ecosystem through completing bounties for new features and templates on our product roadmap. If you're interested in getting involved, check out our [current bounties](https://github.com/orgs/open-format/projects) to see if there are any projects that match your skills and interests.
-
-## Community
-
-We're building a community of talented developers who are passionate about shaping the future of the internet. We believe that collaboration and shared knowledge are absolutely essential to creating amazing things that will impact people's lives in profound ways. If you share our vision, we invite you to come be a part of something amazing on [Discord](https://discord.gg/BgkbC7Dkuf).
-
 ## Setting Up Your Local Development Environment
 
 ### Clone the repository:
@@ -137,3 +129,11 @@ To set up the local version, follow these steps:
 3. Set up the Open Format subgraph by following the instructions in the [Open Format subgraph repository](https://github.com/open-format/subgraph).
 
 After completing these steps, you will have a fully functional local development environment that includes the contracts, the Graph Node, and the subgraph. You can now proceed with running the tests.
+
+## Contributing
+
+Our bounty program provides developers with a chance to earn by contributing to the Open Format ecosystem through completing bounties for new features and templates on our product roadmap. If you're interested in getting involved, check out our [current bounties](https://github.com/orgs/open-format/projects) to see if there are any projects that match your skills and interests.
+
+## Community
+
+We're building a community of talented developers who are passionate about shaping the future of the internet. We believe that collaboration and shared knowledge are absolutely essential to creating amazing things that will impact people's lives in profound ways. If you share our vision, we invite you to come be a part of something amazing on [Discord](https://discord.gg/BgkbC7Dkuf).
