@@ -1,5 +1,14 @@
 # @openformat/react
 
+## 0.3.0-dev-c58301f
+
+### Patch Changes
+
+- [#108](https://github.com/open-format/js/pull/108) [`406865d`](https://github.com/open-format/js/commit/406865d5e2c7d44f8ccf637c855e5a00acb72e7d) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Remove tokenURI from Reward_CreateBadgeParams type
+
+- Updated dependencies [[`406865d`](https://github.com/open-format/js/commit/406865d5e2c7d44f8ccf637c855e5a00acb72e7d)]:
+  - @openformat/sdk@0.6.0-dev-c58301f
+
 ## 0.3.0-dev-49b851b
 
 ### Minor Changes
