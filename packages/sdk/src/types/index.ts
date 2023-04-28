@@ -377,7 +377,6 @@ export interface RewardToken {
 export interface Reward_CreateBadgeParams {
   name: string;
   symbol: string;
-  tokenURI: string;
 }
 
 ///////////////////
