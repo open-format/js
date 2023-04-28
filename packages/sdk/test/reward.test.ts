@@ -42,7 +42,6 @@ describe('Reward', () => {
     const params: ERC20CreateParams = {
       name: 'REWARD',
       symbol: 'RWRD',
-      decimal: 18,
       supply: 1000,
     };
 
@@ -56,7 +55,6 @@ describe('Reward', () => {
     const params: Reward_CreateBadgeParams = {
       name: 'REWARD',
       symbol: 'RWRD',
-      tokenURI: 'ipfs://',
     };
 
     const badge = await sdk.Reward.createBadge(params);
