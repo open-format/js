@@ -1,4 +1,11 @@
-import { BigNumber, ContractReceipt, ethers, providers, Signer } from 'ethers';
+import {
+  BigNumber,
+  BigNumberish,
+  ContractReceipt,
+  ethers,
+  providers,
+  Signer,
+} from 'ethers';
 import {
   ERC721LazyMint as ERC721LazyMintContract,
   ERC721LazyMint__factory,
@@ -144,8 +151,11 @@ export class ERC721LazyMint extends BaseContract {
 
       validateWalletAndAmount(params.to, params.quantity);
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.batchMintTo(params.to, params.quantity, {
         ...params.overrides,
+        value: platformFee.mul(params.quantity as BigNumberish),
       });
 
       const receipt = await processTransaction(tx);
