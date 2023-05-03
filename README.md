@@ -1,6 +1,6 @@
 # What is Open Format?
 
-Open Format is a suite of developer tools designed to assist web2 developers in creating Web3 applications on multiple EVM blockchains. With Open Format, developers can easily build decentralised applications that leverage the unique features of Web3 while enjoying a familiar development experience.
+Open Format is a suite of developer tools designed to assist Web2 developers in creating Web3 applications on multiple EVM blockchains. With Open Format, developers can easily build decentralised applications that leverage the unique features of Web3 while enjoying a familiar development experience.
 
 Open Format also incorporates a social conscious layer that dedicates a portion of its transaction fees to good causes, making it a socially responsible choice for developers who care about giving back to the community.
 
@@ -75,9 +75,9 @@ const token = await sdk.App.createToken({
 await mint({ to: "WALLET_ADDRESS", amount: toWei("1000") });
 ```
 
-### Try our [Hello new world](https://github.com/open-format/hello-world) template
+### Try our [GetStarted](https://github.com/open-format/GetStarted) template
 
-Hello new world is an introduction into a new decentralised world and what we believe to be the starting point for 90% of all future applications. It features a fundamental file structure boilerplate, which comprises of an admin area, authentication, and a tokenised system with XP, Badges, and "Reward Tokens", all integrated into a front-end application built using NextJS and the Open Format SDK.
+GetStarted is an introduction into a new decentralised world and what we believe to be the starting point for 90% of all future applications. It features a fundamental file structure boilerplate, which comprises of an admin area, authentication, and a tokenised system with Action Tokens, Badges, and Reward Tokens, all integrated into a front-end application built using NextJS and the Open Format SDK.
 
 ## Packages
 
