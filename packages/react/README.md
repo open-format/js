@@ -50,9 +50,9 @@ await mint({
 
 From [examples/react-next](examples/react-next/) you can `yarn run start` to run the Next.js app which utiltises `@openformat/react`.
 
-### Try our [Hello new world](https://github.com/open-format/hello-world) template
+### Try our [GetStarted](https://github.com/open-format/GetStarted) template
 
-Hello new world is an introduction into a new decentralised world and what we believe to be the starting point for 90% of all future applications. It features a fundamental file structure boilerplate, which comprises of an admin area, authentication, and a tokenised system with XP, Badges, and "Reward Tokens", all integrated into a front-end application built using NextJS and the Open Format SDK.
+GetStarted is an introduction into a new decentralised world and what we believe to be the starting point for 90% of all future applications. It features a fundamental file structure boilerplate, which comprises of an admin area, authentication, and a tokenised system with Action Tokens, Badges, and Reward Tokens, all integrated into a front-end application built using NextJS and the Open Format SDK.
 
 ## Quickstart
 
