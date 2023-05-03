@@ -48,7 +48,7 @@ describe('Reward', () => {
     const token = await sdk.Reward.createRewardToken(params);
     const totalSupply = await token.totalSupply();
 
-    expect(totalSupply).toBe(1000);
+    expect(totalSupply).toBe('1000');
   });
 
   it('should create a Badge', async () => {
