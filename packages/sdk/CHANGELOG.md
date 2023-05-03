@@ -1,5 +1,15 @@
 # @openformat/sdk
 
+## 1.0.0-dev-fee074d
+
+### Major Changes
+
+- [#111](https://github.com/open-format/js/pull/111) [`8f72eb1`](https://github.com/open-format/js/commit/8f72eb177eaa7e5735094d1f1c351192047978a3) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Release v1.0.0 🚀
+
+### Patch Changes
+
+- [#110](https://github.com/open-format/js/pull/110) [`f3167b0`](https://github.com/open-format/js/commit/f3167b0f12b63705a9c7608de83fd783afa3c7e1) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Updates batch minting fee handling
+
 ## 0.6.0-dev-c58301f
 
 ### Patch Changes

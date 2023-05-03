@@ -9,7 +9,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "@openformat/sdk": "0.6.0-dev-c58301f",
+    "@openformat/sdk": "1.0.0-dev-fee074d",
     "graphql-request": "^6.0.0"
   }
 }
