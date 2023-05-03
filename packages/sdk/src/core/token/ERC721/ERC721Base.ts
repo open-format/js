@@ -1,4 +1,11 @@
-import { BigNumber, ContractReceipt, ethers, providers, Signer } from 'ethers';
+import {
+  BigNumber,
+  BigNumberish,
+  ContractReceipt,
+  ethers,
+  providers,
+  Signer,
+} from 'ethers';
 import {
   ERC721Base as ERC721BaseContract,
   ERC721Base__factory,
@@ -91,34 +98,6 @@ export class ERC721Base extends BaseContract {
   }
 
   /**
-   *
-   * Grants a give role to the specified account for the current ERC721 contract.
-   * @async
-   * @function grantRole
-   * @param {BytesLike} params.role - The role to grant to the account.
-   * @param {string} params.account - The account to be granted the given role.
-   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
-   * @returns {Promise<ContractReceipt>} - A Promise that resolves to a ContractReceipt object that contains information about the transaction.
-   * @throws {Error} - Throws an error if the network check fails or if there is an error during the grantRole transaction.
-   */
-
-  async grantRole(params: ERC721SetMinterRoleParams): Promise<ContractReceipt> {
-    try {
-      await this.checkNetworksMatch();
-
-      const tx = await this.contract.grantRole(params.role, params.account, {
-        ...params.overrides,
-      });
-
-      const receipt = await processTransaction(tx);
-      return receipt;
-    } catch (error: any) {
-      const parsedError = parseErrorData(error);
-      throw new Error(parsedError);
-    }
-  }
-
-  /**
    * Mint multiple tokens and transfer them to the specified address.
    * @async
    * @function batchMint
@@ -136,6 +115,8 @@ export class ERC721Base extends BaseContract {
 
       validateWalletAndMetadata(params.to, params.baseURI);
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.batchMintTo(
         params.to,
         params.quantity,
@@ -143,6 +124,7 @@ export class ERC721Base extends BaseContract {
 
         {
           ...params.overrides,
+          value: platformFee.mul(params.quantity as BigNumberish),
         }
       );
 
@@ -262,6 +244,34 @@ export class ERC721Base extends BaseContract {
       });
 
       return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   *
+   * Grants a give role to the specified account for the current ERC721 contract.
+   * @async
+   * @function grantRole
+   * @param {BytesLike} params.role - The role to grant to the account.
+   * @param {string} params.account - The account to be granted the given role.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - A Promise that resolves to a ContractReceipt object that contains information about the transaction.
+   * @throws {Error} - Throws an error if the network check fails or if there is an error during the grantRole transaction.
+   */
+
+  async grantRole(params: ERC721SetMinterRoleParams): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.contract.grantRole(params.role, params.account, {
+        ...params.overrides,
+      });
+
+      const receipt = await processTransaction(tx);
+      return receipt;
     } catch (error: any) {
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);
