@@ -1,5 +1,13 @@
 # @openformat/react
 
+## 1.1.1
+
+### Patch Changes
+
+- 00b0411: Add missing build vars
+- Updated dependencies [00b0411]
+  - @openformat/sdk@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes
