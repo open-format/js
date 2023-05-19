@@ -4,7 +4,7 @@ import { useOpenFormat } from '../provider';
 /**
  * Create a contract instance from it's address
  * @param {string} address Address of the contract
- * @returns {ERC721Instance}
+ * @returns {ERC721Base}
  * @example 
  * ```jsx
   const contractAddress = "0x3a151f807ee4370ea173a051cb6ba0790ce10da7";

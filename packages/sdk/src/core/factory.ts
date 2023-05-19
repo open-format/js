@@ -5,12 +5,11 @@ import {
   providers,
   Signer,
 } from 'ethers';
-import {
-  Factory as FactoryContract,
-  Factory__factory,
-} from '../contract-types';
+import { factoryContracts } from '../constants';
+import { Factory__factory } from '../contract-types';
+import { parseErrorData } from '../helpers/transaction';
+import { ContractType } from '../types';
 import { BaseContract } from './base';
-
 /**
  * A class representing a Factory contract that extends the BaseContract class.
  *
@@ -24,8 +23,6 @@ export class Factory extends BaseContract {
    *
    * @type {FactoryContract}
    */
-
-  contract: FactoryContract;
 
   /**
    * Create a new instance of the Factory class.
@@ -42,11 +39,6 @@ export class Factory extends BaseContract {
     signer?: Signer
   ) {
     super(provider, factoryAddress, signer);
-
-    this.contract = Factory__factory.connect(
-      factoryAddress,
-      signer || provider
-    );
   }
 
   /**
@@ -63,6 +55,16 @@ export class Factory extends BaseContract {
     return receipt;
   }
 
+  getFactoryContractAddress(chainId: number): string {
+    const factoryContract = factoryContracts[chainId];
+
+    if (!factoryContract) {
+      throw new Error(`Factory contract not found for chainId '${chainId}'`);
+    }
+
+    return factoryContract.address;
+  }
+
   /**
    * Creates a new contract with the given name.
    *
@@ -73,10 +75,25 @@ export class Factory extends BaseContract {
    */
 
   async create(name: string): Promise<ContractReceipt> {
-    const tx = await this.contract.create(
-      ethers.utils.formatBytes32String(name)
-    );
-    const receipt = await this.processTransaction(tx);
-    return receipt;
+    try {
+      const providerNetwork = await this.provider.getNetwork();
+      this.checkNetworksMatch();
+
+      const factoryAddress = this.getFactoryContractAddress(
+        providerNetwork.chainId
+      );
+
+      const contract = Factory__factory.connect(
+        factoryAddress,
+        this.signer || this.provider
+      );
+      const tx = await contract.create(ethers.utils.formatBytes32String(name));
+
+      const receipt = await this.processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
   }
 }

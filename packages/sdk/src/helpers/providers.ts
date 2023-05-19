@@ -1,42 +1,20 @@
 import { ethers, providers, Signer } from 'ethers';
-import { Chains } from '../constants';
-import { Chain, ChainId } from '../types';
+import { Chains, Subgraphs } from '../constants';
+import { ChainId } from '../types';
 
-/**
- * Returns a network URL base on a chain e.g. 'mumbai' and allows for
- * custom URLs
- * @param chain
- * @returns a chain URL
- */
-export function getProviderUrl(chain: Chain) {
-  switch (chain) {
-    case 'mainnet':
-      return Chains.mainnet.rpcUrl;
-    case 'mumbai':
-      return Chains.mumbai.rpcUrl;
-    case 'aurora':
-      return Chains.aurora.rpcUrl;
-    case 'localhost':
-      return Chains.localhost.rpcUrl;
-    default:
-      if (chain.startsWith('http')) {
-        return chain as string;
-      } else {
-        throw new Error(`Couldn't get provider for '${chain}'`);
-      }
-  }
-}
 //@TODO: comment
 export function getSubgraphUrlFromChainID(chainId: ChainId) {
   switch (chainId) {
-    case Chains.mainnet.chainId:
-      return Chains.mainnet.subgraph;
-    case Chains.mumbai.chainId:
-      return Chains.mumbai.subgraph;
-    case Chains.aurora.chainId:
-      return Chains.aurora.subgraph;
-    case Chains.localhost.chainId:
-      return Chains.localhost.subgraph;
+    case Chains.polygon.id:
+      return Subgraphs[Chains.polygon.id].url;
+    case Chains.polygonMumbai.id:
+      return Subgraphs[Chains.polygonMumbai.id].url;
+    case Chains.aurora.id:
+      return Subgraphs[Chains.aurora.id].url;
+    case Chains.auroraTestnet.id:
+      return Subgraphs[Chains.auroraTestnet.id].url;
+    case Chains.foundry.id:
+      return Subgraphs[Chains.foundry.id].url;
     default:
       throw new Error(`Couldn't get subgraph URL for '${chainId}'`);
   }

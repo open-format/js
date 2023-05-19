@@ -1,10 +1,13 @@
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import {
-  ERC20Instance,
-  ERC721Instance,
+  Chains,
+  ContractErrors,
+  ERC20Base,
+  ERC721Base,
   ERC721MintParams,
   OpenFormatSDK,
 } from '../src';
+import { toWei } from '../src/helpers';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -16,20 +19,20 @@ import {
 describe('ERC721', () => {
   describe('State', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC721Instance;
+    let contract: ERC721Base;
     let walletAddress: string;
     let ERC721MintParams: ERC721MintParams;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });
 
       contract = (await sdk.getContract({
         contractAddress: ERC721_CONTRACT_ADDRESS,
-      })) as ERC721Instance;
+      })) as ERC721Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
@@ -61,7 +64,9 @@ describe('ERC721', () => {
           await contract.ownerOf({ tokenId: tokenId.add(1) });
         }
 
-        await expect(ownerOf).rejects.toThrow('OwnerQueryForNonexistentToken');
+        await expect(ownerOf).rejects.toThrow(
+          ContractErrors.OwnerQueryForNonexistentToken
+        );
       });
     });
     describe('balanceOf()', () => {
@@ -87,23 +92,23 @@ describe('ERC721', () => {
 });
 
 describe('ERC20', () => {
-  const AMOUNT = 100;
+  const AMOUNT = toWei('100');
 
   describe('State', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC20Instance;
+    let contract: ERC20Base;
     let walletAddress: string;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });
 
       contract = (await sdk.getContract({
         contractAddress: ERC20_CONTRACT_ADDRESS,
-      })) as ERC20Instance;
+      })) as ERC20Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
@@ -114,7 +119,10 @@ describe('ERC20', () => {
         const totalSupply = await contract.totalSupply();
         await contract.mint({ to: walletAddress, amount: AMOUNT });
         const newTotalSupply = await contract.totalSupply();
-        expect(newTotalSupply).toBe(totalSupply + AMOUNT);
+
+        expect(newTotalSupply).toBe(
+          BigNumber.from(totalSupply).add(AMOUNT).toString()
+        );
       });
     });
     describe('balanceOf()', () => {
@@ -127,7 +135,9 @@ describe('ERC20', () => {
           account: WALLET_ADDRESS2,
         });
 
-        expect(newBalanceOf).toBe(balanceOf + AMOUNT);
+        expect(newBalanceOf).toBe(
+          BigNumber.from(balanceOf).add(AMOUNT).toString()
+        );
       });
 
       it('throws an error if the attempted wallet to be checked is not valid', async () => {
@@ -150,7 +160,7 @@ describe('ERC20', () => {
           spender: WALLET_ADDRESS2,
         });
 
-        expect(allowance).toBe(AMOUNT);
+        expect(allowance).toBe(AMOUNT.toString());
       });
 
       it('throws an error if the attempted wallet to be checked is not valid', async () => {

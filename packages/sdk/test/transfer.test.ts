@@ -1,10 +1,14 @@
+import { BigNumber } from 'ethers';
 import {
-  ERC20Instance,
-  ERC721Instance,
+  Chains,
+  ContractErrors,
+  ERC20Base,
+  ERC721Base,
   ERC721MintParams,
   ERC721TransferParams,
   OpenFormatSDK,
 } from '../src';
+import { toWei } from '../src/helpers';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -16,21 +20,21 @@ import {
 describe('ERC721', () => {
   describe('transfer()', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC721Instance;
+    let contract: ERC721Base;
 
     let walletAddress: string;
     let ERC721MintParams: ERC721MintParams;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });
 
       contract = (await sdk.getContract({
         contractAddress: ERC721_CONTRACT_ADDRESS,
-      })) as ERC721Instance;
+      })) as ERC721Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
@@ -66,7 +70,9 @@ describe('ERC721', () => {
         await contract.transfer(params);
       }
 
-      await expect(transfer).rejects.toThrow('OwnerQueryForNonexistentToken');
+      await expect(transfer).rejects.toThrow(
+        ContractErrors.OwnerQueryForNonexistentToken
+      );
     });
 
     it('throws an error if token transferred is not owned by signer', async () => {
@@ -85,28 +91,32 @@ describe('ERC721', () => {
         await contract.transfer(params);
       }
 
-      await expect(transfer).rejects.toThrow('TransferFromIncorrectOwner');
+      await expect(transfer).rejects.toThrow(
+        ContractErrors.TransferFromIncorrectOwner
+      );
     });
   });
 });
 
 // @TODO Increase test coverage for ERC20 transfer
 describe('ERC20', () => {
+  const AMOUNT = toWei('1');
+
   describe('transfer()', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC20Instance;
+    let contract: ERC20Base;
     let walletAddress: string;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });
 
       contract = (await sdk.getContract({
         contractAddress: ERC20_CONTRACT_ADDRESS,
-      })) as ERC20Instance;
+      })) as ERC20Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
@@ -117,12 +127,15 @@ describe('ERC20', () => {
       const receiverBalance = await contract.balanceOf({
         account: WALLET_ADDRESS2,
       });
-      await contract.transfer({ to: WALLET_ADDRESS2, amount: 100 });
+
+      await contract.transfer({ to: WALLET_ADDRESS2, amount: AMOUNT });
       const newReceiverBalance = await contract.balanceOf({
         account: WALLET_ADDRESS2,
       });
 
-      expect(newReceiverBalance).toBe(receiverBalance + 100);
+      expect(newReceiverBalance).toBe(
+        BigNumber.from(receiverBalance).add(AMOUNT).toString()
+      );
     });
   });
 });

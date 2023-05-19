@@ -1,8 +1,8 @@
-import { BigNumberish } from 'ethers';
 import {
-  ERC20Instance,
+  Chains,
+  ERC20Base,
   ERC20MintParams,
-  ERC721Instance,
+  ERC721Base,
   OpenFormatSDK,
 } from '../src';
 import {
@@ -12,23 +12,21 @@ import {
   PRIVATE_KEY,
 } from './utilities';
 
-//@TODO Tidy test naming across ALL tests
-
 describe('ERC721', () => {
   let sdk: OpenFormatSDK;
-  let contract: ERC721Instance;
+  let contract: ERC721Base;
   let walletAddress: string;
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });
 
     contract = (await sdk.getContract({
       contractAddress: ERC721_CONTRACT_ADDRESS,
-    })) as ERC721Instance;
+    })) as ERC721Base;
 
     if (sdk.signer) {
       walletAddress = await sdk.signer?.getAddress();
@@ -81,7 +79,6 @@ describe('ERC721', () => {
   });
 
   describe('batchMint()', () => {
-    // BATCH MINTING
     it('batch mints 5 tokens if wallet and metadata are valid', async () => {
       const params = {
         to: walletAddress,
@@ -133,7 +130,7 @@ describe('ERC721', () => {
       //@TODO: I need to try and get a contract that isn't a ERC721 that exists in the subgraph.
 
       async function createInstance() {
-        return new ERC721Instance(sdk.provider, APP_ID, '0x1', sdk.signer);
+        return new ERC721Base(sdk.provider, APP_ID, '0x1', sdk.signer);
       }
 
       expect(createInstance()).rejects.toThrow('Failed to get contract');
@@ -143,19 +140,19 @@ describe('ERC721', () => {
 
 describe('ERC20', () => {
   let sdk: OpenFormatSDK;
-  let contract: ERC20Instance;
+  let contract: ERC20Base;
   let walletAddress: string;
 
   beforeAll(async () => {
     sdk = new OpenFormatSDK({
-      network: 'localhost',
+      network: Chains.foundry,
       appId: APP_ID,
       signer: PRIVATE_KEY,
     });
 
     contract = (await sdk.getContract({
       contractAddress: ERC20_CONTRACT_ADDRESS,
-    })) as ERC20Instance;
+    })) as ERC20Base;
 
     if (sdk.signer) {
       walletAddress = await sdk.signer?.getAddress();

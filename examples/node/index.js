@@ -1,39 +1,63 @@
-import { OpenFormatSDK } from "@openformat/sdk";
-import { ethers } from "ethers";
+const { OpenFormatSDK, toWei, Chains } = require("@openformat/sdk");
+const { gql } = require("graphql-request");
+
+// Visit https://apps.openformat.tech/ to generate an App ID on Polygon Mumbai.
+const APP_ID = "INSERT_APP_ID";
 
 const sdk = new OpenFormatSDK({
-  signer: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+  network: Chains.polygonMumbai,
+  appId: APP_ID,
+  signer: "INSERT_PRIVATE_KEY",
 });
 
-// Deploy Proxy
-const app = await sdk.getApp("0x");
-const mint = await app.ERC20.mint();
+(async () => {
+  try {
+    // We first create a fungible (ERC20) token
+    // contract and mints 1000 tokens.
+    console.log("creating token...");
 
-console.log({ mint });
-// // Get Proxy
-// const app = sdk.getApp(appId | process.env.APP_ID);
-// // ERC20
-// const ERC20 = app.ERC20;
-// await ERC20.mint();
-// await ERC20.deploy();
-// await ERC20.burn();
-// await ERC20.transfer();
-// // ERC721
-// const ERC721 = app.ERC721;
-// await ERC721.mint();
-// await ERC721.deploy();
-// await ERC721.transfer();
-// // Marketplace
-// const marketplace = app.Marketplace;
+    const token = await sdk.App.createToken({
+      name: "My First Token",
+      symbol: "MFT",
+      supply: toWei("1000"),
+    });
 
-// await marketplace.createListing();
-// await marketplace.updateListing();
-// await marketplace.cancelListing();
-// await marketplace.buyListing();
-// // Loyalty
-// const loyalty = app.Loyalty;
-// await loyalty.createToken();
-// await loyalty.earn();
-// await loyalty.redeem();
-// await loyalty.createPoints();
-// await loyalty.deletePoints();
+    console.log(
+      `Token created - https://mumbai.polygonscan.com/address/${token.address()}`
+    );
+
+    // Now we mint 1000 fungible tokens from
+    // the token contract we just created.
+    console.log("Minting 1000 tokens...");
+
+    await token.mint({
+      to: "0x03755352654D73DA06756077Dd7f040ADcE3Fd58",
+      amount: toWei("1000"),
+    });
+    console.log("Tokens minted...");
+
+    // Lastly, we fetch blockchain data via our subgraph.
+    // See - https://api.thegraph.com/subgraphs/name/open-format/mumbai
+    const query = gql`
+      query contractByAppId($appId: String!) {
+        contracts(where: { app_contains_nocase: $appId }) {
+          id
+          type
+          metadata {
+            name
+            symbol
+            totalSupply
+          }
+        }
+      }
+    `;
+
+    const subgraphData = await sdk.subgraph.rawRequest(query, {
+      appId: APP_ID,
+    });
+
+    console.log(JSON.stringify(subgraphData, null, 2));
+  } catch (e) {
+    console.log({ e });
+  }
+})();

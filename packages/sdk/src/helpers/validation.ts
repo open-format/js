@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 import { PromiseOrValue } from '../contract-types/common';
+import { toWei } from './transaction';
 
 export function validateWalletAndMetadata(
   wallet: PromiseOrValue<string>,
@@ -14,7 +15,7 @@ export function validateWalletAndAmount(
   amount: any
 ) {
   validateWallet(wallet);
-  validateBigNumber(amount);
+  validateBigNumbers([amount]);
 }
 
 export function validateWallets(wallets: PromiseOrValue<string>[]) {
@@ -42,15 +43,6 @@ function validateMetadata(url: PromiseOrValue<string>) {
   }
 }
 
-export function validateBigNumber(amount: any) {
-  try {
-    if (BigNumber.from(amount)) return;
-  } catch (e) {
-    throw new Error(
-      'Invalid amount. Please check you are passing a valid number'
-    );
-  }
-}
 export function validateBigNumbers(amount: any[]) {
   for (let i = 0; i < amount.length; i++) {
     try {

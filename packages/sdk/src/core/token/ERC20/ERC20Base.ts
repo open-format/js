@@ -1,12 +1,17 @@
 import { ContractReceipt, ethers, providers, Signer } from 'ethers';
-import { ERC20Base, ERC20Base__factory } from '../../contract-types';
-import { parseErrorData, processTransaction } from '../../helpers/transaction';
 import {
-  validateBigNumber,
+  ERC20Base as ERC20BaseContract,
+  ERC20Base__factory,
+} from '../../../contract-types';
+import {
+  parseErrorData,
+  processTransaction,
+  validateBigNumbers,
   validateWallet,
   validateWalletAndAmount,
   validateWallets,
-} from '../../helpers/validation';
+} from '../../../helpers';
+
 import {
   ContractType,
   ERC20AllowanceParams,
@@ -15,9 +20,11 @@ import {
   ERC20BurnParams,
   ERC20MintParams,
   ERC20TotalSupplyParams,
+  ERC20TransferFromParams,
   ERC20TransferParams,
-} from '../../types';
-import { BaseContract } from '../base';
+} from '../../../types';
+import { App } from '../../app';
+import { BaseContract } from '../../base';
 
 /**
  * Represents an ERC20 contract instance with utility methods to interact with an ERC20 contract
@@ -26,8 +33,9 @@ import { BaseContract } from '../base';
  * @extends BaseContract
  */
 
-export class ERC20Instance extends BaseContract {
-  private contract: ERC20Base;
+export class ERC20Base extends BaseContract {
+  private contract: ERC20BaseContract;
+  private app: App;
 
   constructor(
     provider: providers.Provider,
@@ -42,6 +50,8 @@ export class ERC20Instance extends BaseContract {
         contractAddress,
         signer || provider
       );
+
+      this.app = new App(provider, this.appId, signer);
     } else {
       throw new Error('Failed to get contract');
     }
@@ -64,14 +74,17 @@ export class ERC20Instance extends BaseContract {
       await this.checkNetworksMatch();
       validateWalletAndAmount(params.to, params.amount);
 
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
       const tx = await this.contract.mintTo(params.to, params.amount, {
         ...params.overrides,
+        value: platformFee,
       });
 
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error);
 
       throw new Error(parsedError);
     }
@@ -91,7 +104,7 @@ export class ERC20Instance extends BaseContract {
   async burn(params: ERC20BurnParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
-      validateBigNumber(params.amount);
+      validateBigNumbers([params.amount]);
 
       const tx = await this.contract.burn(params.amount, {
         ...params.overrides,
@@ -101,7 +114,7 @@ export class ERC20Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -130,7 +143,43 @@ export class ERC20Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   * Transfers tokens from the current account to the provided account.
+   *
+   * @async
+   * @function transfer
+   * @param {string} params.to - The address of the account to receive the tokens.
+   * @param {BigNumberish} params.amount - The amount of tokens to transfer.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - A Promise that resolves to the transaction receipt object.
+   * @throws {Error} - If there is an error with the Ethereum transaction, a new Error object is thrown with a message containing the error details.
+   */
+  async transferFrom(
+    params: ERC20TransferFromParams
+  ): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+      validateWalletAndAmount(params.to, params.amount);
+
+      const tx = await this.contract.transferFrom(
+        params.from,
+        params.to,
+        params.amount,
+        {
+          ...params.overrides,
+        }
+      );
+
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -161,7 +210,7 @@ export class ERC20Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -178,7 +227,7 @@ export class ERC20Instance extends BaseContract {
    * @returns {Promise<number>} Returns the allowance amount as a number
    */
 
-  async allowance(params: ERC20AllowanceParams): Promise<number> {
+  async allowance(params: ERC20AllowanceParams): Promise<string> {
     try {
       await this.checkNetworksMatch();
       validateWallets([params.holder, params.spender]);
@@ -191,9 +240,9 @@ export class ERC20Instance extends BaseContract {
         }
       );
 
-      return allowance.toNumber();
+      return allowance.toString();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -208,7 +257,7 @@ export class ERC20Instance extends BaseContract {
    * @throws {Error} - If the method call fails, an error is thrown with the relevant error message.
    */
 
-  async totalSupply(params?: ERC20TotalSupplyParams): Promise<number> {
+  async totalSupply(params?: ERC20TotalSupplyParams): Promise<string> {
     try {
       await this.checkNetworksMatch();
 
@@ -216,9 +265,9 @@ export class ERC20Instance extends BaseContract {
         ...params?.overrides,
       });
 
-      return totalSupply.toNumber();
+      return totalSupply.toString();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -234,7 +283,7 @@ export class ERC20Instance extends BaseContract {
    * @throws {Error} Throws an error if the account address is invalid or the balanceOf call fails.
    */
 
-  async balanceOf(params: ERC20BalanceOfParams): Promise<number> {
+  async balanceOf(params: ERC20BalanceOfParams): Promise<string> {
     try {
       await this.checkNetworksMatch();
 
@@ -244,10 +293,10 @@ export class ERC20Instance extends BaseContract {
         ...params.overrides,
       });
 
-      return balance.toNumber();
+      return balance.toString();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
-      const parsedError = parseErrorData(error, ContractType.ERC20);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }

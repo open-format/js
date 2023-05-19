@@ -1,9 +1,9 @@
-import { ERC20Instance } from '@openformat/sdk';
+import { ERC20Base } from '@openformat/sdk';
 import { useMutation } from '@tanstack/react-query';
 
 /**
  * Hook to mint
- * @param {ERC20Instance} token ERC20Instance
+ * @param {ERC20Base} token ERC20Base
  *
  * @example
  * ```tsx
@@ -11,11 +11,11 @@ import { useMutation } from '@tanstack/react-query';
  * ```
  *
  */
-export function useBurnToken(token: ERC20Instance) {
+export function useBurnToken(token: ERC20Base) {
   const { mutateAsync, ...mutation } = useMutation<
     Awaited<ReturnType<typeof token.burn>>,
     unknown,
-    Parameters<ERC20Instance['burn']>[0]
+    Parameters<ERC20Base['burn']>[0]
   >(async (data) => {
     return await token.burn(data);
   });

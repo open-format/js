@@ -1,9 +1,12 @@
 import {
-  ERC20Instance,
-  ERC721Instance,
+  Chains,
+  ContractErrors,
+  ERC20Base,
+  ERC721Base,
   ERC721MintParams,
   OpenFormatSDK,
 } from '../src';
+import { toWei } from '../src/helpers';
 import {
   APP_ID,
   ERC20_CONTRACT_ADDRESS,
@@ -13,23 +16,23 @@ import {
   ZERO_ADDRESS,
 } from './utilities';
 
-describe('ERC721', () => {
+describe('NFT', () => {
   describe('approve()', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC721Instance;
+    let contract: ERC721Base;
     let walletAddress: string;
     let ERC721MintParams: ERC721MintParams;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });
 
       contract = (await sdk.getContract({
         contractAddress: ERC721_CONTRACT_ADDRESS,
-      })) as ERC721Instance;
+      })) as ERC721Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
@@ -56,7 +59,9 @@ describe('ERC721', () => {
         });
       }
 
-      await expect(approve).rejects.toThrow('OwnerQueryForNonexistentToken');
+      await expect(approve).rejects.toThrow(
+        ContractErrors.OwnerQueryForNonexistentToken
+      );
     });
 
     it('throws an error if token attempted to be approved is not owned by signer', async () => {
@@ -73,29 +78,29 @@ describe('ERC721', () => {
       }
 
       await expect(approve).rejects.toThrow(
-        'ApprovalCallerNotOwnerNorApproved'
+        ContractErrors.ApprovalCallerNotOwnerNorApproved
       );
     });
   });
 });
 describe('ERC20', () => {
-  const AMOUNT = 100;
+  const AMOUNT = toWei('100');
 
   describe('approve()', () => {
     let sdk: OpenFormatSDK;
-    let contract: ERC20Instance;
+    let contract: ERC20Base;
     let walletAddress: string;
 
     beforeAll(async () => {
       sdk = new OpenFormatSDK({
-        network: 'localhost',
+        network: Chains.foundry,
         appId: APP_ID,
         signer: PRIVATE_KEY,
       });
 
       contract = (await sdk.getContract({
         contractAddress: ERC20_CONTRACT_ADDRESS,
-      })) as ERC20Instance;
+      })) as ERC20Base;
 
       if (sdk.signer) {
         walletAddress = await sdk.signer?.getAddress();
@@ -111,7 +116,7 @@ describe('ERC20', () => {
         spender: WALLET_ADDRESS2,
       });
 
-      expect(approved).toBe(AMOUNT);
+      expect(approved).toBe(AMOUNT.toString());
     });
 
     it('throws an error when to address is not a valid address', async () => {
@@ -129,7 +134,9 @@ describe('ERC20', () => {
         await contract.approve({ spender: ZERO_ADDRESS, amount: AMOUNT });
       }
 
-      await expect(approve).rejects.toThrow('ERC20Base__ApproveToZeroAddress');
+      await expect(approve).rejects.toThrow(
+        ContractErrors.ERC20Base__ApproveToZeroAddress
+      );
     });
   });
 });

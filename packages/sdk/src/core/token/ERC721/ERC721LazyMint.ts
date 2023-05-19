@@ -1,24 +1,45 @@
-import { BigNumber, ContractReceipt, ethers, providers, Signer } from 'ethers';
-import { ERC721Base, ERC721Base__factory } from '../../contract-types';
-import { parseErrorData, processTransaction } from '../../helpers/transaction';
+import {
+  BigNumber,
+  BigNumberish,
+  ContractReceipt,
+  ethers,
+  providers,
+  Signer,
+} from 'ethers';
+import {
+  ERC721LazyMint as ERC721LazyMintContract,
+  ERC721LazyMint__factory,
+} from '../../../contract-types';
+import { ERC721LazyDropStorage } from '../../../contract-types/facet/ERC721LazyDropFacet';
+import {
+  parseErrorData,
+  processTransaction,
+} from '../../../helpers/transaction';
 import {
   validateWallet,
-  validateWalletAndMetadata,
-} from '../../helpers/validation';
+  validateWalletAndAmount,
+} from '../../../helpers/validation';
 import {
-  ContractType,
   ERC721ApproveParams,
   ERC721BalanceOfParams,
-  ERC721BatchMintParams,
-  ERC721BurnParams,
   ERC721GetApprovedParams,
-  ERC721MintParams,
+  ERC721LazyMint_BatchMintParams,
+  ERC721LazyMint_BurnParams,
+  ERC721LazyMint_ClaimParams,
+  ERC721LazyMint_GetClaimConditionParams,
+  ERC721LazyMint_LazyMintParams,
+  ERC721LazyMint_MintParams,
+  ERC721LazyMint_RemoveClaimConditionParams,
+  ERC721LazyMint_SetClaimConditionParams,
+  ERC721LazyMint_SetMinterRoleParams,
+  ERC721LazyMint_TransferParams,
+  ERC721LazyMint_VerifyClaimParams,
   ERC721OwnerOfParams,
-  ERC721OwnerParams,
   ERC721TotalSupplyParams,
-  ERC721TransferParams,
-} from '../../types';
-import { BaseContract } from '../base';
+} from '../../../types';
+import { App } from '../../app';
+import { BaseContract } from '../../base';
+import { ERC721LazyDrop } from '../../drop/ERC721LazyDrop';
 
 /**
  * Represents an ERC721 contract instance with utility methods to interact with an ERC721 contract
@@ -26,8 +47,10 @@ import { BaseContract } from '../base';
  * @extends BaseContract
  */
 
-export class ERC721Instance extends BaseContract {
-  private contract: ERC721Base;
+export class ERC721LazyMint extends BaseContract {
+  private contract: ERC721LazyMintContract;
+  private drop: ERC721LazyDrop;
+  private app: App;
 
   constructor(
     provider: providers.Provider,
@@ -38,10 +61,13 @@ export class ERC721Instance extends BaseContract {
     super(provider, appId, signer);
 
     if (contractAddress && ethers.utils.isAddress(contractAddress)) {
-      this.contract = ERC721Base__factory.connect(
+      this.contract = ERC721LazyMint__factory.connect(
         contractAddress,
         signer || provider
       );
+
+      this.drop = new ERC721LazyDrop(provider, contractAddress, appId, signer);
+      this.app = new App(provider, appId, signer);
     } else {
       throw new Error('Failed to get contract');
     }
@@ -58,20 +84,49 @@ export class ERC721Instance extends BaseContract {
    * @throws {Error} - Throws an error if the recipient address or tokenURI is invalid or if the transaction fails.
    */
 
-  async mint(params: ERC721MintParams): Promise<ContractReceipt> {
+  async mint(params: ERC721LazyMint_MintParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
 
-      validateWalletAndMetadata(params.to, params.tokenURI);
+      validateWallet(params.to);
 
-      const tx = await this.contract.mintTo(params.to, params.tokenURI, {
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
+      const tx = await this.contract.mintTo(params.to, {
         ...params.overrides,
+        value: platformFee,
       });
 
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  async lazyMint(
+    params: ERC721LazyMint_LazyMintParams
+  ): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+
+      const { platformFee } = await this.app.platformFeeInfo(0);
+
+      const tx = await this.contract.lazyMint(
+        params.amount,
+        params.baseURIForTokens,
+        ethers.utils.formatBytes32String(params.data as string),
+        {
+          ...params.overrides,
+          value: platformFee,
+        }
+      );
+
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -88,26 +143,25 @@ export class ERC721Instance extends BaseContract {
    * @throws Will throw an error if the wallet or metadata are invalid or if an error occurs during the transaction.
    */
 
-  async batchMint(params: ERC721BatchMintParams): Promise<ContractReceipt> {
+  async batchMint(
+    params: ERC721LazyMint_BatchMintParams
+  ): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
 
-      validateWalletAndMetadata(params.to, params.baseURI);
+      validateWalletAndAmount(params.to, params.quantity);
 
-      const tx = await this.contract.batchMintTo(
-        params.to,
-        params.quantity,
-        params.baseURI,
+      const { platformFee } = await this.app.platformFeeInfo(0);
 
-        {
-          ...params.overrides,
-        }
-      );
+      const tx = await this.contract.batchMintTo(params.to, params.quantity, {
+        ...params.overrides,
+        value: platformFee.mul(params.quantity as BigNumberish),
+      });
 
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -122,7 +176,7 @@ export class ERC721Instance extends BaseContract {
    * @throws {Error} - Throws an error if the burn operation fails.
    */
 
-  async burn(params: ERC721BurnParams): Promise<ContractReceipt> {
+  async burn(params: ERC721LazyMint_BurnParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
 
@@ -134,7 +188,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -151,7 +205,9 @@ export class ERC721Instance extends BaseContract {
    * @throws {Error} - Throws an error if the transfer operation fails.
    */
 
-  async transfer(params: ERC721TransferParams): Promise<ContractReceipt> {
+  async transfer(
+    params: ERC721LazyMint_TransferParams
+  ): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
 
@@ -168,11 +224,116 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
 
+  /**
+   *
+   * Grants the MINTER_ROLE to the specified account for the current ERC721 contract.
+   * @async
+   * @function setMinterRole
+   * @param {BytesLike} params.role - The role to grant to the account.
+   * @param {string} params.account - The account to be granted the MINTER_ROLE.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - A Promise that resolves to a ContractReceipt object that contains information about the transaction.
+   * @throws {Error} - Throws an error if the network check fails or if there is an error during the grantRole transaction.
+   */
+
+  async grantRole(
+    params: ERC721LazyMint_SetMinterRoleParams
+  ): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.contract.grantRole(params.role, params.account, {
+        ...params.overrides,
+      });
+
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  async setClaimConditions(
+    params: ERC721LazyMint_SetClaimConditionParams
+  ): Promise<ContractReceipt> {
+    return await this.drop.setClaimCondition(params);
+  }
+
+  /**
+   * Removes the claim condition for the ERC721LazyDrop contract.
+   *
+   * @async
+   * @function removeClaimCondition
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} - A promise that resolves to a contract receipt object.
+   * @throws {Error} - Throws an error if there is a problem removing the claim condition.
+   */
+
+  async removeClaimCondition(
+    params?: ERC721LazyMint_RemoveClaimConditionParams
+  ): Promise<ContractReceipt> {
+    return await this.drop.removeClaimCondition(params);
+  }
+
+  /**
+   * Gets the claim condition.
+   *
+   * @async
+   * @function getClaimCondition
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ERC721LazyDropStorage.ClaimConditionStructOutput>} - A promise that resolves to the claim condition object.
+   * @throws {Error} - Throws an error if there is a problem getting the claim condition.
+   */
+
+  async getClaimCondition(
+    params?: ERC721LazyMint_GetClaimConditionParams
+  ): Promise<ERC721LazyDropStorage.ClaimConditionStructOutput> {
+    return await this.drop.getClaimCondition(params);
+  }
+
+  /**
+   * Claims NFT tokens.
+   *
+   * @async
+   * @function claim
+   * @param {string} params.receiver - The address that will receive the claimed NFT tokens.
+   * @param {number} params.quantity - The number of NFT tokens to claim.
+   * @param {string} params.currency - The contract address of the currency used to pay for the NFT tokens (e.g. 'ETH', 'DAI').
+   * @param {number} params.pricePerToken - The price per token in wei of the NFT tokens.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<ContractReceipt>} The transaction receipt.
+   * @throws {Error} - Throws an error if there is a problem claiming the tokens.
+   */
+
+  async claim(params: ERC721LazyMint_ClaimParams): Promise<ContractReceipt> {
+    return await this.drop.claim(params);
+  }
+
+  /**
+   * Verifies a claim.
+   *
+   * @async
+   * @function
+   * @param {address} params.claimer - The address of the account that will claim the tokens.
+   * @param {number} params.quantity - The number of tokens to be claimed.
+   * @param {address} params.currency - The address of the token used to purchase the NFTs.
+   * @param {BigNumber} params.pricePerToken - The price per token, denominated in the currency token.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<boolean>} - A Promise that resolves with a boolean indicating whether the claim can be made.
+   * @throws {Error} - Throws an error if there is a problem verifying the claim.
+   */
+
+  async verifyClaim(
+    params: ERC721LazyMint_VerifyClaimParams
+  ): Promise<boolean> {
+    return await this.drop.verifyClaim(params);
+  }
   /**
    * Grants approval to another address to transfer ownership of an ERC721 token.
    * @async
@@ -196,7 +357,7 @@ export class ERC721Instance extends BaseContract {
 
       return receipt;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -221,7 +382,7 @@ export class ERC721Instance extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -246,7 +407,7 @@ export class ERC721Instance extends BaseContract {
 
       return totalSupply.toNumber();
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -273,7 +434,7 @@ export class ERC721Instance extends BaseContract {
       return balance.toNumber();
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }
@@ -298,7 +459,7 @@ export class ERC721Instance extends BaseContract {
 
       return tx;
     } catch (error: any) {
-      const parsedError = parseErrorData(error, ContractType.ERC721);
+      const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }
   }

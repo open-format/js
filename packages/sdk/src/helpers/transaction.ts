@@ -1,7 +1,15 @@
-import { ContractReceipt, ContractTransaction, ethers } from 'ethers';
-import ERC20Base from '../../abis/ERC20/ERC20Base.json';
-import ERC721Base from '../../abis/ERC721/ERC721Base.json';
-import { ContractType } from '../types';
+import {
+  BigNumber,
+  BigNumberish,
+  BytesLike,
+  ContractReceipt,
+  ContractTransaction,
+  ethers,
+} from 'ethers';
+import forOwn from 'lodash.forown';
+import isObject from 'lodash.isobject';
+import { abis } from '../constants/contracts';
+import { ContractErrors } from '../types';
 
 export async function processTransaction(
   tx: ContractTransaction
@@ -10,35 +18,74 @@ export async function processTransaction(
   return receipt;
 }
 
-export function parseErrorData(error: any, contractType: ContractType) {
-  let abi: any;
+export function parseErrorData(error: any) {
+  const iface = new ethers.utils.Interface(abis);
+  let result: BytesLike = '';
 
-  switch (contractType) {
-    case ContractType.ERC721:
-      abi = ERC721Base.abi;
-      break;
-    case ContractType.ERC20:
-      abi = ERC20Base.abi;
-      break;
+  function getSignatureHash(error: any) {
+    forOwn(error, (value, key) => {
+      if (isObject(value)) {
+        getSignatureHash(value);
+      } else if (key === 'data') {
+        if (value.length === 10) {
+          result = value;
+        }
+      }
+    });
   }
 
-  if (!abi) throw new Error("Can't determine ABI");
+  getSignatureHash(error);
 
-  const iface = new ethers.utils.Interface(abi);
-
-  //@TODO: Needs a refactor.
-  // Must return: error signature, name, transaction data
-
-  if (error?.data) {
-    if (iface.parseError(error.data)) return iface.parseError(error.data).name;
-  } else if (error?.error?.error?.error?.data) {
-    if (iface.parseError(error.error.error.error.data))
-      return iface.parseError(error.error.error.error.data).name;
-  } else if (error?.reason === 'network does not support ENS') {
-    return 'Invalid wallet address';
-  } else if (error?.reason) {
-    return error.reason;
-  } else {
-    return error;
+  interface ContractErrorsInterface {
+    [key: string]: number;
   }
+
+  const contractErrorsObj =
+    ContractErrors as unknown as ContractErrorsInterface;
+
+  try {
+    if (result) {
+      const SigName = iface.parseError(result).name;
+
+      if (SigName in contractErrorsObj) {
+        return contractErrorsObj[SigName];
+      } else {
+        return 'SigHash not found in ContractErrors type';
+      }
+    } else {
+      return error;
+    }
+  } catch (e: any) {
+    throw Error(e);
+  }
+}
+
+/**
+ * Convert a decimal Ether amount (ETH) to its smallest unit (wei) as a BigNumber.
+ *
+ * @param {string} amount - The decimal Ether amount to be converted to wei.
+ * @returns {BigNumber} The converted wei amount as a BigNumber instance.
+ *
+ * @example
+ * const decimalAmount = "0.01";
+ * const weiAmount = toWei(decimalAmount);
+ * console.log(weiAmount.toString()); // "10000000000000000"
+ */
+export function toWei(amount: string): BigNumber {
+  return ethers.utils.parseEther(amount);
+}
+
+/**
+ * Convert a wei amount as a BigNumber to its decimal Ether representation (ETH) as a string.
+ *
+ * @param {BigNumberish} amount - The wei amount to be converted to decimal Ether.
+ * @returns {string} The converted decimal Ether amount as a string.
+ *
+ * @example
+ * const weiAmount = "10000000000000000"
+ * const decimalAmount = fromWei(weiAmount);
+ * console.log(decimalAmount); // "0.01"
+ */
+export function fromWei(amount: BigNumberish): string {
+  return ethers.utils.formatEther(amount);
 }

@@ -1,4 +1,4 @@
-import { ERC721Instance } from '@openformat/sdk';
+import { ERC721Base } from '@openformat/sdk';
 import '@testing-library/jest-dom';
 import React from 'react';
 import { useBatchMint, useContract } from '../src/hooks';
@@ -12,7 +12,7 @@ import {
 
 function Mint({ address }: { address: string }) {
   const { data: nft } = useContract(address);
-  const { data, batchMint } = useBatchMint(nft as ERC721Instance);
+  const { data, batchMint } = useBatchMint(nft as ERC721Base);
 
   async function handleMint() {
     await batchMint({ to: WALLET_ADDRESS, quantity: 5, baseURI: 'ipfs://' });
