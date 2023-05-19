@@ -1,5 +1,18 @@
 # @openformat/react
 
+## 1.1.0
+
+### Minor Changes
+
+- [#114](https://github.com/open-format/js/pull/114) [`e87147d`](https://github.com/open-format/js/commit/e87147dab409b21d2fb4f9095043bc4e416ded67) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Allow app ID to be set via a function call
+
+- [`df1378f`](https://github.com/open-format/js/commit/df1378f527d23185c57ef6b2ec35798770e686f1) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Release
+
+### Patch Changes
+
+- Updated dependencies [[`e87147d`](https://github.com/open-format/js/commit/e87147dab409b21d2fb4f9095043bc4e416ded67), [`df1378f`](https://github.com/open-format/js/commit/df1378f527d23185c57ef6b2ec35798770e686f1)]:
+  - @openformat/sdk@1.1.0
+
 ## 1.0.0-dev-fee074d
 
 ### Major Changes
