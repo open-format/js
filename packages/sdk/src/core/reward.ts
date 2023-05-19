@@ -1,4 +1,4 @@
-import { BytesLike, providers, Signer } from 'ethers';
+import { BytesLike, ethers, providers, Signer } from 'ethers';
 import {
   RewardFacet as RewardContract,
   RewardFacet__factory,
@@ -141,9 +141,13 @@ export class Reward extends BaseContract {
 
     try {
       this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
+      console.log({ gasOverrides });
 
       if (transactions?.length) {
-        const tx = await this.contract.multicall(transactions);
+        const tx = await this.contract.multicall(transactions, {
+          ...gasOverrides,
+        });
         return tx;
       } else {
         throw new Error('No transactions found.');

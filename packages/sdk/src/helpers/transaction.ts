@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   BigNumber,
   BigNumberish,
@@ -5,9 +6,11 @@ import {
   ContractReceipt,
   ContractTransaction,
   ethers,
+  providers,
 } from 'ethers';
 import forOwn from 'lodash.forown';
 import isObject from 'lodash.isobject';
+import { Chains } from '../constants';
 import { abis } from '../constants/contracts';
 import { ContractErrors } from '../types';
 
@@ -24,6 +27,7 @@ export function parseErrorData(error: any) {
 
   function getSignatureHash(error: any) {
     forOwn(error, (value, key) => {
+      console.log({ value });
       if (isObject(value)) {
         getSignatureHash(value);
       } else if (key === 'data') {
@@ -88,4 +92,27 @@ export function toWei(amount: string): BigNumber {
  */
 export function fromWei(amount: BigNumberish): string {
   return ethers.utils.formatEther(amount);
+}
+
+export async function getPolygonGasFee(chainId: number) {
+  function getURL(chainId: number): string {
+    switch (chainId) {
+      case Chains.polygon.id:
+        return 'https://gasstation-mainnet.matic.network/v2';
+      case Chains.polygonMumbai.id:
+        return 'https://gasstation-mumbai.matic.today/v2';
+    }
+  }
+
+  try {
+    const url = getURL(chainId);
+    const { data } = await axios.get(url);
+    const gasPrice = ethers.utils.parseUnits(data.standard.toString(), 'gwei');
+
+    return {
+      gasPrice,
+    };
+  } catch (e) {
+    console.log('could not fetch gas');
+  }
 }
