@@ -1,5 +1,11 @@
 # @openformat/react
 
+## 1.1.0-dev-d3a8dcf
+
+### Minor Changes
+
+- [#117](https://github.com/open-format/js/pull/117) [`08b4852`](https://github.com/open-format/js/commit/08b4852d1fc97a7909ca11ea3ff6b48a89d9eef3) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Enable custom styling for Connect Button
+
 ## 1.1.0-dev-8de5595
 
 ### Minor Changes
