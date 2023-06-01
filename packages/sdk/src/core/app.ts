@@ -4,7 +4,7 @@ import {
   ContractReceipt,
   ethers,
   providers,
-  Signer,
+  Signer
 } from 'ethers';
 import {
   ERC20FactoryFacet as ERC20FactoryContract,
@@ -14,7 +14,7 @@ import {
   ERC721LazyDropFacet as ERC721LazyDropFacetContract,
   ERC721LazyDropFacet__factory,
   SettingsFacet as SettingsContract,
-  SettingsFacet__factory,
+  SettingsFacet__factory
 } from '../contract-types';
 import { poll } from '../helpers/subgraph';
 import { parseErrorData, processTransaction } from '../helpers/transaction';
@@ -28,7 +28,7 @@ import {
   ContractType,
   ERC20CreateParams,
   ERC721CreateParams,
-  ImplementationType,
+  ImplementationType
 } from '../types';
 import { BaseContract } from './base';
 import { Subgraph } from './subgraph';
@@ -106,11 +106,12 @@ export class App extends BaseContract {
   ): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.settings.setCreatorAccess(
         params.accounts,
         params.approvals,
-        { ...params.overrides }
+        { ...gasOverrides, ...params.overrides }
       );
 
       const receipt = await processTransaction(tx);
@@ -142,11 +143,13 @@ export class App extends BaseContract {
   ): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.settings.setAcceptedCurrencies(
         params.currencies,
         params.approvals,
         {
+          ...gasOverrides,
           ...params.overrides,
         }
       );
@@ -162,11 +165,13 @@ export class App extends BaseContract {
   async setApplicationFee(params: AppSetApplicationFeeParams) {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.settings.setApplicationFee(
         params.percentageBPS,
         params.recipient,
         {
+          ...gasOverrides,
           ...params.overrides,
         }
       );
@@ -222,6 +227,8 @@ export class App extends BaseContract {
       validateWallet(params.royaltyRecipient);
       validateBigNumbers([params.royaltyBps]);
 
+      const gasOverrides = await this.getGasPrice();
+
       const { platformFee } = await this.platformFeeInfo(0);
 
       const tx = await this.ERC721Factory.createERC721(
@@ -230,7 +237,7 @@ export class App extends BaseContract {
         params.royaltyRecipient,
         params.royaltyBps,
         ethers.utils.formatBytes32String(ImplementationType.BASE),
-        { ...params.overrides, value: platformFee }
+        { ...gasOverrides, ...params.overrides, value: platformFee }
       );
       const receipt = await tx.wait();
       const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
@@ -277,6 +284,8 @@ export class App extends BaseContract {
       validateWallet(params.royaltyRecipient);
       validateBigNumbers([params.royaltyBps]);
 
+      const gasOverrides = await this.getGasPrice();
+
       const { platformFee } = await this.platformFeeInfo(0);
 
       const tx = await this.ERC721Factory.createERC721(
@@ -286,7 +295,7 @@ export class App extends BaseContract {
         params.royaltyBps,
         ethers.utils.formatBytes32String(ImplementationType.LAZY_MINT),
 
-        { ...params.overrides, value: platformFee }
+        { ...gasOverrides, ...params.overrides, value: platformFee }
       );
       const receipt = await tx.wait();
       const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
@@ -332,6 +341,8 @@ export class App extends BaseContract {
 
       validateBigNumbers([params.supply]);
 
+      const gasOverrides = await this.getGasPrice();
+
       const { platformFee } = await this.platformFeeInfo(0);
 
       const tx = await this.ERC20Factory.createERC20(
@@ -340,7 +351,7 @@ export class App extends BaseContract {
         18,
         params.supply,
         ethers.utils.formatBytes32String(ImplementationType.BASE),
-        { ...params.overrides, value: platformFee }
+        { ...gasOverrides, ...params.overrides, value: platformFee }
       );
       const receipt = await tx.wait();
       const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))

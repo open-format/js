@@ -75,11 +75,13 @@ export class ERC721LazyDrop extends BaseContract {
 
       const { platformFee } = await this.app.platformFeeInfo(0);
 
+      const gasOverrides = await this.getGasPrice();
+
       const tx = await this.contract.ERC721LazyDrop_setClaimCondition(
         this.tokenContractAddress,
         params.condition,
         params.resetClaimEligibility,
-        { ...params.overrides, value: platformFee }
+        { ...gasOverrides, ...params.overrides, value: platformFee }
       );
 
       const receipt = await processTransaction(tx);
@@ -109,13 +111,19 @@ export class ERC721LazyDrop extends BaseContract {
         BigNumber.from(params.pricePerToken).mul(params.quantity as BigNumber)
       );
 
+      const gasOverrides = await this.getGasPrice();
+
       const tx = await this.contract.ERC721LazyDrop_claim(
         this.tokenContractAddress,
         params.receiver,
         params.quantity,
         params.currency,
         params.pricePerToken,
-        { ...params.overrides, value: platformFee.add(applicationFee) }
+        {
+          ...gasOverrides,
+          ...params.overrides,
+          value: platformFee.add(applicationFee),
+        }
       );
 
       const receipt = await processTransaction(tx);
@@ -172,10 +180,11 @@ export class ERC721LazyDrop extends BaseContract {
   ): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.ERC721LazyDrop_removeClaimCondition(
         this.tokenContractAddress,
-        { ...params?.overrides }
+        { ...gasOverrides, ...params?.overrides }
       );
 
       const receipt = await processTransaction(tx);

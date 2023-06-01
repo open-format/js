@@ -4,20 +4,20 @@ import {
   ContractReceipt,
   ethers,
   providers,
-  Signer,
+  Signer
 } from 'ethers';
 import {
   ERC721LazyMint as ERC721LazyMintContract,
-  ERC721LazyMint__factory,
+  ERC721LazyMint__factory
 } from '../../../contract-types';
 import { ERC721LazyDropStorage } from '../../../contract-types/facet/ERC721LazyDropFacet';
 import {
   parseErrorData,
-  processTransaction,
+  processTransaction
 } from '../../../helpers/transaction';
 import {
   validateWallet,
-  validateWalletAndAmount,
+  validateWalletAndAmount
 } from '../../../helpers/validation';
 import {
   ERC721ApproveParams,
@@ -35,7 +35,7 @@ import {
   ERC721LazyMint_TransferParams,
   ERC721LazyMint_VerifyClaimParams,
   ERC721OwnerOfParams,
-  ERC721TotalSupplyParams,
+  ERC721TotalSupplyParams
 } from '../../../types';
 import { App } from '../../app';
 import { BaseContract } from '../../base';
@@ -89,10 +89,13 @@ export class ERC721LazyMint extends BaseContract {
       await this.checkNetworksMatch();
 
       validateWallet(params.to);
+        
+      const gasOverrides = await this.getGasPrice();
 
       const { platformFee } = await this.app.platformFeeInfo(0);
 
       const tx = await this.contract.mintTo(params.to, {
+        ...gasOverrides,
         ...params.overrides,
         value: platformFee,
       });
@@ -113,11 +116,14 @@ export class ERC721LazyMint extends BaseContract {
 
       const { platformFee } = await this.app.platformFeeInfo(0);
 
+      const gasOverrides = await this.getGasPrice();
+
       const tx = await this.contract.lazyMint(
         params.amount,
         params.baseURIForTokens,
         ethers.utils.formatBytes32String(params.data as string),
         {
+          ...gasOverrides,
           ...params.overrides,
           value: platformFee,
         }
@@ -150,10 +156,12 @@ export class ERC721LazyMint extends BaseContract {
       await this.checkNetworksMatch();
 
       validateWalletAndAmount(params.to, params.quantity);
+      const gasOverrides = await this.getGasPrice();
 
       const { platformFee } = await this.app.platformFeeInfo(0);
 
       const tx = await this.contract.batchMintTo(params.to, params.quantity, {
+        ...gasOverrides,
         ...params.overrides,
         value: platformFee.mul(params.quantity as BigNumberish),
       });
@@ -179,8 +187,10 @@ export class ERC721LazyMint extends BaseContract {
   async burn(params: ERC721LazyMint_BurnParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.burn(params.tokenId, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -211,11 +221,14 @@ export class ERC721LazyMint extends BaseContract {
     try {
       await this.checkNetworksMatch();
 
+      const gasOverrides = await this.getGasPrice();
+
       const tx = await this.contract.transferFrom(
         params.from,
         params.to,
         params.tokenId,
         {
+          ...gasOverrides,
           ...params.overrides,
         }
       );
@@ -246,8 +259,10 @@ export class ERC721LazyMint extends BaseContract {
   ): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.grantRole(params.role, params.account, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -348,8 +363,10 @@ export class ERC721LazyMint extends BaseContract {
   async approve(params: ERC721ApproveParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.approve(params.spender, params.tokenId, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
