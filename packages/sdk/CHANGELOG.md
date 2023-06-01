@@ -1,5 +1,17 @@
 # @openformat/sdk
 
+## 1.1.2
+
+### Patch Changes
+
+- [#117](https://github.com/open-format/js/pull/117) [`08b4852`](https://github.com/open-format/js/commit/08b4852d1fc97a7909ca11ea3ff6b48a89d9eef3) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Enable custom styling for Connect Button
+
+## 1.1.0-dev-8de5595
+
+### Minor Changes
+
+- [#114](https://github.com/open-format/js/pull/114) [`e87147d`](https://github.com/open-format/js/commit/e87147dab409b21d2fb4f9095043bc4e416ded67) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Allow app ID to be set via a function call
+
 ## 1.0.0-dev-fee074d
 
 ### Major Changes

@@ -1,6 +1,6 @@
 {
   "name": "@openformat/sdk",
-  "version": "1.0.0-dev-fee074d",
+  "version": "1.1.2",
   "repository": "https://github.com/open-format/js/tree/main/packages/sdk",
   "author": "OpenFormat Dev <dev@openformat.tech>",
   "license": "Apache-2.0",

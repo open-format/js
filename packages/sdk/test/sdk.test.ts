@@ -64,4 +64,15 @@ describe('sdk', () => {
 
     await expect(createInstance).rejects.toThrow('Invalid contract address');
   });
+
+  it('should update the app ID', async () => {
+    const sdk = new OpenFormatSDK({
+      network: Chains.foundry,
+      appId: APP_ID,
+    });
+
+    sdk.setAppId('0x123');
+
+    expect(sdk.appId).toBe('0x123');
+  });
 });

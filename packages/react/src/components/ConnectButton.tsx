@@ -1,16 +1,34 @@
 import { ConnectKitButton } from 'connectkit';
-import React from 'react';
 
 interface Props {
   labels?: {
     disconnected: string;
   };
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export function ConnectButton({
   labels = {
     disconnected: 'Connect Wallet',
   },
+  className,
+  style,
+  ...props
 }: Props) {
-  return <ConnectKitButton label={labels.disconnected} />;
+  const custom = className || style;
+
+  return custom ? (
+    <ConnectKitButton.Custom>
+      {({ isConnected, show, truncatedAddress, ensName }) => {
+        return (
+          <button onClick={show} className={className} style={style} {...props}>
+            {isConnected ? ensName ?? truncatedAddress : labels.disconnected}
+          </button>
+        );
+      }}
+    </ConnectKitButton.Custom>
+  ) : (
+    <ConnectKitButton />
+  );
 }
