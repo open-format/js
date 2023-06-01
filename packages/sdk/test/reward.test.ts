@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import {
   ActivityType,
   Chains,
@@ -63,7 +64,8 @@ describe('Reward', () => {
   });
 
   it('should trigger XP, Reward currency and a badge', async () => {
-    const TRANSFER_AMOUNT = 20;
+    const AMOUNT = ethers.utils.parseEther('1');
+    const TRANSFER_AMOUNT = ethers.utils.parseEther('2');
 
     await rewardCurrency.approve({ spender: APP_ID, amount: TRANSFER_AMOUNT });
 
@@ -73,7 +75,7 @@ describe('Reward', () => {
         {
           id: 'connect',
           address: ERC20_CONTRACT_ADDRESS,
-          amount: 10,
+          amount: AMOUNT,
           type: RewardType.XP,
           activityType: ActivityType.ACTION,
         },
@@ -95,9 +97,9 @@ describe('Reward', () => {
       ],
     };
 
-    const receipt = await sdk.Reward.trigger(params);
+    const tx = await sdk.Reward.trigger(params);
 
-    expect(receipt.status).toBe(1);
+    expect(tx.status).toBe(1);
   });
 
   it('should throw an error if app does not have the allowance to transfer reward currency', async () => {
