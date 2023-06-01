@@ -66,6 +66,29 @@ export class OpenFormatSDK extends BaseContract {
     this.subgraph = new Subgraph(this.provider, this.appId, this?.signer);
   }
 
+  /**
+   * Updates the appId of the OpenFormatSDK instance and reinstantiates
+   * the App, Reward, Factory, and Subgraph objects with the new appId.
+   *
+   * @remarks
+   * This function does not retain any states from the previous App, Reward,
+   * Factory, or Subgraph instances. Use with caution as this may lead to loss
+   * of previous states.
+   *
+   * @param appId - The new application identifier to set. This is expected to be a string.
+   *
+   * @example
+   * const sdk = new OpenFormatSDK(sdkOptions);
+   * sdk.setAppId('newAppId');
+   */
+  setAppId(appId: string) {
+    this.appId = appId;
+    this.App = new App(this.provider, appId, this?.signer);
+    this.Reward = new Reward(this.provider, appId, this?.signer);
+    this.factory = new Factory(this.provider, appId, this?.signer);
+    this.subgraph = new Subgraph(this.provider, appId, this?.signer);
+  }
+
   async getContract({
     contractAddress,
     name,

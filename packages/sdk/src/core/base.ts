@@ -37,8 +37,4 @@ export class BaseContract {
       }
     }
   }
-
-  setAppId(appId: string) {
-    this.appId = appId;
-  }
 }
