@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   BigNumber,
   BigNumberish,
@@ -8,6 +9,7 @@ import {
 } from 'ethers';
 import forOwn from 'lodash.forown';
 import isObject from 'lodash.isobject';
+import { Chains } from '../constants';
 import { abis } from '../constants/contracts';
 import { ContractErrors } from '../types';
 
@@ -88,4 +90,61 @@ export function toWei(amount: string): BigNumber {
  */
 export function fromWei(amount: BigNumberish): string {
   return ethers.utils.formatEther(amount);
+}
+
+/**
+ * Asynchronously fetches the gas fee for the Polygon network.
+ *
+ * This function takes in a `chainId` as a parameter, uses it to determine the correct URL endpoint for fetching
+ * the gas fee from the Polygon network's gas station API, and returns the gas fee as a BigNumber.
+ *
+ * If the function encounters an error while fetching the gas fee, it defaults to returning '31' Gwei for the Polygon mainnet
+ * and '1' Gwei for the Polygon Mumbai testnet.
+ *
+ * @remarks
+ * This function utilises the Ethers library for manipulating the fetched gas fee.
+ *
+ * @param chainId - The ID of the blockchain network where the transaction is taking place.
+ * @returns A Promise that resolves to a BigNumber representing the gas fee in Gwei.
+ * @throws Will throw an error if unable to fetch the gas fee.
+ *
+ * @example
+ * ```typescript
+ * const gasFee = await getPolygonGasFee(Chains.polygon.id);
+ * console.log(gasFee.toString());
+ * ```
+ */
+export async function getPolygonGasFee(
+  chainId: typeof Chains.polygon.id | typeof Chains.polygonMumbai.id
+): Promise<BigNumber> {
+  function getURL(
+    chainId: typeof Chains.polygon.id | typeof Chains.polygonMumbai.id
+  ) {
+    switch (chainId) {
+      case Chains.polygon.id:
+        return 'https://gasstation-mainnet.matic.network/v2';
+      case Chains.polygonMumbai.id:
+        return 'https://gasstation-mumbai.matic.today/v2';
+    }
+  }
+
+  try {
+    const url = getURL(chainId);
+    const { data } = await axios.get(url);
+
+    const priorityFee = data.fast.maxPriorityFee;
+    if (priorityFee > 0) {
+      const fixedFee = parseFloat(priorityFee).toFixed(9);
+
+      return ethers.utils.parseUnits(fixedFee, 'gwei');
+    }
+  } catch (e) {
+    console.log('could not fetch from polygon gas station');
+  }
+
+  if (chainId === Chains.polygon.id) {
+    return ethers.utils.parseUnits('31', 'gwei');
+  } else {
+    return ethers.utils.parseUnits('1', 'gwei');
+  }
 }
