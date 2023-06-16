@@ -417,4 +417,5 @@ export enum ContractErrors {
   ERC721LazyDrop_quantityZeroOrExceededWalletLimit = 'Exceeded wallet limit.',
   ERC721LazyDrop_cantClaimYet = 'Cannot claim yet, please wait for drop to begin.',
   ERC721LazyDrop_exceededMaxSupply = 'All tokens have been claimed.',
+  BatchMintMetadata_invalidTokenId = 'The Token does not exist',
 }
