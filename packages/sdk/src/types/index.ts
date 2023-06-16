@@ -164,6 +164,11 @@ export interface ERC721OwnerOfParams {
   overrides?: Parameters<ERC721BaseContract['ownerOf']>[1];
 }
 
+export interface ERC721TokenURIParams {
+  tokenId: Parameters<ERC721BaseContract['tokenURI']>[0];
+  overrides?: Parameters<ERC721BaseContract['tokenURI']>[1];
+}
+
 export interface ERC721NextTokenIdToMintParams {
   overrides?: Parameters<ERC721BaseContract['nextTokenIdToMint']>[0];
 }
@@ -409,4 +414,7 @@ export enum ContractErrors {
   OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
   Factory_nameAlreadyUsed = 'Factory name already used',
   CurrencyTransferLib_insufficientValue = 'Transaction value is not set or too low.',
+  ERC721LazyDrop_quantityZeroOrExceededWalletLimit = 'Exceeded wallet limit.',
+  ERC721LazyDrop_cantClaimYet = 'Cannot claim yet, please wait for drop to begin.',
+  ERC721LazyDrop_exceededMaxSupply = 'All tokens have been claimed.',
 }
