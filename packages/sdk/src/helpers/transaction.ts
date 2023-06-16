@@ -122,9 +122,9 @@ export async function getPolygonGasFee(
   ) {
     switch (chainId) {
       case Chains.polygon.id:
-        return 'https://gasstation-mainnet.matic.network/v2';
+        return 'https://gasstation.polygon.technology/v2';
       case Chains.polygonMumbai.id:
-        return 'https://gasstation-mumbai.matic.today/v2';
+        return 'https://gasstation-testnet.polygon.technology/v2';
     }
   }
 
