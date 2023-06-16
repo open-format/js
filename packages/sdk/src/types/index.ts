@@ -1,5 +1,5 @@
 import { Chain } from '@wagmi/chains';
-import { Signer } from 'ethers';
+import { BigNumberish, Signer } from 'ethers';
 import {
   ERC20Base as ERC20BaseContract,
   ERC20FactoryFacet,
@@ -365,7 +365,7 @@ export interface RewardTriggerParams {
 }
 
 export interface RewardToken {
-  amount: number;
+  amount: BigNumberish;
   address: string;
   type: RewardType;
   id: string;
