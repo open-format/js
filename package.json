@@ -27,7 +27,7 @@
     "document": "node generate-docs.js",
     "version:dev": "yarn changeset version --snapshot dev",
     "release:dev": "yarn changeset publish --tag dev --no-git-tag",
-    "release": "yarn changeset publish"
+    "release": "yarn run packages:build && yarn changeset publish"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.9",

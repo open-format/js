@@ -1,5 +1,5 @@
 import { Chain } from '@wagmi/chains';
-import { Signer } from 'ethers';
+import { BigNumberish, Signer } from 'ethers';
 import {
   ERC20Base as ERC20BaseContract,
   ERC20FactoryFacet,
@@ -162,6 +162,11 @@ export interface ERC721BalanceOfParams {
 export interface ERC721OwnerOfParams {
   tokenId: Parameters<ERC721BaseContract['ownerOf']>[0];
   overrides?: Parameters<ERC721BaseContract['ownerOf']>[1];
+}
+
+export interface ERC721TokenURIParams {
+  tokenId: Parameters<ERC721BaseContract['tokenURI']>[0];
+  overrides?: Parameters<ERC721BaseContract['tokenURI']>[1];
 }
 
 export interface ERC721NextTokenIdToMintParams {
@@ -365,7 +370,7 @@ export interface RewardTriggerParams {
 }
 
 export interface RewardToken {
-  amount: number;
+  amount: BigNumberish;
   address: string;
   type: RewardType;
   id: string;
@@ -409,4 +414,8 @@ export enum ContractErrors {
   OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
   Factory_nameAlreadyUsed = 'Factory name already used',
   CurrencyTransferLib_insufficientValue = 'Transaction value is not set or too low.',
+  ERC721LazyDrop_quantityZeroOrExceededWalletLimit = 'Exceeded wallet limit.',
+  ERC721LazyDrop_cantClaimYet = 'Cannot claim yet, please wait for drop to begin.',
+  ERC721LazyDrop_exceededMaxSupply = 'All tokens have been claimed.',
+  BatchMintMetadata_invalidTokenId = 'The Token does not exist',
 }

@@ -69,6 +69,28 @@ describe('ERC721', () => {
         );
       });
     });
+    describe('tokenURI()', () => {
+      it('returns the tokenURI of a given token', async () => {
+        const tokenId = await contract.nextTokenIdToMint();
+        await contract.mint(ERC721MintParams);
+        const tokenURI = await contract.tokenURI({ tokenId });
+
+        expect(tokenURI).toBe('ipfs://');
+      });
+
+      it('throws an error if the attempted token to be checked does not exist', async () => {
+        const tokenId = await contract.nextTokenIdToMint();
+        await contract.mint(ERC721MintParams);
+
+        async function tokenURI() {
+          await contract.tokenURI({ tokenId: tokenId.add(1) });
+        }
+
+        await expect(tokenURI).rejects.toThrow(
+          ContractErrors.BatchMintMetadata_invalidTokenId
+        );
+      });
+    });
     describe('balanceOf()', () => {
       it('returns the amount of tokens owned by an account', async () => {
         const newWallet = ethers.Wallet.createRandom().address;

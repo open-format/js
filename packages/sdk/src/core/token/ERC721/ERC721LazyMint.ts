@@ -35,6 +35,7 @@ import {
   ERC721LazyMint_TransferParams,
   ERC721LazyMint_VerifyClaimParams,
   ERC721OwnerOfParams,
+  ERC721TokenURIParams,
   ERC721TotalSupplyParams,
 } from '../../../types';
 import { App } from '../../app';
@@ -90,9 +91,12 @@ export class ERC721LazyMint extends BaseContract {
 
       validateWallet(params.to);
 
+      const gasOverrides = await this.getGasPrice();
+
       const { platformFee } = await this.app.platformFeeInfo(0);
 
       const tx = await this.contract.mintTo(params.to, {
+        ...gasOverrides,
         ...params.overrides,
         value: platformFee,
       });
@@ -113,11 +117,14 @@ export class ERC721LazyMint extends BaseContract {
 
       const { platformFee } = await this.app.platformFeeInfo(0);
 
+      const gasOverrides = await this.getGasPrice();
+
       const tx = await this.contract.lazyMint(
         params.amount,
         params.baseURIForTokens,
         ethers.utils.formatBytes32String(params.data as string),
         {
+          ...gasOverrides,
           ...params.overrides,
           value: platformFee,
         }
@@ -150,10 +157,12 @@ export class ERC721LazyMint extends BaseContract {
       await this.checkNetworksMatch();
 
       validateWalletAndAmount(params.to, params.quantity);
+      const gasOverrides = await this.getGasPrice();
 
       const { platformFee } = await this.app.platformFeeInfo(0);
 
       const tx = await this.contract.batchMintTo(params.to, params.quantity, {
+        ...gasOverrides,
         ...params.overrides,
         value: platformFee.mul(params.quantity as BigNumberish),
       });
@@ -179,8 +188,10 @@ export class ERC721LazyMint extends BaseContract {
   async burn(params: ERC721LazyMint_BurnParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.burn(params.tokenId, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -211,11 +222,14 @@ export class ERC721LazyMint extends BaseContract {
     try {
       await this.checkNetworksMatch();
 
+      const gasOverrides = await this.getGasPrice();
+
       const tx = await this.contract.transferFrom(
         params.from,
         params.to,
         params.tokenId,
         {
+          ...gasOverrides,
           ...params.overrides,
         }
       );
@@ -246,8 +260,10 @@ export class ERC721LazyMint extends BaseContract {
   ): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.grantRole(params.role, params.account, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -348,8 +364,10 @@ export class ERC721LazyMint extends BaseContract {
   async approve(params: ERC721ApproveParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.approve(params.spender, params.tokenId, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -459,6 +477,43 @@ export class ERC721LazyMint extends BaseContract {
 
       return tx;
     } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   * Returns the tokenURI of the specified NFT.
+   * @async
+   * @function tokenURI
+   * @param {number} params.tokenId - The identifier of the NFT.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<string>} - The URI of the specified NFT.
+   * @throws {Error} If there was an error executing the transaction, an Error object is thrown containing parsed error data.
+   */
+  async tokenURI(params: ERC721TokenURIParams): Promise<string> {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.contract.tokenURI(params.tokenId, {
+        ...params.overrides,
+      });
+
+      return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  async owner(): Promise<string> {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.contract.owner();
+      return tx;
+    } catch (error: any) {
+      console.log({ error });
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);
     }

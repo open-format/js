@@ -1,18 +1,25 @@
 # @openformat/sdk
 
-## 1.1.1
+## 1.1.3-dev-4037e8a
 
 ### Patch Changes
 
-- 00b0411: Add missing build vars
+- [#123](https://github.com/open-format/js/pull/123) [`adad111`](https://github.com/open-format/js/commit/adad111bafee7605b9fe900eac4c9ee0377cc61c) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - - Updates polygon gas station URLs
 
-## 1.1.0
+- [#122](https://github.com/open-format/js/pull/122) [`1487bdf`](https://github.com/open-format/js/commit/1487bdfb5d578d9f0d81468b74687324ebd2fb3e) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - - Adds tokenURI functions to get tokenURI from ERC721Base and ERC721LazyMint contracts
+  - Updates to latest ERC721 token ABIs
+
+## 1.1.2
+
+### Patch Changes
+
+- [#117](https://github.com/open-format/js/pull/117) [`08b4852`](https://github.com/open-format/js/commit/08b4852d1fc97a7909ca11ea3ff6b48a89d9eef3) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Enable custom styling for Connect Button
+
+## 1.1.0-dev-8de5595
 
 ### Minor Changes
 
 - [#114](https://github.com/open-format/js/pull/114) [`e87147d`](https://github.com/open-format/js/commit/e87147dab409b21d2fb4f9095043bc4e416ded67) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Allow app ID to be set via a function call
-
-- [`df1378f`](https://github.com/open-format/js/commit/df1378f527d23185c57ef6b2ec35798770e686f1) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Release
 
 ## 1.0.0-dev-fee074d
 

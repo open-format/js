@@ -73,10 +73,12 @@ export class ERC20Base extends BaseContract {
     try {
       await this.checkNetworksMatch();
       validateWalletAndAmount(params.to, params.amount);
+      const gasOverrides = await this.getGasPrice();
 
       const { platformFee } = await this.app.platformFeeInfo(0);
 
       const tx = await this.contract.mintTo(params.to, params.amount, {
+        ...gasOverrides,
         ...params.overrides,
         value: platformFee,
       });
@@ -105,8 +107,10 @@ export class ERC20Base extends BaseContract {
     try {
       await this.checkNetworksMatch();
       validateBigNumbers([params.amount]);
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.burn(params.amount, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -134,8 +138,10 @@ export class ERC20Base extends BaseContract {
     try {
       await this.checkNetworksMatch();
       validateWalletAndAmount(params.to, params.amount);
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.transfer(params.to, params.amount, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -165,12 +171,14 @@ export class ERC20Base extends BaseContract {
     try {
       await this.checkNetworksMatch();
       validateWalletAndAmount(params.to, params.amount);
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.transferFrom(
         params.from,
         params.to,
         params.amount,
         {
+          ...gasOverrides,
           ...params.overrides,
         }
       );
@@ -199,10 +207,12 @@ export class ERC20Base extends BaseContract {
   async approve(params: ERC20ApproveParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       validateWalletAndAmount(params.spender, params.amount);
 
       const tx = await this.contract.approve(params.spender, params.amount, {
+        ...gasOverrides,
         ...params.overrides,
       });
 

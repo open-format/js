@@ -1,25 +1,21 @@
 # @openformat/react
 
-## 1.1.1
+## 1.1.2
 
 ### Patch Changes
 
-- 00b0411: Add missing build vars
-- Updated dependencies [00b0411]
-  - @openformat/sdk@1.1.1
+- [#117](https://github.com/open-format/js/pull/117) [`08b4852`](https://github.com/open-format/js/commit/08b4852d1fc97a7909ca11ea3ff6b48a89d9eef3) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Enable custom styling for Connect Button
 
-## 1.1.0
+## 1.1.0-dev-8de5595
 
 ### Minor Changes
 
 - [#114](https://github.com/open-format/js/pull/114) [`e87147d`](https://github.com/open-format/js/commit/e87147dab409b21d2fb4f9095043bc4e416ded67) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Allow app ID to be set via a function call
 
-- [`df1378f`](https://github.com/open-format/js/commit/df1378f527d23185c57ef6b2ec35798770e686f1) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Release
-
 ### Patch Changes
 
-- Updated dependencies [[`e87147d`](https://github.com/open-format/js/commit/e87147dab409b21d2fb4f9095043bc4e416ded67), [`df1378f`](https://github.com/open-format/js/commit/df1378f527d23185c57ef6b2ec35798770e686f1)]:
-  - @openformat/sdk@1.1.0
+- Updated dependencies [[`e87147d`](https://github.com/open-format/js/commit/e87147dab409b21d2fb4f9095043bc4e416ded67)]:
+  - @openformat/sdk@1.1.0-dev-8de5595
 
 ## 1.0.0-dev-fee074d
 

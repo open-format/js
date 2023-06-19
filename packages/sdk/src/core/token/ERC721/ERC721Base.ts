@@ -19,7 +19,6 @@ import {
   validateWalletAndMetadata,
 } from '../../../helpers/validation';
 import {
-  ContractType,
   ERC721ApproveParams,
   ERC721BalanceOfParams,
   ERC721BatchMintParams,
@@ -28,9 +27,9 @@ import {
   ERC721MintParams,
   ERC721OwnerOfParams,
   ERC721SetMinterRoleParams,
+  ERC721TokenURIParams,
   ERC721TotalSupplyParams,
   ERC721TransferParams,
-  Roles,
 } from '../../../types';
 import { App } from '../../app';
 import { BaseContract } from '../../base';
@@ -82,9 +81,12 @@ export class ERC721Base extends BaseContract {
 
       validateWalletAndMetadata(params.to, params.tokenURI);
 
+      const gasOverrides = await this.getGasPrice();
+
       const { platformFee } = await this.app.platformFeeInfo(0);
 
       const tx = await this.contract.mintTo(params.to, params.tokenURI, {
+        ...gasOverrides,
         ...params.overrides,
         value: platformFee,
       });
@@ -115,6 +117,8 @@ export class ERC721Base extends BaseContract {
 
       validateWalletAndMetadata(params.to, params.baseURI);
 
+      const gasOverrides = await this.getGasPrice();
+
       const { platformFee } = await this.app.platformFeeInfo(0);
 
       const tx = await this.contract.batchMintTo(
@@ -123,6 +127,7 @@ export class ERC721Base extends BaseContract {
         params.baseURI,
 
         {
+          ...gasOverrides,
           ...params.overrides,
           value: platformFee.mul(params.quantity as BigNumberish),
         }
@@ -149,8 +154,10 @@ export class ERC721Base extends BaseContract {
   async burn(params: ERC721BurnParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.burn(params.tokenId, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -178,12 +185,14 @@ export class ERC721Base extends BaseContract {
   async transfer(params: ERC721TransferParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.transferFrom(
         params.from,
         params.to,
         params.tokenId,
         {
+          ...gasOverrides,
           ...params.overrides,
         }
       );
@@ -211,8 +220,10 @@ export class ERC721Base extends BaseContract {
   async approve(params: ERC721ApproveParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.approve(params.spender, params.tokenId, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -265,8 +276,10 @@ export class ERC721Base extends BaseContract {
   async grantRole(params: ERC721SetMinterRoleParams): Promise<ContractReceipt> {
     try {
       await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
 
       const tx = await this.contract.grantRole(params.role, params.account, {
+        ...gasOverrides,
         ...params.overrides,
       });
 
@@ -345,6 +358,30 @@ export class ERC721Base extends BaseContract {
       await this.checkNetworksMatch();
 
       const tx = await this.contract.ownerOf(params.tokenId, {
+        ...params.overrides,
+      });
+
+      return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   * Returns the tokenURI of the specified NFT.
+   * @async
+   * @function tokenURI
+   * @param {number} params.tokenId - The identifier of the NFT.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<string>} - The URI of the specified NFT.
+   * @throws {Error} If there was an error executing the transaction, an Error object is thrown containing parsed error data.
+   */
+  async tokenURI(params: ERC721TokenURIParams): Promise<string> {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.contract.tokenURI(params.tokenId, {
         ...params.overrides,
       });
 
