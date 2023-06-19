@@ -27,6 +27,7 @@ import {
   ERC721MintParams,
   ERC721OwnerOfParams,
   ERC721SetMinterRoleParams,
+  ERC721TokenURIParams,
   ERC721TotalSupplyParams,
   ERC721TransferParams,
 } from '../../../types';
@@ -357,6 +358,30 @@ export class ERC721Base extends BaseContract {
       await this.checkNetworksMatch();
 
       const tx = await this.contract.ownerOf(params.tokenId, {
+        ...params.overrides,
+      });
+
+      return tx;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   * Returns the tokenURI of the specified NFT.
+   * @async
+   * @function tokenURI
+   * @param {number} params.tokenId - The identifier of the NFT.
+   * @param {Overrides} [params.overrides] - Optional overrides for the contract call.
+   * @returns {Promise<string>} - The URI of the specified NFT.
+   * @throws {Error} If there was an error executing the transaction, an Error object is thrown containing parsed error data.
+   */
+  async tokenURI(params: ERC721TokenURIParams): Promise<string> {
+    try {
+      await this.checkNetworksMatch();
+
+      const tx = await this.contract.tokenURI(params.tokenId, {
         ...params.overrides,
       });
 
