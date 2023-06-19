@@ -1,5 +1,14 @@
 # @openformat/sdk
 
+## 1.1.3-dev-4037e8a
+
+### Patch Changes
+
+- [#123](https://github.com/open-format/js/pull/123) [`adad111`](https://github.com/open-format/js/commit/adad111bafee7605b9fe900eac4c9ee0377cc61c) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - - Updates polygon gas station URLs
+
+- [#122](https://github.com/open-format/js/pull/122) [`1487bdf`](https://github.com/open-format/js/commit/1487bdfb5d578d9f0d81468b74687324ebd2fb3e) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - - Adds tokenURI functions to get tokenURI from ERC721Base and ERC721LazyMint contracts
+  - Updates to latest ERC721 token ABIs
+
 ## 1.1.2
 
 ### Patch Changes
