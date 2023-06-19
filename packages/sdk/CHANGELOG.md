@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 1.1.3
+
+### Patch Changes
+
+- [`3251660`](https://github.com/open-format/js/commit/3251660cff5d0514400aa84f10d563cb353f414f) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Stable Release
+
 ## 1.1.3-dev-4037e8a
 
 ### Patch Changes
