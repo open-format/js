@@ -10,6 +10,7 @@ export * from './useMintToken';
 export * from './useNetwork';
 export * from './useRawRequest';
 export * from './useSigner';
+export * from './useSwitchNetwork';
 export * from './useTransferNFT';
 export * from './useTransferToken';
 export * from './useWallet';
