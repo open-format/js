@@ -1,5 +1,18 @@
 # @openformat/react
 
+## 2.0.0-dev-c70fcd3
+
+### Major Changes
+
+- [#131](https://github.com/open-format/js/pull/131) [`4561105`](https://github.com/open-format/js/commit/456110561ee700a3f9b6b0f7e05630fe86832d3d) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Add custom chain config for polygonMumbai
+
+### Patch Changes
+
+- [#127](https://github.com/open-format/js/pull/127) [`05dc9b1`](https://github.com/open-format/js/commit/05dc9b11cceb53cbb13842e37cc73c5e9816937e) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Add useSwitchNetwork hook to easily handle switching between blockchains
+
+- Updated dependencies [[`05dc9b1`](https://github.com/open-format/js/commit/05dc9b11cceb53cbb13842e37cc73c5e9816937e), [`4561105`](https://github.com/open-format/js/commit/456110561ee700a3f9b6b0f7e05630fe86832d3d)]:
+  - @openformat/sdk@2.0.0-dev-c70fcd3
+
 ## 1.1.2
 
 ### Patch Changes
