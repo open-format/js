@@ -389,6 +389,7 @@ export interface Reward_CreateBadgeParams {
 ///////////////////
 
 export enum ContractErrors {
+  ERC20Base_notAuthorized = 'Signer not authorized to transfer this token',
   ERC20Base__ApproveFromZeroAddress = 'Cannot approve from zero address',
   ERC20Base__ApproveToZeroAddress = 'Cannot approve to zero address',
   ERC20Base__BurnExceedsBalance = 'Burn amount exceeds balance',

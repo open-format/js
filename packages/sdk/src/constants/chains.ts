@@ -16,7 +16,7 @@ export const polygonMumbai = {
       webSocket: ['wss://polygon-mumbai.infura.io/ws/v3'],
     },
     default: {
-      http: ['https://polygon-mumbai-bor.publicnode.com'],
+      http: ['https://polygon-testnet.public.blastapi.io'],
     },
     public: {
       http: ['https://polygon-testnet.public.blastapi.io'],

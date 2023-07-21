@@ -4,7 +4,7 @@ import {
   ContractReceipt,
   ethers,
   providers,
-  Signer
+  Signer,
 } from 'ethers';
 import {
   ERC20FactoryFacet as ERC20FactoryContract,
@@ -14,21 +14,22 @@ import {
   ERC721LazyDropFacet as ERC721LazyDropFacetContract,
   ERC721LazyDropFacet__factory,
   SettingsFacet as SettingsContract,
-  SettingsFacet__factory
+  SettingsFacet__factory,
 } from '../contract-types';
-import { poll } from '../helpers/subgraph';
-import { parseErrorData, processTransaction } from '../helpers/transaction';
+import {
+  getArgumentFromEvent,
+  parseErrorData,
+  processTransaction,
+} from '../helpers/transaction';
 import { validateBigNumbers, validateWallet } from '../helpers/validation';
 import {
   AppHasCreatorAccessParams,
   AppSetAcceptedCurrenciesParams,
   AppSetApplicationFeeParams,
   AppSetCreatorAccessParams,
-  ContractResponse,
-  ContractType,
   ERC20CreateParams,
   ERC721CreateParams,
-  ImplementationType
+  ImplementationType,
 } from '../types';
 import { BaseContract } from './base';
 import { Subgraph } from './subgraph';
@@ -240,33 +241,14 @@ export class App extends BaseContract {
         { ...gasOverrides, ...params.overrides, value: platformFee }
       );
       const receipt = await tx.wait();
-      const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
-        .timestamp;
-
-      const subgraphCall = async () =>
-        await this.subgraph.getContractByTimestamp({
-          appId: this.appId.toString(),
-          createdAt: txTimestamp.toString(),
-          type: ContractType.NFT,
-        });
-
-      const validate = (response: ContractResponse) =>
-        !!response.contracts.length;
-
-      return await poll({
-        fn: subgraphCall,
-        validate,
-        interval: 1000,
-        maxAttempts: 20,
-      }).then(
-        (response) =>
-          new ERC721Base(
-            this.provider,
-            this.appId,
-            (response as ContractResponse).contracts[0].id,
-            this.signer
-          )
+      const contractId = getArgumentFromEvent(
+        receipt,
+        this.ERC721Factory.interface,
+        'Created',
+        0
       );
+
+      return new ERC721Base(this.provider, this.appId, contractId, this.signer);
     } catch (error: any) {
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);
@@ -298,32 +280,19 @@ export class App extends BaseContract {
         { ...gasOverrides, ...params.overrides, value: platformFee }
       );
       const receipt = await tx.wait();
-      const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
-        .timestamp;
 
-      const subgraphCall = async () =>
-        await this.subgraph.getContractByTimestamp({
-          appId: this.appId.toString(),
-          createdAt: txTimestamp.toString(),
-          type: ContractType.NFTLazyMint,
-        });
+      const contractId = getArgumentFromEvent(
+        receipt,
+        this.ERC721Factory.interface,
+        'Created',
+        0
+      );
 
-      const validate = (response: ContractResponse) =>
-        !!response.contracts.length;
-
-      return await poll({
-        fn: subgraphCall,
-        validate,
-        interval: 1000,
-        maxAttempts: 20,
-      }).then(
-        (response) =>
-          new ERC721LazyMint(
-            this.provider,
-            this.appId,
-            (response as ContractResponse).contracts[0].id,
-            this.signer
-          )
+      return new ERC721LazyMint(
+        this.provider,
+        this.appId,
+        contractId,
+        this.signer
       );
     } catch (error: any) {
       const parsedError = parseErrorData(error);
@@ -354,33 +323,15 @@ export class App extends BaseContract {
         { ...gasOverrides, ...params.overrides, value: platformFee }
       );
       const receipt = await tx.wait();
-      const txTimestamp = (await this.provider.getBlock(receipt.blockNumber))
-        .timestamp;
 
-      const subgraphCall = async () =>
-        await this.subgraph.getContractByTimestamp({
-          appId: this.appId.toString(),
-          createdAt: txTimestamp.toString(),
-          type: ContractType.Token,
-        });
-
-      const validate = (response: ContractResponse) =>
-        !!response.contracts.length;
-
-      return await poll({
-        fn: subgraphCall,
-        validate,
-        interval: 1000,
-        maxAttempts: 20,
-      }).then(
-        (response) =>
-          new ERC20Base(
-            this.provider,
-            this.appId,
-            (response as ContractResponse).contracts[0].id,
-            this.signer
-          )
+      const contractId = getArgumentFromEvent(
+        receipt,
+        this.ERC20Factory.interface,
+        'Created',
+        0
       );
+
+      return new ERC20Base(this.provider, this.appId, contractId, this.signer);
     } catch (error: any) {
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);
