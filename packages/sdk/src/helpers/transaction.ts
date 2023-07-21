@@ -52,7 +52,7 @@ export function parseErrorData(error: any) {
       if (SigName in contractErrorsObj) {
         return contractErrorsObj[SigName];
       } else {
-        return 'SigHash not found in ContractErrors type';
+        return `SigHash: ${SigName} not found in ContractErrors type`;
       }
     } else {
       return error;
@@ -147,4 +147,26 @@ export async function getPolygonGasFee(
   } else {
     return ethers.utils.parseUnits('1', 'gwei');
   }
+}
+
+export function getArgumentFromEvent(
+  receipt: ContractReceipt,
+  contractInterface: ethers.utils.Interface,
+  eventName: string,
+  argIndex: number
+) {
+  const event = contractInterface.getEvent(eventName);
+  const eventTopic = contractInterface.getEventTopic(event);
+
+  const createdEvent = receipt.logs.find((log) =>
+    log.topics.includes(eventTopic)
+  );
+
+  if (!createdEvent) {
+    throw new Error('Created event not found in transaction receipt');
+  }
+
+  const parsedEvent = contractInterface.parseLog(createdEvent);
+
+  return parsedEvent.args[argIndex];
 }
