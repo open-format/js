@@ -1,5 +1,14 @@
 # @openformat/react
 
+## 1.1.3-dev-bfd2e07
+
+### Patch Changes
+
+- [#134](https://github.com/open-format/js/pull/134) [`903e68b`](https://github.com/open-format/js/commit/903e68be61d9400e7b63f612ce9925ffd8eb55fb) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Get contract ids from events instead of polling subgraph
+
+- Updated dependencies [[`903e68b`](https://github.com/open-format/js/commit/903e68be61d9400e7b63f612ce9925ffd8eb55fb)]:
+  - @openformat/sdk@1.1.3-dev-bfd2e07
+
 ## 1.1.3-dev-05de380
 
 ### Patch Changes
