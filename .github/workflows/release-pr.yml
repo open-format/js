@@ -63,8 +63,8 @@ jobs:
 
       - name: Deploy pre-release
         run: |
-          yarn changeset version --snapshot pr${{ github.event.issue.number }}
-          yarn build && yarn changeset publish --tag pr${{ github.event.issue.number }} --no-git-tag
+          yarn version:dev
+          yarn release:dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
