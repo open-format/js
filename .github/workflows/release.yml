@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - production
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -27,11 +27,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Send Discord notification if publish is successful
-        if: steps.changesets.outputs.published == 'true'
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'New releases of "[@openformat/sdk](https://www.npmjs.com/package/@openformat/sdk)" and "[@openformat/react](https://www.npmjs.com/package/@openformat/react)" are now available! 🚀'
