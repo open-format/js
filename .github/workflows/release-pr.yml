@@ -16,8 +16,6 @@ jobs:
           reaction: rocket
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - name: print event comment context
-        run: echo "${{ toJson(github.event.comment) }}"
       - name: validate user
         id: validate_user
         if: ${{ steps.check.outputs.triggered == 'true' }}
@@ -55,25 +53,13 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: pull the repo.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: true
           repository: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.repo.full_name }}
 
-      - name: Setup Node.js 12.x
-        # https://github.com/actions/setup-node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 12.x
-
-      - name: Install Dependencies
-        run: yarn
-
-      - name: Configure npm
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: CI Setup
+        uses: ./.github/actions/ci-setup
 
       - name: Deploy pre-release
         run: |
@@ -81,3 +67,4 @@ jobs:
           yarn build && yarn changeset publish --tag pr${{ github.event.issue.number }} --no-git-tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
