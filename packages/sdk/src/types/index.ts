@@ -9,6 +9,7 @@ import {
   ERC721LazyMint as ERC721LazyMintContract,
   SettingsFacet,
 } from '../contract-types';
+import { ERC721LazyDrop } from '../core/drop/ERC721LazyDrop';
 import { ERC20Base } from '../core/token/ERC20/ERC20Base';
 import { ERC721Base } from '../core/token/ERC721/ERC721Base';
 import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
@@ -17,6 +18,7 @@ import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 ///     SDK     ///
 ///////////////////
 
+// @TODO - change to Constellation/Star - https://chat.openai.com/share/71975ca3-da1a-46c0-8125-18744dc82688
 export interface SDKOptions {
   network: Chain;
   appId: string;
@@ -27,13 +29,18 @@ export interface SDKOptions {
 ///  CONTRACTS  ///
 ///////////////////
 
-export type OpenFormatContract = ERC20Base | ERC721Base | ERC721LazyMint;
+export type OpenFormatContract =
+  | ERC20Base
+  | ERC721Base
+  | ERC721LazyMint
+  | ERC721LazyDrop;
 
 export enum ContractType {
   NFT = 'NFT',
   NFTDrop = 'NFTDrop',
   NFTLazyMint = 'NFTLazyMint',
   Token = 'Token',
+  Constellation = 'Constellation',
 }
 
 export enum ImplementationType {
@@ -91,10 +98,10 @@ export interface AppResponse {
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
-export type GetContractParameters = AtLeastOne<{
+export type GetContractParameters = {
   contractAddress: string;
-  name: string;
-}>;
+  type: ContractType;
+};
 
 ///////////////////
 ////  ERC721   ////
@@ -320,6 +327,11 @@ export interface ERC20TotalSupplyParams {
 export interface ERC20BalanceOfParams {
   account: Parameters<ERC20BaseContract['balanceOf']>[0];
   overrides?: Parameters<ERC20BaseContract['balanceOf']>[1];
+}
+
+export interface ERC20SetMetadataURIParams {
+  uri: Parameters<ERC20BaseContract['setContractURI']>[0];
+  overrides?: Parameters<ERC20BaseContract['setContractURI']>[1];
 }
 
 ///////////////////
