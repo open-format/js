@@ -57,6 +57,7 @@ jobs:
         with:
           persist-credentials: true
           repository: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.repo.full_name }}
+          ref: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
 
       - name: CI Setup
         uses: ./.github/actions/ci-setup
