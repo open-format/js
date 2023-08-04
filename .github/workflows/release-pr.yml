@@ -62,10 +62,15 @@ jobs:
       - name: CI Setup
         uses: ./.github/actions/ci-setup
 
+      - name: Configure npm
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Deploy pre-release
         run: |
           yarn version:dev
           yarn release:dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
