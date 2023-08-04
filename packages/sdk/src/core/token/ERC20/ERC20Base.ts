@@ -13,12 +13,13 @@ import {
 } from '../../../helpers';
 
 import {
-  ContractType,
   ERC20AllowanceParams,
   ERC20ApproveParams,
   ERC20BalanceOfParams,
   ERC20BurnParams,
+  ERC20GrantRoleParams,
   ERC20MintParams,
+  ERC20SetMetadataURIParams,
   ERC20TotalSupplyParams,
   ERC20TransferFromParams,
   ERC20TransferParams,
@@ -282,6 +283,39 @@ export class ERC20Base extends BaseContract {
     }
   }
 
+  async hasRole(role: string, account: string): Promise<boolean> {
+    try {
+      await this.checkNetworksMatch();
+
+      const hasRole = await this.contract.hasRole(
+        ethers.utils.formatBytes32String(role),
+        account
+      );
+      return hasRole;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  async grantRole(params: ERC20GrantRoleParams): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
+
+      const tx = await this.contract.grantRole(params.role, params.account, {
+        ...gasOverrides,
+        ...params.overrides,
+      });
+
+      const receipt = await processTransaction(tx);
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
   /**
    * Gets the balance of the specified account.
    *
@@ -320,5 +354,26 @@ export class ERC20Base extends BaseContract {
 
   address(): string {
     return this.contract.address;
+  }
+
+  async setMetadataURI(
+    params: ERC20SetMetadataURIParams
+  ): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
+
+      const tx = await this.contract.setContractURI(params.uri, {
+        ...gasOverrides,
+        ...params.overrides,
+      });
+
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
   }
 }
