@@ -10,6 +10,7 @@ import {
 } from '../types';
 import { App } from './app';
 import { BaseContract } from './base';
+import { Constellation } from './constellation';
 import { Factory } from './factory';
 import { Reward } from './reward';
 import { Subgraph } from './subgraph';
@@ -124,6 +125,13 @@ export class OpenFormatSDK extends BaseContract {
 
       case ContractType.Token:
         return new ERC20Base(
+          this.provider,
+          this.appId,
+          contractAddress,
+          this.signer
+        );
+      case ContractType.Constellation:
+        return new Constellation(
           this.provider,
           this.appId,
           contractAddress,

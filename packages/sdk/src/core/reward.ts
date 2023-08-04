@@ -1,4 +1,4 @@
-import { BytesLike, ethers, providers, Signer } from 'ethers';
+import { BytesLike, providers, Signer } from 'ethers';
 import {
   RewardFacet as RewardContract,
   RewardFacet__factory,
@@ -90,8 +90,7 @@ export class Reward extends BaseContract {
             params.receiver,
             token.tokenURI,
             token.id,
-            this.appId,
-            token.activityType,
+            token.uri ?? '',
           ]);
 
           transactions.push(tx);
@@ -114,8 +113,7 @@ export class Reward extends BaseContract {
             params.receiver,
             token.amount,
             token.id,
-            this.appId,
-            token.activityType,
+            token.uri ?? '',
           ]);
 
           transactions.push(tx);
@@ -127,8 +125,7 @@ export class Reward extends BaseContract {
             params.receiver,
             token.amount,
             token.id,
-            this.appId,
-            token.activityType,
+            token.uri ?? '',
           ]);
 
           transactions.push(tx);

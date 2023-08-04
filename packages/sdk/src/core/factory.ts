@@ -5,10 +5,14 @@ import {
   providers,
   Signer,
 } from 'ethers';
-import { factoryContracts } from '../constants';
-import { Factory__factory } from '../contract-types';
-import { parseErrorData } from '../helpers/transaction';
-import { ContractType } from '../types';
+import {
+  constellationFactoryContracts,
+  starFactoryContracts,
+} from '../constants';
+import { StarFactory__factory } from '../contract-types';
+import { ConstellationFactory__factory } from '../contract-types/factories/factories/ConstellationFactory__factory';
+import { validateWallets } from '../helpers';
+import { getArgumentFromEvent, parseErrorData } from '../helpers/transaction';
 import { BaseContract } from './base';
 /**
  * A class representing a Factory contract that extends the BaseContract class.
@@ -55,14 +59,24 @@ export class Factory extends BaseContract {
     return receipt;
   }
 
-  getFactoryContractAddress(chainId: number): string {
-    const factoryContract = factoryContracts[chainId];
+  getStarFactoryContractAddress(chainId: number): string {
+    const factoryContract = starFactoryContracts[chainId];
 
     if (!factoryContract) {
       throw new Error(`Factory contract not found for chainId '${chainId}'`);
     }
 
     return factoryContract.address;
+  }
+
+  getConstellationFactoryContractAddress(chainId: number): string {
+    const constellationFactoryContract = constellationFactoryContracts[chainId];
+
+    if (!constellationFactoryContract) {
+      throw new Error(`Factory contract not found for chainId '${chainId}'`);
+    }
+
+    return constellationFactoryContract.address;
   }
 
   /**
@@ -74,23 +88,96 @@ export class Factory extends BaseContract {
    * @returns {Promise<ContractReceipt>} A Promise that resolves to the transaction receipt of the contract creation.
    */
 
-  async create(name: string): Promise<ContractReceipt> {
+  async createStar({
+    name,
+    constellation,
+    owner,
+  }: {
+    name: string;
+    constellation: string;
+    owner: string;
+  }): Promise<{ appAddress: string }> {
     try {
       const providerNetwork = await this.provider.getNetwork();
       this.checkNetworksMatch();
 
-      const factoryAddress = this.getFactoryContractAddress(
+      validateWallets([constellation, owner]);
+
+      const factoryAddress = this.getStarFactoryContractAddress(
         providerNetwork.chainId
       );
 
-      const contract = Factory__factory.connect(
+      const contract = StarFactory__factory.connect(
         factoryAddress,
         this.signer || this.provider
       );
-      const tx = await contract.create(ethers.utils.formatBytes32String(name));
+
+      const tx = await contract.create(
+        ethers.utils.formatBytes32String(name),
+        constellation,
+        owner
+      );
 
       const receipt = await this.processTransaction(tx);
-      return receipt;
+      return {
+        appAddress: getArgumentFromEvent(
+          receipt,
+          contract.interface,
+          'Created',
+          0
+        ),
+      };
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  /**
+   * Creates a new contract with the given name.
+   *
+   * @async
+   * @function create
+   * @param {string} name - The name of the new contract.
+   * @returns {Promise<ContractReceipt>} A Promise that resolves to the transaction receipt of the contract creation.
+   */
+
+  async createConstellation({
+    name,
+    symbol,
+    decimals,
+    supply,
+  }: {
+    name: string;
+    symbol: string;
+    decimals: number;
+    supply: number;
+  }): Promise<{ constellationAddress: string }> {
+    try {
+      const providerNetwork = await this.provider.getNetwork();
+      this.checkNetworksMatch();
+
+      const factoryAddress = this.getConstellationFactoryContractAddress(
+        providerNetwork.chainId
+      );
+
+      const contract = ConstellationFactory__factory.connect(
+        factoryAddress,
+        this.signer || this.provider
+      );
+
+      const tx = await contract.create(name, symbol, decimals, supply);
+
+      const receipt = await this.processTransaction(tx);
+
+      return {
+        constellationAddress: getArgumentFromEvent(
+          receipt,
+          contract.interface,
+          'Created',
+          0
+        ),
+      };
     } catch (error: any) {
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);
