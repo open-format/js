@@ -91,17 +91,9 @@ export class OpenFormatSDK extends BaseContract {
 
   async getContract({
     contractAddress,
-    name,
+    type,
   }: GetContractParameters): Promise<OpenFormatContract> {
-    const subgraphResponse = await this.subgraph.getContractByAddressOrName({
-      id: contractAddress?.toLowerCase() as string,
-      name: name as string,
-      appId: this.appId,
-    });
-
-    const contract = subgraphResponse.contracts[0];
-
-    if ((contractAddress as string) === '' || name === '') {
+    if ((contractAddress as string) === '') {
       throw new Error('Please enter valid contract address or name');
     }
 
@@ -109,27 +101,16 @@ export class OpenFormatSDK extends BaseContract {
       throw new Error('Invalid contract address');
     }
 
-    if (!contract?.id) {
-      throw new Error('Contract does not not exist');
+    if (!(ContractType[type] in ContractType)) {
+      throw new Error('Invalid contract type');
     }
 
-    if (subgraphResponse.contracts.length > 1) {
-      const contractList = subgraphResponse.contracts.map((contract) =>
-        JSON.stringify([
-          { name, contractAddress: contract.id, type: ContractType },
-        ])
-      );
-      throw new Error(
-        `More than one contract found. Please use name and/or contractAddress parameter: ${contractList}`
-      );
-    }
-
-    switch (contract.type) {
+    switch (type) {
       case ContractType.NFT:
         return new ERC721Base(
           this.provider,
           this.appId,
-          contract.id,
+          contractAddress,
           this.signer
         );
 
@@ -137,7 +118,7 @@ export class OpenFormatSDK extends BaseContract {
         return new ERC721LazyMint(
           this.provider,
           this.appId,
-          contract.id,
+          contractAddress,
           this.signer
         );
 
@@ -145,7 +126,7 @@ export class OpenFormatSDK extends BaseContract {
         return new ERC20Base(
           this.provider,
           this.appId,
-          contract.id,
+          contractAddress,
           this.signer
         );
       default:
