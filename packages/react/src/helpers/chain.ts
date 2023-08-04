@@ -5,6 +5,7 @@ export const chainIdToNetwork = {
   [Chains.polygon.id]: Chains.polygon,
   [Chains.aurora.id]: Chains.aurora,
   [Chains.auroraTestnet.id]: Chains.auroraTestnet,
+  [Chains.foundry.id]: Chains.foundry,
 };
 
 export const getNetworkByChainId = (chainId: ChainId) => {
