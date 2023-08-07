@@ -1,4 +1,4 @@
-import { BytesLike, providers, Signer } from 'ethers';
+import { BytesLike, ethers, providers, Signer } from 'ethers';
 import {
   RewardFacet as RewardContract,
   RewardFacet__factory,
@@ -89,14 +89,14 @@ export class Reward extends BaseContract {
             token.address,
             params.receiver,
             token.tokenURI,
-            token.id,
+            ethers.utils.formatBytes32String(token.id),
             token.uri ?? '',
           ]);
 
           transactions.push(tx);
           break;
 
-        case RewardType.REWARD_CURRENCY:
+        case RewardType.CONSTELLATION_TOKEN:
           let holderAddress = await this.signer?.getAddress();
 
           if (token.holderAddress) {
@@ -112,19 +112,19 @@ export class Reward extends BaseContract {
             token.address,
             params.receiver,
             token.amount,
-            token.id,
+            ethers.utils.formatBytes32String(token.id),
             token.uri ?? '',
           ]);
 
           transactions.push(tx);
           break;
 
-        case RewardType.XP:
+        case RewardType.XP_TOKEN:
           tx = this.contract.interface.encodeFunctionData('mintERC20', [
             token.address,
             params.receiver,
             token.amount,
-            token.id,
+            ethers.utils.formatBytes32String(token.id),
             token.uri ?? '',
           ]);
 
