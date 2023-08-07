@@ -41,7 +41,7 @@ Create a fungible (ERC20) token on the Polygon Mumbai network, mint 1000 tokens 
 ```ts
 const sdk = new OpenFormatSDK({
   network: Chains.polygonMumbai,
-  appId: "INSERT_APP_ID",
+  starId: "INSERT_STAR_ID",
   signer: "INSERT_PRIVATE_KEY",
 });
 
