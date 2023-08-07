@@ -2,8 +2,8 @@ import { word } from 'casual';
 import {
   Chains,
   ContractErrors,
-  factoryContracts,
   OpenFormatSDK,
+  starFactoryContracts,
 } from '../src';
 import { PRIVATE_KEY } from './utilities';
 
@@ -25,12 +25,12 @@ describe('Factory', () => {
 
   it('should return the factory address for localhost', async () => {
     const network = await sdk.provider.getNetwork();
-    const foundryContractAddress = sdk.factory.getFactoryContractAddress(
+    const foundryContractAddress = sdk.factory.getStarFactoryContractAddress(
       network.chainId
     );
 
     expect(foundryContractAddress).toBe(
-      factoryContracts[network.chainId].address
+      starFactoryContracts[network.chainId].address
     );
   });
 
@@ -42,12 +42,12 @@ describe('Factory', () => {
     });
 
     const network = await sdk.provider.getNetwork();
-    const foundryContractAddress = sdk.factory.getFactoryContractAddress(
+    const foundryContractAddress = sdk.factory.getStarFactoryContractAddress(
       network.chainId
     );
 
     expect(foundryContractAddress).toBe(
-      factoryContracts[network.chainId].address
+      starFactoryContracts[network.chainId].address
     );
   });
   it('should return the factory address for polygon', async () => {
@@ -58,12 +58,12 @@ describe('Factory', () => {
     });
 
     const network = await sdk.provider.getNetwork();
-    const foundryContractAddress = sdk.factory.getFactoryContractAddress(
+    const foundryContractAddress = sdk.factory.getStarFactoryContractAddress(
       network.chainId
     );
 
     expect(foundryContractAddress).toBe(
-      factoryContracts[network.chainId].address
+      starFactoryContracts[network.chainId].address
     );
   });
   it('should return the factory address for aurora', async () => {
@@ -74,12 +74,12 @@ describe('Factory', () => {
     });
 
     const network = await sdk.provider.getNetwork();
-    const foundryContractAddress = sdk.factory.getFactoryContractAddress(
+    const foundryContractAddress = sdk.factory.getStarFactoryContractAddress(
       network.chainId
     );
 
     expect(foundryContractAddress).toBe(
-      factoryContracts[network.chainId].address
+      starFactoryContracts[network.chainId].address
     );
   });
   it('should return the factory address for aurora testnet', async () => {
@@ -90,26 +90,26 @@ describe('Factory', () => {
     });
 
     const network = await sdk.provider.getNetwork();
-    const foundryContractAddress = sdk.factory.getFactoryContractAddress(
+    const foundryContractAddress = sdk.factory.getStarFactoryContractAddress(
       network.chainId
     );
 
     expect(foundryContractAddress).toBe(
-      factoryContracts[network.chainId].address
+      starFactoryContracts[network.chainId].address
     );
   });
 
   it('should create an app', async () => {
-    const tx = await sdk.factory.create(word);
+    const tx = await sdk.factory.createStar(word);
     expect(tx.status).toBe(1);
   });
 
   it('should throw error if app name already exists', async () => {
     const name = word;
-    await sdk.factory.create(name);
+    await sdk.factory.createStar(name);
 
     async function handleCreate() {
-      await sdk.factory.create(name);
+      await sdk.factory.createStar(name);
     }
 
     await expect(handleCreate).rejects.toThrow(

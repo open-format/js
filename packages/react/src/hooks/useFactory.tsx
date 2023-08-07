@@ -14,11 +14,11 @@ export function useFactory() {
   const { sdk } = useOpenFormat();
 
   const { mutateAsync, ...mutation } = useMutation<
-    Awaited<ReturnType<Factory['create']>>,
+    Awaited<ReturnType<Factory['createStar']>>,
     unknown,
-    Parameters<Factory['create']>[0]
+    Parameters<Factory['createStar']>[0]
   >((data) => {
-    return sdk.factory.create(data);
+    return sdk.factory.createStar(data);
   });
 
   return {
