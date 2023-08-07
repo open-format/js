@@ -1,125 +1,83 @@
 import { ethers } from 'ethers';
 import {
-  ActivityType,
-  Chains,
+  Constellation,
   ContractErrors,
+  ContractType,
   ERC20Base,
-  ERC20CreateParams,
-  OpenFormatSDK,
+  ERC721Base,
   RewardTriggerParams,
   RewardType,
-  Reward_CreateBadgeParams,
 } from '../src';
-import {
-  APP_ID,
-  ERC20_CONTRACT_ADDRESS,
-  ERC721_CONTRACT_ADDRESS,
-  PRIVATE_KEY,
-  WALLET_ADDRESS2,
-} from './utilities';
+import { WALLETS } from './utilities';
 
 describe('Reward', () => {
-  let sdk: OpenFormatSDK;
-  let walletAddress: string;
-  let rewardCurrency: ERC20Base;
+  let constellationToken: Constellation;
+  let xpToken: ERC20Base = global.Token;
+  let badgeToken: ERC721Base = global.NFT;
 
   beforeAll(async () => {
-    sdk = new OpenFormatSDK({
-      network: Chains.foundry,
-      appId: APP_ID,
-      signer: PRIVATE_KEY,
+    constellationToken = await global.sdk.getContract({
+      contractAddress: global.constellation,
+      type: ContractType.Constellation,
     });
-
-    rewardCurrency = (await sdk.getContract({
-      contractAddress: ERC20_CONTRACT_ADDRESS,
-    })) as ERC20Base;
-
-    if (sdk.signer) {
-      walletAddress = await sdk.signer?.getAddress();
-    }
-  });
-
-  it('should create a reward token with 1000 supply', async () => {
-    const params: ERC20CreateParams = {
-      name: 'REWARD',
-      symbol: 'RWRD',
-      supply: 1000,
-    };
-
-    const token = await sdk.Reward.createRewardToken(params);
-    const totalSupply = await token.totalSupply();
-
-    expect(totalSupply).toBe('1000');
-  });
-
-  it('should create a Badge', async () => {
-    const params: Reward_CreateBadgeParams = {
-      name: 'REWARD',
-      symbol: 'RWRD',
-    };
-
-    const badge = await sdk.Reward.createBadge(params);
-
-    //@TODO add expect
   });
 
   it('should trigger XP, Reward currency and a badge', async () => {
     const AMOUNT = ethers.utils.parseEther('1');
     const TRANSFER_AMOUNT = ethers.utils.parseEther('2');
 
-    await rewardCurrency.approve({ spender: APP_ID, amount: TRANSFER_AMOUNT });
+    await constellationToken.approve({
+      spender: global.star,
+      amount: TRANSFER_AMOUNT,
+    });
 
     const params: RewardTriggerParams = {
-      receiver: WALLET_ADDRESS2,
+      receiver: WALLETS[1],
       tokens: [
         {
           id: 'connect',
-          address: ERC20_CONTRACT_ADDRESS,
+          address: xpToken.address(),
           amount: AMOUNT,
-          type: RewardType.XP,
-          activityType: ActivityType.ACTION,
+          type: RewardType.XP_TOKEN,
         },
         {
           id: 'connect_mission',
-          address: ERC20_CONTRACT_ADDRESS,
+          address: constellationToken.address(),
           amount: TRANSFER_AMOUNT,
-          type: RewardType.REWARD_CURRENCY,
-          activityType: ActivityType.MISSION,
+          type: RewardType.CONSTELLATION_TOKEN,
         },
         {
           id: 'connect_mission',
-          address: ERC721_CONTRACT_ADDRESS,
-          amount: 1,
+          address: badgeToken.address(),
           type: RewardType.BADGE,
-          activityType: ActivityType.MISSION,
+          amount: 1,
           tokenURI: 'ipfs://',
         },
       ],
     };
 
-    const tx = await sdk.Reward.trigger(params);
+    const tx = await global.sdk.Reward.trigger(params);
 
     expect(tx.status).toBe(1);
   });
 
   it('should throw an error if app does not have the allowance to transfer reward currency', async () => {
     const TRANSFER_AMOUNT = 20;
-    await rewardCurrency.approve({ spender: APP_ID, amount: 0 });
+    await constellationToken.approve({ spender: global.star, amount: 0 });
 
     const params: RewardTriggerParams = {
-      receiver: WALLET_ADDRESS2,
+      receiver: WALLETS[2],
       tokens: [
         {
           id: 'connect_mission',
-          address: ERC20_CONTRACT_ADDRESS,
+          address: constellationToken.address(),
           amount: TRANSFER_AMOUNT,
-          type: RewardType.REWARD_CURRENCY,
-          activityType: ActivityType.MISSION,
+          type: RewardType.CONSTELLATION_TOKEN,
         },
       ],
     };
     async function trigger() {
-      await sdk.Reward.trigger(params);
+      await global.sdk.Reward.trigger(params);
     }
 
     await expect(trigger).rejects.toThrow(

@@ -64,7 +64,6 @@ describe('ERC20', () => {
 
   describe('approve()', () => {
     let contract: ERC20Base = global.Token;
-    let walletAddress: string;
 
     beforeAll(async () => {
       await contract.mint({ to: WALLETS[0], amount: AMOUNT });

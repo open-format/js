@@ -1,42 +1,13 @@
-import {
-  Chains,
-  ERC20Base,
-  ERC20MintParams,
-  ERC721Base,
-  OpenFormatSDK,
-} from '../src';
-import {
-  APP_ID,
-  ERC20_CONTRACT_ADDRESS,
-  ERC721_CONTRACT_ADDRESS,
-  PRIVATE_KEY,
-} from './utilities';
+import { ERC20Base, ERC20MintParams, ERC721Base } from '../src';
+import { WALLETS } from './utilities';
 
 describe('ERC721', () => {
-  let sdk: OpenFormatSDK;
-  let contract: ERC721Base;
-  let walletAddress: string;
-
-  beforeAll(async () => {
-    sdk = new OpenFormatSDK({
-      network: Chains.foundry,
-      appId: APP_ID,
-      signer: PRIVATE_KEY,
-    });
-
-    contract = (await sdk.getContract({
-      contractAddress: ERC721_CONTRACT_ADDRESS,
-    })) as ERC721Base;
-
-    if (sdk.signer) {
-      walletAddress = await sdk.signer?.getAddress();
-    }
-  });
+  let contract: ERC721Base = global.NFT;
 
   describe('mint()', () => {
     it('mints a token if wallet and metadata are valid', async () => {
       const params = {
-        to: walletAddress,
+        to: WALLETS[0],
         tokenURI: 'ipfs://',
       };
       const tx = await contract.mint(params);
@@ -44,7 +15,7 @@ describe('ERC721', () => {
       const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
 
       if (mintedEvent?.args) {
-        expect(mintedEvent.args[0]).toBe(walletAddress);
+        expect(mintedEvent.args[0]).toBe(WALLETS[0]);
       }
       expect(tx.status).toBe(1);
     });
@@ -66,7 +37,7 @@ describe('ERC721', () => {
 
     it('throws an error if to metadata URL is not valid', async () => {
       const params = {
-        to: walletAddress,
+        to: WALLETS[0],
         tokenURI: 'invalid',
       };
 
@@ -81,7 +52,7 @@ describe('ERC721', () => {
   describe('batchMint()', () => {
     it('batch mints 5 tokens if wallet and metadata are valid', async () => {
       const params = {
-        to: walletAddress,
+        to: WALLETS[0],
         quantity: 5,
         baseURI: 'ipfs://',
       };
@@ -91,7 +62,7 @@ describe('ERC721', () => {
       const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
 
       if (mintedEvent?.args) {
-        expect(mintedEvent.args[0]).toBe(walletAddress);
+        expect(mintedEvent.args[0]).toBe(WALLETS[0]);
       }
       expect(tx.status).toBe(1);
     });
@@ -114,7 +85,7 @@ describe('ERC721', () => {
 
     it('throws an error if to metadata URL is not valid', async () => {
       const params = {
-        to: walletAddress,
+        to: WALLETS[0],
         quantity: 5,
         baseURI: 'invalid',
       };
@@ -130,7 +101,12 @@ describe('ERC721', () => {
       //@TODO: I need to try and get a contract that isn't a ERC721 that exists in the subgraph.
 
       async function createInstance() {
-        return new ERC721Base(sdk.provider, APP_ID, '0x1', sdk.signer);
+        return new ERC721Base(
+          global.sdk.provider,
+          global.star,
+          '0x1',
+          global.sdk.signer
+        );
       }
 
       expect(createInstance()).rejects.toThrow('Failed to get contract');
@@ -139,31 +115,13 @@ describe('ERC721', () => {
 });
 
 describe('ERC20', () => {
-  let sdk: OpenFormatSDK;
-  let contract: ERC20Base;
-  let walletAddress: string;
-
-  beforeAll(async () => {
-    sdk = new OpenFormatSDK({
-      network: Chains.foundry,
-      appId: APP_ID,
-      signer: PRIVATE_KEY,
-    });
-
-    contract = (await sdk.getContract({
-      contractAddress: ERC20_CONTRACT_ADDRESS,
-    })) as ERC20Base;
-
-    if (sdk.signer) {
-      walletAddress = await sdk.signer?.getAddress();
-    }
-  });
+  let contract: ERC20Base = global.Token;
 
   describe('mint()', () => {
     const AMOUNT = 100;
     it('mints 100 tokens if to address is valid', async () => {
       const params: ERC20MintParams = {
-        to: walletAddress,
+        to: WALLETS[0],
         amount: AMOUNT,
       };
       const tx = await contract.mint(params);
@@ -171,7 +129,7 @@ describe('ERC20', () => {
       const mintedEvent = tx.events?.find((event) => event.event === 'Minted');
 
       if (mintedEvent?.args) {
-        expect(mintedEvent.args[0]).toBe(walletAddress);
+        expect(mintedEvent.args[0]).toBe(WALLETS[0]);
       }
       expect(tx.status).toBe(1);
     });
@@ -193,7 +151,7 @@ describe('ERC20', () => {
 
     it('throws an error if amount is not valid', async () => {
       const params: ERC20MintParams = {
-        to: walletAddress,
+        to: WALLETS[0],
         amount: 'NaN',
       };
 
