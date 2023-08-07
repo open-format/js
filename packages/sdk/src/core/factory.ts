@@ -1,4 +1,5 @@
 import {
+  BigNumberish,
   ContractReceipt,
   ContractTransaction,
   ethers,
@@ -96,7 +97,7 @@ export class Factory extends BaseContract {
     name: string;
     constellation: string;
     owner: string;
-  }): Promise<{ appAddress: string }> {
+  }): Promise<{ starAddress: string }> {
     try {
       const providerNetwork = await this.provider.getNetwork();
       this.checkNetworksMatch();
@@ -120,7 +121,7 @@ export class Factory extends BaseContract {
 
       const receipt = await this.processTransaction(tx);
       return {
-        appAddress: getArgumentFromEvent(
+        starAddress: getArgumentFromEvent(
           receipt,
           contract.interface,
           'Created',
@@ -151,7 +152,7 @@ export class Factory extends BaseContract {
     name: string;
     symbol: string;
     decimals: number;
-    supply: number;
+    supply: BigNumberish;
   }): Promise<{ constellationAddress: string }> {
     try {
       const providerNetwork = await this.provider.getNetwork();
