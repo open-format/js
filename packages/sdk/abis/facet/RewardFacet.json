@@ -41,9 +41,9 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -78,9 +78,9 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -134,9 +134,9 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -171,9 +171,9 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -210,9 +210,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "_id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "internalType": "string",
@@ -243,9 +243,9 @@
         "type": "string"
       },
       {
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "_id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "internalType": "string",
@@ -326,9 +326,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "_id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "internalType": "string",
@@ -350,6 +350,11 @@
       },
       {
         "internalType": "address",
+        "name": "_holder",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_to",
         "type": "address"
       },
@@ -359,9 +364,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "_id",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "internalType": "string",
