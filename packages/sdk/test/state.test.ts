@@ -1,44 +1,21 @@
 import { BigNumber, ethers } from 'ethers';
 import {
-  Chains,
   ContractErrors,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
-  OpenFormatSDK,
 } from '../src';
 import { toWei } from '../src/helpers';
-import {
-  APP_ID,
-  ERC20_CONTRACT_ADDRESS,
-  ERC721_CONTRACT_ADDRESS,
-  PRIVATE_KEY,
-  WALLET_ADDRESS2,
-} from './utilities';
+import { WALLETS } from './utilities';
 
 describe('ERC721', () => {
   describe('State', () => {
-    let sdk: OpenFormatSDK;
-    let contract: ERC721Base;
-    let walletAddress: string;
-    let ERC721MintParams: ERC721MintParams;
+    let contract: ERC721Base = global.NFT;
+    let ERC721MintParams: ERC721MintParams = {
+      to: WALLETS[0],
+      tokenURI: 'ipfs://',
+    };
 
-    beforeAll(async () => {
-      sdk = new OpenFormatSDK({
-        network: Chains.foundry,
-        appId: APP_ID,
-        signer: PRIVATE_KEY,
-      });
-
-      contract = (await sdk.getContract({
-        contractAddress: ERC721_CONTRACT_ADDRESS,
-      })) as ERC721Base;
-
-      if (sdk.signer) {
-        walletAddress = await sdk.signer?.getAddress();
-        ERC721MintParams = { to: walletAddress, tokenURI: 'ipfs://' };
-      }
-    });
     describe('totalSupply()', () => {
       it('returns the total supply', async () => {
         const totalSupply = await contract.totalSupply();
@@ -53,7 +30,7 @@ describe('ERC721', () => {
         await contract.mint(ERC721MintParams);
         const ownerOf = await contract.ownerOf({ tokenId });
 
-        expect(ownerOf.toString()).toBe(walletAddress);
+        expect(ownerOf.toString()).toBe(WALLETS[0]);
       });
 
       it('throws an error if the attempted token to be checked does not exist', async () => {
@@ -117,29 +94,12 @@ describe('ERC20', () => {
   const AMOUNT = toWei('100');
 
   describe('State', () => {
-    let sdk: OpenFormatSDK;
-    let contract: ERC20Base;
-    let walletAddress: string;
+    let contract: ERC20Base = global.Token;
 
-    beforeAll(async () => {
-      sdk = new OpenFormatSDK({
-        network: Chains.foundry,
-        appId: APP_ID,
-        signer: PRIVATE_KEY,
-      });
-
-      contract = (await sdk.getContract({
-        contractAddress: ERC20_CONTRACT_ADDRESS,
-      })) as ERC20Base;
-
-      if (sdk.signer) {
-        walletAddress = await sdk.signer?.getAddress();
-      }
-    });
     describe('totalSupply()', () => {
       it('returns the total supply', async () => {
         const totalSupply = await contract.totalSupply();
-        await contract.mint({ to: walletAddress, amount: AMOUNT });
+        await contract.mint({ to: WALLETS[0], amount: AMOUNT });
         const newTotalSupply = await contract.totalSupply();
 
         expect(newTotalSupply).toBe(
@@ -150,11 +110,11 @@ describe('ERC20', () => {
     describe('balanceOf()', () => {
       it(`returns ${AMOUNT} after minting ${AMOUNT} token`, async () => {
         const balanceOf = await contract.balanceOf({
-          account: WALLET_ADDRESS2,
+          account: WALLETS[1],
         });
-        await contract.mint({ to: WALLET_ADDRESS2, amount: AMOUNT });
+        await contract.mint({ to: WALLETS[1], amount: AMOUNT });
         const newBalanceOf = await contract.balanceOf({
-          account: WALLET_ADDRESS2,
+          account: WALLETS[1],
         });
 
         expect(newBalanceOf).toBe(
@@ -174,12 +134,12 @@ describe('ERC20', () => {
     });
     describe('allowance()', () => {
       it(`returns ${AMOUNT} as the allowance`, async () => {
-        await contract.mint({ to: walletAddress, amount: AMOUNT });
-        await contract.approve({ spender: WALLET_ADDRESS2, amount: AMOUNT });
+        await contract.mint({ to: WALLETS[0], amount: AMOUNT });
+        await contract.approve({ spender: WALLETS[1], amount: AMOUNT });
 
         const allowance = await contract.allowance({
-          holder: walletAddress,
-          spender: WALLET_ADDRESS2,
+          holder: WALLETS[0],
+          spender: WALLETS[1],
         });
 
         expect(allowance).toBe(AMOUNT.toString());

@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { Chains, OpenFormatSDK } from '../src';
+import { ethers } from 'ethers';
+import { Chains, OpenFormatSDK, toWei } from '../src';
 import { WALLETS } from './utilities';
 
 // @dev NEVER commit non local private key. This key is the private key for anvil local node
@@ -22,7 +23,7 @@ module.exports = async () => {
     name: faker.internet.domainName(),
     symbol: faker.hacker.abbreviation(),
     decimals: 18,
-    supply: 1000,
+    supply: toWei('100'),
   });
 
   global.constellation = constellationTx.constellationAddress;
@@ -62,7 +63,7 @@ module.exports = async () => {
   const Token = await global.sdk.App.createToken({
     name: 'TEST',
     symbol: 'NFT',
-    supply: 1,
+    supply: ethers.utils.parseEther('10'),
   });
 
   global.NFT = NFT;
