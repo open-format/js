@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Chains, OpenFormatSDK } from '../src';
+import { WALLETS } from './utilities';
 
 // @dev NEVER commit non local private key. This key is the private key for anvil local node
 export const PRIVATE_KEY =
@@ -40,4 +41,31 @@ module.exports = async () => {
     starId: global.star,
     signer: PRIVATE_KEY,
   });
+
+  // Create NFT
+  const NFT = await global.sdk.App.createNFT({
+    name: faker.science.chemicalElement().name,
+    symbol: faker.science.chemicalElement().symbol,
+    royaltyBps: 1000,
+    royaltyRecipient: WALLETS[0],
+  });
+
+  // Create NFTDrop
+  const NFTDrop = await global.sdk.App.createNFTDrop({
+    name: faker.science.chemicalElement().name,
+    symbol: faker.science.chemicalElement().symbol,
+    royaltyBps: 1000,
+    royaltyRecipient: WALLETS[0],
+  });
+
+  // Create Token
+  const Token = await global.sdk.App.createToken({
+    name: 'TEST',
+    symbol: 'NFT',
+    supply: 1,
+  });
+
+  global.NFT = NFT;
+  global.NFTDrop = NFTDrop;
+  global.Token = Token;
 };
