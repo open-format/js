@@ -22,7 +22,7 @@ import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 // @TODO - change to Constellation/Star - https://chat.openai.com/share/71975ca3-da1a-46c0-8125-18744dc82688
 export interface SDKOptions {
   network: Chain;
-  appId: string;
+  starId: string;
   signer?: Signer | string;
 }
 
@@ -376,9 +376,9 @@ export interface AppSetApplicationFeeParams {
 ///////////////////
 
 export enum RewardType {
-  XP = 'XP',
+  XP_TOKEN = 'XP_TOKEN',
   BADGE = 'BADGE',
-  REWARD_CURRENCY = 'REWARD_CURRENCY',
+  CONSTELLATION_TOKEN = 'CONSTELLATION_TOKEN',
 }
 
 export enum ActivityType {
@@ -435,7 +435,8 @@ export enum ContractErrors {
   URIQueryForNonexistentToken = 'The token does not exist',
   MintERC2309QuantityExceedsLimit = 'The `quantity` minted with ERC2309 exceeds the safety limit.',
   OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
-  Factory_nameAlreadyUsed = 'Factory name already used',
+  Factory_nameAlreadyUsed = 'Star name already used',
+  Constellation_NameAlreadyUsed = 'Constellation name already used',
   CurrencyTransferLib_insufficientValue = 'Transaction value is not set or too low.',
   ERC721LazyDrop_quantityZeroOrExceededWalletLimit = 'Exceeded wallet limit.',
   ERC721LazyDrop_cantClaimYet = 'Cannot claim yet, please wait for drop to begin.',

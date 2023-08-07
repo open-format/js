@@ -40,13 +40,13 @@ export class OpenFormatSDK extends BaseContract {
 
   static defaultOptions: SDKOptions = {
     network: Chains.polygonMumbai,
-    appId: '',
+    starId: '',
   };
 
   constructor(options: SDKOptions) {
     super(
       getProviderFromUrl(options.network.rpcUrls.default?.http?.[0]),
-      options.appId,
+      options.starId,
       options.signer
     );
 
@@ -56,7 +56,7 @@ export class OpenFormatSDK extends BaseContract {
       this.options.network.rpcUrls.default?.http?.[0]
     );
 
-    this.appId = this.options.appId;
+    this.appId = this.options.starId;
 
     if (this.options.signer) {
       this.signer = getSigner(this.options.signer, this.provider);
@@ -82,12 +82,12 @@ export class OpenFormatSDK extends BaseContract {
    * const sdk = new OpenFormatSDK(sdkOptions);
    * sdk.setAppId('newAppId');
    */
-  setAppId(appId: string) {
-    this.appId = appId;
-    this.App = new App(this.provider, appId, this?.signer);
-    this.Reward = new Reward(this.provider, appId, this?.signer);
-    this.factory = new Factory(this.provider, appId, this?.signer);
-    this.subgraph = new Subgraph(this.provider, appId, this?.signer);
+  setStarId(starId: string) {
+    this.appId = starId;
+    this.App = new App(this.provider, starId, this?.signer);
+    this.Reward = new Reward(this.provider, starId, this?.signer);
+    this.factory = new Factory(this.provider, starId, this?.signer);
+    this.subgraph = new Subgraph(this.provider, starId, this?.signer);
   }
 
   async getContract({
