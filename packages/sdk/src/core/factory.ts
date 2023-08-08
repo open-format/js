@@ -167,7 +167,12 @@ export class Factory extends BaseContract {
         this.signer || this.provider
       );
 
-      const tx = await contract.create(name, symbol, decimals, supply);
+      const tx = await contract.create(
+        ethers.utils.formatBytes32String(name),
+        symbol,
+        decimals,
+        supply
+      );
 
       const receipt = await this.processTransaction(tx);
 
