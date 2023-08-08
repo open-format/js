@@ -1,11 +1,11 @@
 import { gql } from 'graphql-request';
 import { Chains, OpenFormatSDK, Subgraphs } from '../src/index';
-import { APP_ID } from './utilities';
+
 describe('subgraph', () => {
   it('should return subgraph endpoint for Polygon Mumbai', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.polygonMumbai,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     const endpoint = await sdk.getSubgraphEndpoint();
@@ -16,7 +16,7 @@ describe('subgraph', () => {
   it('should return subgraph endpoint for Polygon Mainnet', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.polygon,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     const endpoint = await sdk.getSubgraphEndpoint();
@@ -26,7 +26,7 @@ describe('subgraph', () => {
   it('should return subgraph endpoint for Aurora', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.aurora,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     const endpoint = await sdk.getSubgraphEndpoint();
@@ -37,7 +37,7 @@ describe('subgraph', () => {
   it('should return subgraph endpoint for Aurora testnet', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.auroraTestnet,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     const endpoint = await sdk.getSubgraphEndpoint();
@@ -47,7 +47,7 @@ describe('subgraph', () => {
   it('should return subgraph endpoint for Foundry(localhost)', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.foundry,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     const endpoint = await sdk.getSubgraphEndpoint();
@@ -58,12 +58,12 @@ describe('subgraph', () => {
   it('allows you to perform a raw request', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.polygonMumbai,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     const query = gql`
       {
-        apps {
+        constellations {
           id
         }
       }
@@ -71,6 +71,6 @@ describe('subgraph', () => {
 
     const result = await sdk.subgraph.rawRequest(query);
 
-    expect(typeof result.apps[0].id).toBe('string');
+    expect(typeof result.constellations[0].id).toBe('string');
   });
 });

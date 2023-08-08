@@ -46,6 +46,11 @@
   },
   {
     "inputs": [],
+    "name": "ERC721LazyDrop_claimPeriodEnded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ERC721LazyDrop_exceededMaxSupply",
     "type": "error"
   },
@@ -106,6 +111,11 @@
           {
             "internalType": "uint256",
             "name": "startTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimestamp",
             "type": "uint256"
           },
           {
@@ -270,6 +280,11 @@
           },
           {
             "internalType": "uint256",
+            "name": "endTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "supplyClaimed",
             "type": "uint256"
           },
@@ -327,6 +342,11 @@
           {
             "internalType": "uint256",
             "name": "startTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimestamp",
             "type": "uint256"
           },
           {

@@ -1,50 +1,28 @@
 import { ethers } from 'ethers';
 import {
-  Chains,
   ERC721LazyMint,
   ERC721LazyMint_ClaimParams,
   ERC721LazyMint_LazyMintParams,
   ERC721LazyMint_SetClaimConditionParams,
   ERC721LazyMint_VerifyClaimParams,
-  OpenFormatSDK,
 } from '../src';
 import { ERC721LazyDropStorage } from '../src/contract-types/facet/ERC721LazyDropFacet';
-import {
-  APP_ID,
-  NFT_DROP_CONTRACT_ADDRESS,
-  PRIVATE_KEY,
-  ZERO_ADDRESS,
-} from './utilities';
+import { WALLETS, ZERO_ADDRESS } from './utilities';
 
 describe('NFTDrop', () => {
-  let sdk: OpenFormatSDK;
-  let contract: ERC721LazyMint;
-  let walletAddress: string;
+  let contract: ERC721LazyMint = global.NFTDrop;
   let condition: ERC721LazyDropStorage.ClaimConditionStruct;
   let PRICE_PER_TOKEN = 10;
 
   beforeAll(async () => {
-    sdk = new OpenFormatSDK({
-      network: Chains.foundry,
-      appId: APP_ID,
-      signer: PRIVATE_KEY,
-    });
-
-    contract = (await sdk.getContract({
-      contractAddress: NFT_DROP_CONTRACT_ADDRESS,
-    })) as ERC721LazyMint;
-
-    if (sdk.signer) {
-      walletAddress = await sdk.signer?.getAddress();
-    }
-
-    await sdk.App.setApplicationFee({
+    await global.sdk.App.setApplicationFee({
       percentageBPS: 1000,
-      recipient: walletAddress,
+      recipient: WALLETS[0],
     });
 
     condition = {
       startTimestamp: Math.floor(Date.now() / 1000),
+      endTimestamp: Math.floor(Date.now() * 1000),
       supplyClaimed: 0,
       maxClaimableSupply: 50,
       quantityLimitPerWallet: 5,
@@ -52,7 +30,7 @@ describe('NFTDrop', () => {
       currency: ZERO_ADDRESS,
     };
 
-    await sdk.App.setAcceptedCurrencies({
+    await global.sdk.App.setAcceptedCurrencies({
       currencies: [ZERO_ADDRESS],
       approvals: [true],
     });
@@ -66,9 +44,9 @@ describe('NFTDrop', () => {
   });
 
   afterAll(async () => {
-    await sdk.App.setApplicationFee({
+    await global.sdk.App.setApplicationFee({
       percentageBPS: 0,
-      recipient: walletAddress,
+      recipient: WALLETS[0],
     });
   });
 
@@ -121,7 +99,7 @@ describe('NFTDrop', () => {
       await contract.setClaimConditions(setClaimParams);
 
       const params: ERC721LazyMint_ClaimParams = {
-        receiver: walletAddress,
+        receiver: WALLETS[0],
         quantity: 1,
         currency: ZERO_ADDRESS,
         pricePerToken: PRICE_PER_TOKEN,

@@ -9,6 +9,7 @@ import {
   ERC721LazyMint as ERC721LazyMintContract,
   SettingsFacet,
 } from '../contract-types';
+import { Constellation } from '../core/constellation';
 import { ERC721LazyDrop } from '../core/drop/ERC721LazyDrop';
 import { ERC20Base } from '../core/token/ERC20/ERC20Base';
 import { ERC721Base } from '../core/token/ERC721/ERC721Base';
@@ -21,7 +22,7 @@ import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 // @TODO - change to Constellation/Star - https://chat.openai.com/share/71975ca3-da1a-46c0-8125-18744dc82688
 export interface SDKOptions {
   network: Chain;
-  appId: string;
+  starId: string;
   signer?: Signer | string;
 }
 
@@ -33,7 +34,8 @@ export type OpenFormatContract =
   | ERC20Base
   | ERC721Base
   | ERC721LazyMint
-  | ERC721LazyDrop;
+  | ERC721LazyDrop
+  | Constellation;
 
 export enum ContractType {
   NFT = 'NFT',
@@ -48,13 +50,9 @@ export enum ImplementationType {
   LAZY_MINT = 'LazyMint',
 }
 
-export enum Roles {
-  ADMIN_ROLE = '0',
-  MINTER_ROLE = '1',
-}
-
 export type ClaimCondition = {
   startTimestamp: number;
+  endTimestamp: number;
   supplyClaimed: number;
   maxClaimableSupply: number;
   quantityLimitPerWallet: number;
@@ -150,6 +148,12 @@ export interface ERC721ApproveParams {
   spender: Parameters<ERC721BaseContract['approve']>[0];
   tokenId: Parameters<ERC721BaseContract['approve']>[1];
   overrides?: Parameters<ERC721BaseContract['approve']>[2];
+}
+
+export interface ERC721SetApprovalForAllParams {
+  operator: Parameters<ERC721BaseContract['setApprovalForAll']>[0];
+  approved: Parameters<ERC721BaseContract['setApprovalForAll']>[1];
+  overrides?: Parameters<ERC721BaseContract['setApprovalForAll']>[2];
 }
 
 export interface ERC721GetApprovedParams {
@@ -324,6 +328,12 @@ export interface ERC20TotalSupplyParams {
   overrides?: Parameters<ERC20BaseContract['totalSupply']>[0];
 }
 
+export interface ERC20GrantRoleParams {
+  role: Parameters<ERC20BaseContract['grantRole']>[0];
+  account: Parameters<ERC20BaseContract['grantRole']>[1];
+  overrides?: Parameters<ERC20BaseContract['grantRole']>[2];
+}
+
 export interface ERC20BalanceOfParams {
   account: Parameters<ERC20BaseContract['balanceOf']>[0];
   overrides?: Parameters<ERC20BaseContract['balanceOf']>[1];
@@ -366,9 +376,9 @@ export interface AppSetApplicationFeeParams {
 ///////////////////
 
 export enum RewardType {
-  XP = 'XP',
+  XP_TOKEN = 'XP_TOKEN',
   BADGE = 'BADGE',
-  REWARD_CURRENCY = 'REWARD_CURRENCY',
+  CONSTELLATION_TOKEN = 'CONSTELLATION_TOKEN',
 }
 
 export enum ActivityType {
@@ -386,7 +396,7 @@ export interface RewardToken {
   address: string;
   type: RewardType;
   id: string;
-  activityType: ActivityType;
+  uri?: string;
   tokenURI?: string;
   holderAddress?: string;
 }
@@ -425,7 +435,8 @@ export enum ContractErrors {
   URIQueryForNonexistentToken = 'The token does not exist',
   MintERC2309QuantityExceedsLimit = 'The `quantity` minted with ERC2309 exceeds the safety limit.',
   OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
-  Factory_nameAlreadyUsed = 'Factory name already used',
+  Factory_nameAlreadyUsed = 'Star name already used',
+  Constellation_NameAlreadyUsed = 'Constellation name already used',
   CurrencyTransferLib_insufficientValue = 'Transaction value is not set or too low.',
   ERC721LazyDrop_quantityZeroOrExceededWalletLimit = 'Exceeded wallet limit.',
   ERC721LazyDrop_cantClaimYet = 'Cannot claim yet, please wait for drop to begin.',

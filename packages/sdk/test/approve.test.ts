@@ -1,51 +1,27 @@
 import {
-  Chains,
   ContractErrors,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
-  OpenFormatSDK,
 } from '../src';
 import { toWei } from '../src/helpers';
-import {
-  APP_ID,
-  ERC20_CONTRACT_ADDRESS,
-  ERC721_CONTRACT_ADDRESS,
-  PRIVATE_KEY,
-  WALLET_ADDRESS2,
-  ZERO_ADDRESS,
-} from './utilities';
+import { WALLETS, ZERO_ADDRESS } from './utilities';
 
 describe('NFT', () => {
   describe('approve()', () => {
-    let sdk: OpenFormatSDK;
-    let contract: ERC721Base;
+    let contract: ERC721Base = global.NFT;
     let walletAddress: string;
-    let ERC721MintParams: ERC721MintParams;
-
-    beforeAll(async () => {
-      sdk = new OpenFormatSDK({
-        network: Chains.foundry,
-        appId: APP_ID,
-        signer: PRIVATE_KEY,
-      });
-
-      contract = (await sdk.getContract({
-        contractAddress: ERC721_CONTRACT_ADDRESS,
-      })) as ERC721Base;
-
-      if (sdk.signer) {
-        walletAddress = await sdk.signer?.getAddress();
-        ERC721MintParams = { to: walletAddress, tokenURI: 'ipfs://' };
-      }
-    });
+    let ERC721MintParams: ERC721MintParams = {
+      to: WALLETS[0],
+      tokenURI: 'ipfs://',
+    };
 
     it('approves another wallet to transfer a token', async () => {
       const tokenId = await contract.nextTokenIdToMint();
       await contract.mint(ERC721MintParams);
-      await contract.approve({ spender: WALLET_ADDRESS2, tokenId });
+      await contract.approve({ spender: WALLETS[1], tokenId });
       const approved = await contract.getApproved({ tokenId });
-      expect(approved.toString()).toBe(WALLET_ADDRESS2);
+      expect(approved.toString()).toBe(WALLETS[1]);
     });
 
     it('throws an error if token attempted to be transferred does not exist', async () => {
@@ -54,7 +30,7 @@ describe('NFT', () => {
 
       async function approve() {
         await contract.approve({
-          spender: WALLET_ADDRESS2,
+          spender: WALLETS[1],
           tokenId: tokenId.add(1),
         });
       }
@@ -68,13 +44,13 @@ describe('NFT', () => {
       const tokenId = await contract.nextTokenIdToMint();
       await contract.mint(ERC721MintParams);
       await contract.transfer({
-        from: walletAddress,
-        to: WALLET_ADDRESS2,
+        from: WALLETS[0],
+        to: WALLETS[1],
         tokenId,
       });
 
       async function approve() {
-        await contract.approve({ spender: WALLET_ADDRESS2, tokenId });
+        await contract.approve({ spender: WALLETS[1], tokenId });
       }
 
       await expect(approve).rejects.toThrow(
@@ -87,33 +63,18 @@ describe('ERC20', () => {
   const AMOUNT = toWei('100');
 
   describe('approve()', () => {
-    let sdk: OpenFormatSDK;
-    let contract: ERC20Base;
-    let walletAddress: string;
+    let contract: ERC20Base = global.Token;
 
     beforeAll(async () => {
-      sdk = new OpenFormatSDK({
-        network: Chains.foundry,
-        appId: APP_ID,
-        signer: PRIVATE_KEY,
-      });
-
-      contract = (await sdk.getContract({
-        contractAddress: ERC20_CONTRACT_ADDRESS,
-      })) as ERC20Base;
-
-      if (sdk.signer) {
-        walletAddress = await sdk.signer?.getAddress();
-      }
-      await contract.mint({ to: walletAddress, amount: AMOUNT });
+      await contract.mint({ to: WALLETS[0], amount: AMOUNT });
     });
 
     it('approves another wallet to transfer a token', async () => {
-      await contract.approve({ spender: WALLET_ADDRESS2, amount: AMOUNT });
+      await contract.approve({ spender: WALLETS[1], amount: AMOUNT });
 
       const approved = await contract.allowance({
-        holder: walletAddress,
-        spender: WALLET_ADDRESS2,
+        holder: WALLETS[0],
+        spender: WALLETS[1],
       });
 
       expect(approved).toBe(AMOUNT.toString());

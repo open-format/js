@@ -1,40 +1,18 @@
 import {
-  Chains,
   ContractErrors,
   ERC20Base,
   ERC721Base,
   ERC721MintParams,
-  OpenFormatSDK,
 } from '../src';
-import {
-  APP_ID,
-  ERC20_CONTRACT_ADDRESS,
-  ERC721_CONTRACT_ADDRESS,
-  PRIVATE_KEY,
-} from './utilities';
+import { WALLETS } from './utilities';
 
 describe('ERC721', () => {
   describe('burn()', () => {
-    let sdk: OpenFormatSDK;
-    let contract: ERC721Base;
-    let walletAddress: string;
+    let contract: ERC721Base = global.NFT;
     let ERC721MintParams: ERC721MintParams;
 
     beforeAll(async () => {
-      sdk = new OpenFormatSDK({
-        network: Chains.foundry,
-        appId: APP_ID,
-        signer: PRIVATE_KEY,
-      });
-
-      contract = (await sdk.getContract({
-        contractAddress: ERC721_CONTRACT_ADDRESS,
-      })) as ERC721Base;
-
-      if (sdk.signer) {
-        walletAddress = await sdk.signer?.getAddress();
-      }
-      ERC721MintParams = { to: walletAddress, tokenURI: 'ipfs://' };
+      ERC721MintParams = { to: WALLETS[0], tokenURI: 'ipfs://' };
     });
 
     it('burns a token', async () => {
@@ -61,36 +39,18 @@ describe('ERC721', () => {
 });
 describe('ERC20', () => {
   describe('burn()', () => {
-    let sdk: OpenFormatSDK;
-    let contract: ERC20Base;
-    let walletAddress: string;
-
-    beforeAll(async () => {
-      sdk = new OpenFormatSDK({
-        network: Chains.foundry,
-        appId: APP_ID,
-        signer: PRIVATE_KEY,
-      });
-
-      contract = (await sdk.getContract({
-        contractAddress: ERC20_CONTRACT_ADDRESS,
-      })) as ERC20Base;
-
-      if (sdk.signer) {
-        walletAddress = await sdk.signer?.getAddress();
-      }
-    });
+    let contract: ERC20Base = global.Token;
 
     it('burns a token', async () => {
-      await contract.mint({ to: walletAddress, amount: 1 });
+      await contract.mint({ to: WALLETS[0], amount: 1 });
       const tx = await contract.burn({ amount: 1 });
       expect(tx.status).toBe(1);
     });
 
     it('throws an error if non existent token is passed', async () => {
-      await contract.mint({ to: walletAddress, amount: 1 });
+      await contract.mint({ to: WALLETS[0], amount: 1 });
       const walletBalance = await contract.balanceOf({
-        account: walletAddress,
+        account: WALLETS[0],
       });
 
       async function burn() {

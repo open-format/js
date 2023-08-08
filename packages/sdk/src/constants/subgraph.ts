@@ -9,16 +9,16 @@ interface SubgraphData {
 export const Subgraphs: SubgraphData = {
   // Add the proper key-value pairs for each chainId
   [Chains.polygon.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/polygon',
+    url: 'https://api.thegraph.com/subgraphs/name/open-format/polygon-v2',
   },
   [Chains.polygonMumbai.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/mumbai',
+    url: 'https://api.thegraph.com/subgraphs/name/open-format/mumbai-v2',
   },
   [Chains.aurora.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora',
+    url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora-v2',
   },
   [Chains.auroraTestnet.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora-testnet',
+    url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora-testnet-v2',
   },
   [Chains.foundry.id]: {
     url: 'http://0.0.0.0:8000/subgraphs/name/open-format/mumbai',

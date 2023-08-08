@@ -2,7 +2,7 @@ import { ContractReceipt, ethers, providers, Signer } from 'ethers';
 import {
   ERC20Base as ERC20BaseContract,
   ERC20Base__factory,
-} from '../../../contract-types';
+} from '../contract-types';
 import {
   parseErrorData,
   processTransaction,
@@ -10,22 +10,20 @@ import {
   validateWallet,
   validateWalletAndAmount,
   validateWallets,
-} from '../../../helpers';
+} from '../helpers';
 
 import {
   ERC20AllowanceParams,
   ERC20ApproveParams,
   ERC20BalanceOfParams,
   ERC20BurnParams,
-  ERC20GrantRoleParams,
   ERC20MintParams,
   ERC20SetMetadataURIParams,
   ERC20TotalSupplyParams,
   ERC20TransferFromParams,
   ERC20TransferParams,
-} from '../../../types';
-import { App } from '../../app';
-import { BaseContract } from '../../base';
+} from '../types';
+import { BaseContract } from './base';
 
 /**
  * Represents an ERC20 contract instance with utility methods to interact with an ERC20 contract
@@ -34,9 +32,8 @@ import { BaseContract } from '../../base';
  * @extends BaseContract
  */
 
-export class ERC20Base extends BaseContract {
+export class Constellation extends BaseContract {
   private contract: ERC20BaseContract;
-  private app: App;
 
   constructor(
     provider: providers.Provider,
@@ -51,8 +48,6 @@ export class ERC20Base extends BaseContract {
         contractAddress,
         signer || provider
       );
-
-      this.app = new App(provider, this.appId, signer);
     } else {
       throw new Error('Failed to get contract');
     }
@@ -76,17 +71,16 @@ export class ERC20Base extends BaseContract {
       validateWalletAndAmount(params.to, params.amount);
       const gasOverrides = await this.getGasPrice();
 
-      const { platformFee } = await this.app.platformFeeInfo(0);
-
       const tx = await this.contract.mintTo(params.to, params.amount, {
         ...gasOverrides,
         ...params.overrides,
-        value: platformFee,
+        value: 0,
       });
 
       const receipt = await processTransaction(tx);
       return receipt;
     } catch (error: any) {
+      console.log({ error });
       const parsedError = parseErrorData(error);
 
       throw new Error(parsedError);
@@ -298,24 +292,6 @@ export class ERC20Base extends BaseContract {
     }
   }
 
-  async grantRole(params: ERC20GrantRoleParams): Promise<ContractReceipt> {
-    try {
-      await this.checkNetworksMatch();
-      const gasOverrides = await this.getGasPrice();
-
-      const tx = await this.contract.grantRole(params.role, params.account, {
-        ...gasOverrides,
-        ...params.overrides,
-      });
-
-      const receipt = await processTransaction(tx);
-      return receipt;
-    } catch (error: any) {
-      const parsedError = parseErrorData(error);
-      throw new Error(parsedError);
-    }
-  }
-
   /**
    * Gets the balance of the specified account.
    *
@@ -338,6 +314,20 @@ export class ERC20Base extends BaseContract {
       });
 
       return balance.toString();
+    } catch (error: any) {
+      //@TODO: Improve parseErrorData helper.
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  async name(): Promise<string> {
+    try {
+      await this.checkNetworksMatch();
+
+      const name = await this.contract.name();
+
+      return name;
     } catch (error: any) {
       //@TODO: Improve parseErrorData helper.
       const parsedError = parseErrorData(error);

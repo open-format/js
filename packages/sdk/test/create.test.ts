@@ -5,33 +5,17 @@ import {
   OpenFormatSDK,
 } from '../src';
 import { toWei } from '../src/helpers';
-import { APP_ID, PRIVATE_KEY } from './utilities';
 
 describe('NFT', () => {
-  let sdk: OpenFormatSDK;
-  let walletAddress: string;
-
-  beforeAll(async () => {
-    sdk = new OpenFormatSDK({
-      network: Chains.foundry,
-      appId: APP_ID,
-      signer: PRIVATE_KEY,
-    });
-
-    if (sdk.signer) {
-      walletAddress = await sdk.signer?.getAddress();
-    }
-  });
-
   it('creates an NFT contract and returns an instance of it', async () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      royaltyRecipient: walletAddress,
+      royaltyRecipient: global.walletAddress,
       royaltyBps: 1000,
     };
 
-    const contract = await sdk.App.createNFT(params);
+    const contract = await global.sdk.App.createNFT(params);
     const totalSupply = await contract.totalSupply();
 
     expect(totalSupply.toString()).toBe('0');
@@ -46,7 +30,7 @@ describe('NFT', () => {
     };
 
     async function create() {
-      await sdk.App.createNFT(params);
+      await global.sdk.App.createNFT(params);
     }
 
     await expect(create).rejects.toThrow('Invalid wallet or contract address');
@@ -56,12 +40,12 @@ describe('NFT', () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      royaltyRecipient: walletAddress,
+      royaltyRecipient: global.walletAddress,
       royaltyBps: 'InvalidRoyaltyBps',
     };
 
     async function create() {
-      await sdk.App.createNFT(params);
+      await global.sdk.App.createNFT(params);
     }
 
     await expect(create).rejects.toThrow(
@@ -73,13 +57,13 @@ describe('NFT', () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      royaltyRecipient: walletAddress,
+      royaltyRecipient: global.walletAddress,
       royaltyBps: 1000,
     };
 
-    sdk = new OpenFormatSDK({
+    const sdk = new OpenFormatSDK({
       network: Chains.foundry,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     async function create() {
@@ -91,30 +75,15 @@ describe('NFT', () => {
 });
 
 describe('NFTDrop', () => {
-  let sdk: OpenFormatSDK;
-  let walletAddress: string;
-
-  beforeAll(async () => {
-    sdk = new OpenFormatSDK({
-      network: Chains.foundry,
-      appId: APP_ID,
-      signer: PRIVATE_KEY,
-    });
-
-    if (sdk.signer) {
-      walletAddress = await sdk.signer?.getAddress();
-    }
-  });
-
   it('creates an NFTDrop contract and returns an instance of it', async () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      royaltyRecipient: walletAddress,
+      royaltyRecipient: global.walletAddress,
       royaltyBps: 1000,
     };
 
-    const contract = await sdk.App.createNFTDrop(params);
+    const contract = await global.sdk.App.createNFTDrop(params);
     const totalSupply = await contract.totalSupply();
 
     expect(totalSupply.toString()).toBe('0');
@@ -129,7 +98,7 @@ describe('NFTDrop', () => {
     };
 
     async function create() {
-      await sdk.App.createNFT(params);
+      await global.sdk.App.createNFT(params);
     }
 
     await expect(create).rejects.toThrow('Invalid wallet or contract address');
@@ -139,12 +108,12 @@ describe('NFTDrop', () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      royaltyRecipient: walletAddress,
+      royaltyRecipient: global.walletAddress,
       royaltyBps: 'InvalidRoyaltyBps',
     };
 
     async function create() {
-      await sdk.App.createNFT(params);
+      await global.sdk.App.createNFT(params);
     }
 
     await expect(create).rejects.toThrow(
@@ -156,13 +125,13 @@ describe('NFTDrop', () => {
     const params: ERC721CreateParams = {
       name: 'TEST',
       symbol: 'NFT',
-      royaltyRecipient: walletAddress,
+      royaltyRecipient: global.walletAddress,
       royaltyBps: 1000,
     };
 
-    sdk = new OpenFormatSDK({
+    const sdk = new OpenFormatSDK({
       network: Chains.foundry,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     async function create() {
@@ -174,21 +143,6 @@ describe('NFTDrop', () => {
 });
 
 describe('Token', () => {
-  let sdk: OpenFormatSDK;
-  let walletAddress: string;
-
-  beforeAll(async () => {
-    sdk = new OpenFormatSDK({
-      network: Chains.foundry,
-      appId: APP_ID,
-      signer: PRIVATE_KEY,
-    });
-
-    if (sdk.signer) {
-      walletAddress = await sdk.signer?.getAddress();
-    }
-  });
-
   it('creates an Token contract and returns an instance of it', async () => {
     const AMOUNT = toWei('0.001');
     const params: ERC20CreateParams = {
@@ -197,10 +151,12 @@ describe('Token', () => {
       supply: AMOUNT,
     };
 
-    const contract = await sdk.App.createToken(params);
+    const contract = await global.sdk.App.createToken(params);
 
     if (contract) {
-      const balanceOf = await contract.balanceOf({ account: walletAddress });
+      const balanceOf = await contract.balanceOf({
+        account: global.walletAddress,
+      });
       expect(balanceOf).toBe(AMOUNT.toString());
     }
   });
@@ -213,7 +169,7 @@ describe('Token', () => {
     };
 
     async function create() {
-      await sdk.App.createToken(params);
+      await global.sdk.App.createToken(params);
     }
 
     await expect(create).rejects.toThrow(
@@ -228,9 +184,9 @@ describe('Token', () => {
       supply: 1000,
     };
 
-    sdk = new OpenFormatSDK({
+    const sdk = new OpenFormatSDK({
       network: Chains.foundry,
-      appId: APP_ID,
+      starId: global.star,
     });
 
     async function create() {

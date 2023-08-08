@@ -97,7 +97,7 @@ export class BaseContract {
     }
   }
 
-  setAppId(appId: string) {
-    this.appId = appId;
+  setStarId(starId: string) {
+    this.appId = starId;
   }
 }

@@ -243,6 +243,7 @@ export class ERC721LazyMint extends BaseContract {
     }
   }
 
+  // @TODO fix comment
   /**
    *
    * Grants the MINTER_ROLE to the specified account for the current ERC721 contract.

@@ -111,12 +111,7 @@ export class Subgraph extends BaseContract {
         $appId: String!
       ) {
         contracts(
-          where: {
-            or: [
-              { id: $id, app_contains_nocase: $appId }
-              { metadata_: { name: $name }, app_contains_nocase: $appId }
-            ]
-          }
+          where: { or: [{ id: $id }, { metadata_: { name: $name } }] }
         ) {
           id
           type
