@@ -1,5 +1,22 @@
 # @openformat/react
 
+## 1.2.0
+
+### Minor Changes
+
+- [#138](https://github.com/open-format/js/pull/138) [`b243d62`](https://github.com/open-format/js/commit/b243d62dd08bc1eb4451eeab61c3b88c21fd21ad) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - - Adds new ConstellationFactory and StarFactory ABIs
+  - Adds new RewardsFacet ABI
+  - Adds new ERC721LazyDrop and ERC721LazyMint ABIs to handle new `endTimestamp` in claim conditions
+  - Renames and updates starFactoryContracts and constellationFactoryContracts mappings
+  - Updates subgraph mappings to latest endpoints
+  - Adds new Constellation class
+  - Fix: Correctly map Chains.foundry in chain helpers
+
+### Patch Changes
+
+- Updated dependencies [[`038f357`](https://github.com/open-format/js/commit/038f3578a89c55900d795e26ab6492601b8a3b34), [`b243d62`](https://github.com/open-format/js/commit/b243d62dd08bc1eb4451eeab61c3b88c21fd21ad)]:
+  - @openformat/sdk@1.2.0
+
 ## 1.1.3-dev-bfd2e07
 
 ### Patch Changes
