@@ -12,7 +12,7 @@ export const Subgraphs: SubgraphData = {
     url: 'https://api.thegraph.com/subgraphs/name/open-format/polygon-v2',
   },
   [Chains.polygonMumbai.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/mumbai-v2',
+    url: 'https://subgraphs.openformat.tech/subgraphs/name/open-format/mumbai',
   },
   [Chains.aurora.id]: {
     url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora-v2',
