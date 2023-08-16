@@ -4,13 +4,13 @@
 
 ### Patch Changes
 
-- [#139](https://github.com/open-format/js/pull/139) [`593b49d`](https://github.com/open-format/js/commit/593b49ddacf79d6ade2cba0674dd516929aa1613) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - ### Fixed
+#### Fixed
 
-  - Issue with Wagmi client being recreated multiple times resulting in the signer being null and causing SDK contracts interactions to fail - #139
+- Issue with Wagmi client being recreated multiple times resulting in the signer being null and causing SDK contracts interactions to fail - #139
 
-  ### Removed
+#### Removed
 
-  - Temporarily removed WalletConnectConnector from wagmi config until we migrate to a new version of Wagmi - #139
+- Temporarily removed WalletConnectConnector from wagmi config until we migrate to a new version of Wagmi - #139
 
 ## 1.2.0
 
