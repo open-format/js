@@ -19,7 +19,7 @@ export const starFactoryContracts: FactoryContractData = {
     address: '0xc0553B98d93114FB241196272603DF4543359820',
   },
   [Chains.auroraTestnet.id]: {
-    address: '0xA22eeFa2C34C8F1C547ADd3A6E8B6c8562E388aC',
+    address: '0x4d9D07E924F9bC486d496CacFaf2Bd9C7bC4E22F',
   },
   [Chains.foundry.id]: {
     //@dev this change depending on local blockchain.
@@ -40,7 +40,7 @@ export const constellationFactoryContracts: FactoryContractData = {
     address: '0xa3cCc90A2025cefad0AeDF4CFe44aD059605620c',
   },
   [Chains.auroraTestnet.id]: {
-    address: '0xA22eeFa2C34C8F1C547ADd3A6E8B6c8562E388aC',
+    address: '0xBCb1242c7354f2edaf16b6AAa961234C6431F597',
   },
   [Chains.foundry.id]: {
     //@dev this change depending on local blockchain.
