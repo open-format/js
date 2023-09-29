@@ -180,6 +180,11 @@ export interface ERC721TokenURIParams {
   overrides?: Parameters<ERC721BaseContract['tokenURI']>[1];
 }
 
+export interface ERC721SetMetadataURIParams {
+  uri: Parameters<ERC721BaseContract['setContractURI']>[0];
+  overrides?: Parameters<ERC721BaseContract['setContractURI']>[1];
+}
+
 export interface ERC721NextTokenIdToMintParams {
   overrides?: Parameters<ERC721BaseContract['nextTokenIdToMint']>[0];
 }
@@ -421,7 +426,7 @@ export enum ContractErrors {
   ERC20Base__TransferFromZeroAddress = 'Cannot transfer from zero address',
   ERC20Base__TransferToZeroAddress = 'Cannot transfer to zero address',
   ERC20Base_insufficientBalance = 'The caller does not have enough balance to burn the tokens',
-  ERC20Base__InsufficientAllowance = 'The caller does not have enough allowance the transfer the tokens',
+  ERC20Base__InsufficientAllowance = 'The caller does not have enough allowance to transfer the tokens',
   ApprovalCallerNotOwnerNorApproved = 'The caller must own the token or be an approved operator',
   ApprovalQueryForNonexistentToken = 'The token does not exist.',
   BalanceQueryForZeroAddress = 'Cannot query the balance for the zero address',
