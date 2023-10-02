@@ -8,8 +8,8 @@ import { useDisconnect as useDisconnectWagmi } from 'wagmi';
  * const { disconnect } = useDisconnect()
  * ```
  */
-export function useDisconnect() {
-  const disconnect = useDisconnectWagmi();
+export function useDisconnect(...args: any) {
+  const disconnect = useDisconnectWagmi(...args);
 
   return {
     ...disconnect,
