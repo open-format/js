@@ -397,6 +397,7 @@ export interface RewardToken {
   type: RewardType;
   id: string;
   uri?: string;
+  quantity?: BigNumberish;
   tokenURI?: string;
   holderAddress?: string;
 }
