@@ -8,8 +8,8 @@ import { useSwitchNetwork as useSwitchNetworkWagmi } from 'wagmi';
  * const { switchNetwork } = useSwitchNetwork();
  * ```
  */
-export function useSwitchNetwork() {
-  const network = useSwitchNetworkWagmi();
+export function useSwitchNetwork(...args: any) {
+  const network = useSwitchNetworkWagmi(...args);
 
   return {
     ...network,
