@@ -396,10 +396,10 @@ export interface RewardToken {
   address: string;
   type: RewardType;
   id: string;
+  activityType: ActivityType;
   uri?: string;
   quantity?: BigNumberish;
   tokenURI?: string;
-  holderAddress?: string;
 }
 
 export interface Reward_CreateBadgeParams {
