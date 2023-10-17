@@ -398,7 +398,6 @@ export interface RewardToken {
   id: string;
   activityType: ActivityType;
   uri?: string;
-  quantity?: BigNumberish;
   tokenURI?: string;
 }
 
