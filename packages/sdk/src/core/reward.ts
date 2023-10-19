@@ -1,12 +1,13 @@
 import { BytesLike, ethers, providers, Signer } from 'ethers';
 import {
-  RewardFacet as RewardContract,
-  RewardFacet__factory,
+  RewardsFacet as RewardContract,
+  RewardsFacet__factory,
 } from '../contract-types';
 import { PromiseOrValue } from '../contract-types/common';
 import { parseErrorData } from '../helpers/transaction';
 
 import {
+  ActivityType,
   ERC20CreateParams,
   RewardTriggerParams,
   RewardType,
@@ -41,7 +42,7 @@ export class Reward extends BaseContract {
     super(provider, appId, signer);
 
     this.app = new App(provider, appId, signer);
-    this.contract = RewardFacet__factory.connect(appId, signer || provider);
+    this.contract = RewardsFacet__factory.connect(appId, signer || provider);
   }
 
   async createRewardToken(params: ERC20CreateParams): Promise<ERC20Base> {
@@ -81,6 +82,10 @@ export class Reward extends BaseContract {
     let transactions: PromiseOrValue<BytesLike>[] = [];
 
     for (const token of params.tokens) {
+      if (!Object.values(ActivityType).includes(token.activityType)) {
+        throw new Error('ActivityType is not valid.');
+      }
+
       switch (token.type) {
         case RewardType.BADGE:
           if (!token.tokenURI) throw new Error('tokenURI has not been set.');
@@ -88,8 +93,10 @@ export class Reward extends BaseContract {
           tx = this.contract.interface.encodeFunctionData('mintERC721', [
             token.address,
             params.receiver,
+            token.amount,
             token.tokenURI,
             ethers.utils.formatBytes32String(token.id),
+            ethers.utils.formatBytes32String(token.activityType),
             token.uri ?? '',
           ]);
 
@@ -97,22 +104,12 @@ export class Reward extends BaseContract {
           break;
 
         case RewardType.CONSTELLATION_TOKEN:
-          let holderAddress = await this.signer?.getAddress();
-
-          if (token.holderAddress) {
-            holderAddress = token.holderAddress;
-          }
-
-          if (!holderAddress) {
-            throw new Error('Holder address must be set');
-          }
-
           tx = this.contract.interface.encodeFunctionData('transferERC20', [
-            holderAddress,
             token.address,
             params.receiver,
             token.amount,
             ethers.utils.formatBytes32String(token.id),
+            ethers.utils.formatBytes32String(token.activityType),
             token.uri ?? '',
           ]);
 
@@ -125,6 +122,7 @@ export class Reward extends BaseContract {
             params.receiver,
             token.amount,
             ethers.utils.formatBytes32String(token.id),
+            ethers.utils.formatBytes32String(token.activityType),
             token.uri ?? '',
           ]);
 

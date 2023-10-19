@@ -50,6 +50,7 @@ describe('Reward', () => {
           id: 'connect_mission',
           address: badgeToken.address(),
           type: RewardType.BADGE,
+          quantity: 5,
           amount: 1,
           tokenURI: 'ipfs://',
         },
