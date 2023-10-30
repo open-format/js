@@ -82,7 +82,7 @@ export class BaseContract {
           : ethers.utils.parseUnits('1', 'gwei');
 
       const baseMaxFeePerGas = baseBlockFee.mul(2);
-      const maxFeePerGas = baseMaxFeePerGas.add(maxPriorityFeePerGas);
+      const maxFeePerGas = baseMaxFeePerGas.add(maxPriorityFeePerGas).mul('2');
       return {
         maxFeePerGas,
         maxPriorityFeePerGas,

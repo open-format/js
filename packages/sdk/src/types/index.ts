@@ -23,6 +23,7 @@ import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 export interface SDKOptions {
   network: Chain;
   starId: string;
+  rpcUrl?: string;
   signer?: Signer | string;
 }
 
