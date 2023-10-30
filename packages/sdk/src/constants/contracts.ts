@@ -1,6 +1,6 @@
 import unionBy from 'lodash.unionby';
 import ERC721LazyDropFacet from '../../abis/facet/ERC721LazyDropFacet.json';
-import RewardFacet from '../../abis/facet/RewardFacet.json';
+import RewardsFacet from '../../abis/facet/RewardsFacet.json';
 import SettingsFacet from '../../abis/facet/SettingsFacet.json';
 import ConstellationFactory from '../../abis/factories/ConstellationFactory.json';
 import StarFactory from '../../abis/factories/StarFactory.json';
@@ -13,7 +13,7 @@ export const abis = unionBy(
   Proxy,
   ERC20Base,
   SettingsFacet,
-  RewardFacet,
+  RewardsFacet,
   ERC721Base,
   ConstellationFactory,
   StarFactory,
