@@ -1,4 +1,4 @@
-import { useConnect as useConnectWagmi } from 'wagmi';
+import { useConnect as useConnectTW } from '@thirdweb-dev/react';
 
 /**
  * Hook for connecting to account with connectors.
@@ -8,8 +8,8 @@ import { useConnect as useConnectWagmi } from 'wagmi';
  * const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
  * ```
  */
-export function useConnect(...args: any) {
-  const connect = useConnectWagmi(...args);
+export function useConnect() {
+  const connect = useConnectTW();
 
   return {
     ...connect,

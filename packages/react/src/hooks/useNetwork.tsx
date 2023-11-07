@@ -1,4 +1,4 @@
-import { useNetwork as useNetworkWagmi } from 'wagmi';
+import { useChain as useChainTW } from '@thirdweb-dev/react';
 
 /**
  * Hook to get the wallet state
@@ -9,7 +9,7 @@ import { useNetwork as useNetworkWagmi } from 'wagmi';
  * ```
  */
 export function useNetwork() {
-  const network = useNetworkWagmi();
+  const network = useChainTW();
 
   return {
     ...network,

@@ -1,5 +1,4 @@
-import { useAccount } from 'wagmi';
-
+import { useAddress } from '@thirdweb-dev/react';
 /**
  * Hook to get the wallet state
  *
@@ -9,9 +8,7 @@ import { useAccount } from 'wagmi';
  * ```
  */
 export function useWallet() {
-  const account = useAccount();
+  const account = useAddress();
 
-  return {
-    ...account,
-  };
+  return account;
 }
