@@ -1,5 +1,16 @@
 # @openformat/react
 
+## 1.2.2
+
+### Patch Changes
+
+- [#143](https://github.com/open-format/js/pull/143) [`cdf4f7d`](https://github.com/open-format/js/commit/cdf4f7d343cd33894f54945b58e6b80ecf8ffe27) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Update Polygon Mumbai subgraph URL
+
+- [#145](https://github.com/open-format/js/pull/145) [`f702910`](https://github.com/open-format/js/commit/f702910e469ed08caaab54e4bb917234d64462dd) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Added useConnect and useDisconnect hooks
+
+- Updated dependencies [[`cdf4f7d`](https://github.com/open-format/js/commit/cdf4f7d343cd33894f54945b58e6b80ecf8ffe27), [`9f0d51b`](https://github.com/open-format/js/commit/9f0d51b5a9580436bbcb8342ab4a899727538b4b), [`39eba80`](https://github.com/open-format/js/commit/39eba8034de8a9bb0a7b9881333d245e21ddee82), [`f702910`](https://github.com/open-format/js/commit/f702910e469ed08caaab54e4bb917234d64462dd)]:
+  - @openformat/sdk@1.2.1
+
 ## 1.2.1
 
 ### Patch Changes

@@ -1,24 +1,43 @@
 # @openformat/sdk
 
+## 1.2.1
+
+### Patch Changes
+
+- [#143](https://github.com/open-format/js/pull/143) [`cdf4f7d`](https://github.com/open-format/js/commit/cdf4f7d343cd33894f54945b58e6b80ecf8ffe27) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Update Polygon Mumbai subgraph URL
+
+- [#148](https://github.com/open-format/js/pull/148) [`9f0d51b`](https://github.com/open-format/js/commit/9f0d51b5a9580436bbcb8342ab4a899727538b4b) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - - You can now specify the quantity of badges you'd like to award in the Rewards Class.
+
+  - ActivityType is now passed as a parameter into all functions in the RewardsFacet contract.
+
+- [#142](https://github.com/open-format/js/pull/142) [`39eba80`](https://github.com/open-format/js/commit/39eba8034de8a9bb0a7b9881333d245e21ddee82) Thanks [@refugene](https://github.com/refugene)! - Updated the aurora testnet StarFactory and ConstellationFactory smart contract addresses
+
+- [#145](https://github.com/open-format/js/pull/145) [`f702910`](https://github.com/open-format/js/commit/f702910e469ed08caaab54e4bb917234d64462dd) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Added useConnect and useDisconnect hooks
+
 ## 1.2.0
 
 ### Minor Changes
+
 #### Added
 
 - new ConstellationFactory and StarFactory ABIs
 - new Constellation Class for interacting with Constellations
+
 #### Updated
 
 - Updates RewardsFacet ABI to interact with latest Reward functionality
 - Updates ERC721LazyDrop and ERC721LazyMint ABIs to handle new `endTimestamp` in claim conditions
 - Renames and updates starFactoryContracts and constellationFactoryContracts mappings
 - Updates subgraph mappings to latest endpoints
-  
+
 #### Fixed
+
 - Correctly map Chains.foundry in chain helpers
 
 ### Patch Changes
+
 #### Updated
+
 - Refactor getContract function to not use subgraph - [#136](https://github.com/open-format/js/pull/136)
 
 ## 1.1.3-dev-bfd2e07
