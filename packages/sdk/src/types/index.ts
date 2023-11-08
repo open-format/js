@@ -23,6 +23,7 @@ import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 export interface SDKOptions {
   network: Chain;
   starId: string;
+  rpcUrl?: string;
   signer?: Signer | string;
 }
 
@@ -396,9 +397,9 @@ export interface RewardToken {
   address: string;
   type: RewardType;
   id: string;
+  activityType: ActivityType;
   uri?: string;
   tokenURI?: string;
-  holderAddress?: string;
 }
 
 export interface Reward_CreateBadgeParams {

@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, Signer } from 'ethers';
 import merge from 'lodash.merge';
 import { Chains } from '../constants/chains';
 import { getProviderFromUrl, getSigner } from '../helpers/providers';
@@ -45,15 +45,17 @@ export class OpenFormatSDK extends BaseContract {
 
   constructor(options: SDKOptions) {
     super(
-      getProviderFromUrl(options.network.rpcUrls.default?.http?.[0]),
+      getProviderFromUrl(
+        options.rpcUrl ?? options.network.rpcUrls.default?.http?.[0]
+      ),
       options.starId,
-      options.signer
+      options.signer as Signer
     );
 
     this.options = merge({}, OpenFormatSDK.defaultOptions, options);
 
     this.provider = getProviderFromUrl(
-      this.options.network.rpcUrls.default?.http?.[0]
+      options.rpcUrl ?? this.options.network.rpcUrls.default?.http?.[0]
     );
 
     this.appId = this.options.starId;
