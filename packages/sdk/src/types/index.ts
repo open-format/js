@@ -73,12 +73,13 @@ export interface Contracts {
 ///  SUBGRAPH   ///
 ///////////////////
 
-export interface ContractResponse {
-  contracts: {
-    id: string;
-    createdAt: string;
-    owner: string;
-    type: string;
+export interface LeaderboardResponse {
+  fungibleTokenBalances: {
+    balance: string;
+    user: {
+      id: string;
+    };
+    updatedAt: string;
   }[];
 }
 

@@ -32,7 +32,7 @@ import {
   ImplementationType,
 } from '../types';
 import { BaseContract } from './base';
-import { Subgraph } from './subgraph';
+import { Data } from './data';
 import { ERC20Base } from './token/ERC20/ERC20Base';
 import { ERC721Base } from './token/ERC721/ERC721Base';
 import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
@@ -55,7 +55,7 @@ export class App extends BaseContract {
   private ERC721Factory: ERC721FactoryContract;
   private ERC20Factory: ERC20FactoryContract;
   private ERC721LazyDrop: ERC721LazyDropFacetContract;
-  private subgraph: Subgraph;
+  private data: Data;
 
   /**
    * Create a new instance of the App class.
@@ -74,7 +74,7 @@ export class App extends BaseContract {
       signer || provider
     );
 
-    this.subgraph = new Subgraph(provider, appId, signer);
+    this.data = new Data(provider, appId, signer);
 
     this.ERC20Factory = ERC20FactoryFacet__factory.connect(
       this.appId,
@@ -337,4 +337,10 @@ export class App extends BaseContract {
       throw new Error(parsedError);
     }
   }
+
+  async getXPTokenAddress() {
+    this.data.rawRequest;
+  }
+
+  async getRewardTokenAddress() {}
 }
