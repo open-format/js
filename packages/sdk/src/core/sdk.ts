@@ -11,9 +11,9 @@ import {
 import { App } from './app';
 import { BaseContract } from './base';
 import { Constellation } from './constellation';
+import { Data } from './data';
 import { Factory } from './factory';
 import { Reward } from './reward';
-import { Subgraph } from './subgraph';
 import { ERC20Base } from './token/ERC20/ERC20Base';
 import { ERC721Base } from './token/ERC721/ERC721Base';
 import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
@@ -34,7 +34,7 @@ import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
 export class OpenFormatSDK extends BaseContract {
   options: SDKOptions;
   factory: Factory;
-  subgraph: Subgraph;
+  data: Data;
   Reward: Reward;
   App: App;
 
@@ -66,7 +66,7 @@ export class OpenFormatSDK extends BaseContract {
     this.App = new App(this.provider, this.appId, this?.signer);
     this.Reward = new Reward(this.provider, this.appId, this?.signer);
     this.factory = new Factory(this.provider, this.appId, this?.signer);
-    this.subgraph = new Subgraph(this.provider, this.appId, this?.signer);
+    this.data = new Data(this.provider, this.appId, this?.signer);
   }
 
   /**
@@ -89,7 +89,7 @@ export class OpenFormatSDK extends BaseContract {
     this.App = new App(this.provider, starId, this?.signer);
     this.Reward = new Reward(this.provider, starId, this?.signer);
     this.factory = new Factory(this.provider, starId, this?.signer);
-    this.subgraph = new Subgraph(this.provider, starId, this?.signer);
+    this.data = new Data(this.provider, starId, this?.signer);
   }
 
   async getContract({
