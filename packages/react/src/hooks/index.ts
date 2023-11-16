@@ -7,6 +7,7 @@ export * from './useConnect';
 export * from './useContract';
 export * from './useDisconnect';
 export * from './useFactory';
+export * from './useLeaderboard';
 export * from './useMintNFT';
 export * from './useMintToken';
 export * from './useNetwork';
