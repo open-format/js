@@ -8,7 +8,11 @@ import { useAddress } from '@thirdweb-dev/react';
  * ```
  */
 export function useWallet() {
-  const account = useAddress();
+  // @todo pass the address
+  const address = useAddress();
+  const isConnected = !!address;
 
-  return account;
+  console.log('Address SDK: ', address);
+  console.log('isConnected SDK: ', isConnected);
+  return { address, isConnected };
 }

@@ -11,7 +11,5 @@ import { useConnect as useConnectTW } from '@thirdweb-dev/react';
 export function useConnect() {
   const connect = useConnectTW();
 
-  return {
-    ...connect,
-  };
+  return connect;
 }

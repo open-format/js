@@ -11,7 +11,6 @@ import { useDisconnect as useDisconnectTW } from '@thirdweb-dev/react';
 export function useDisconnect() {
   const disconnect = useDisconnectTW();
 
-  return {
-    ...disconnect,
-  };
+  //console.log('Disconnect SDK', disconnect);
+  return disconnect;
 }

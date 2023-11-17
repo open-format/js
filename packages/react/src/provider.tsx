@@ -41,17 +41,29 @@ export function OpenFormatProvider({
     networks: Chain[];
     appId: string;
     signer?: Signer | string;
+    walletConnect: {
+      projectId: string;
+      secretKey: string;
+      clientId: string;
+    };
     activeChain?: 'mumbai' | 'polygon' | 'aurora' | 'aurora-testnet';
   };
 }) {
+  const projectId = process.env.REACT_APP_PROJECT_ID;
+
+  console.log('*** SDK OpenFormatProvider ***');
+  console.log('projectId:', config.walletConnect.projectId);
+  console.log('clientId:', config.walletConnect.clientId);
+  console.log('secretKey:', config.walletConnect.secretKey);
+
   return (
     <ThirdwebProvider
       activeChain={config.activeChain}
+      clientId={config.walletConnect.clientId}
       supportedChains={[Polygon, Aurora, Mumbai, AuroraTestnet]}
       autoConnect={false}
-      clientId="b7063680f654cf5c3ee594ab65b8119d"
       supportedWallets={[
-        walletConnect(),
+        walletConnect({ ...config.walletConnect }),
         metamaskWallet({ recommended: true }),
         localWallet(),
       ]}
