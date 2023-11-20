@@ -61,7 +61,7 @@ export function OpenFormatProvider({
       activeChain={config.activeChain}
       clientId={config.walletConnect.clientId}
       supportedChains={[Polygon, Aurora, Mumbai, AuroraTestnet]}
-      autoConnect={false}
+      autoConnect={true}
       supportedWallets={[
         walletConnect({ ...config.walletConnect }),
         metamaskWallet({ recommended: true }),
