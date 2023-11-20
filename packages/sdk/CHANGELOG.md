@@ -1,24 +1,40 @@
 # @openformat/sdk
 
+## 1.2.1
+
+### Patch Changes
+
+#### Updated
+
+- Subgraph URL for Polygon Mumbai to improve stability and performance - [#143](https://github.com/open-format/js/pull/143)
+- You can now reward multiple badges in the Reward Mechanism - [#148](https://github.com/open-format/js/pull/148)
+- ActivityType is now passed as a parameter into all functions in the RewardsFacet contract
+- Updated the aurora testnet StarFactory and ConstellationFactory smart contract addresses
+
 ## 1.2.0
 
 ### Minor Changes
+
 #### Added
 
 - new ConstellationFactory and StarFactory ABIs
 - new Constellation Class for interacting with Constellations
+
 #### Updated
 
 - Updates RewardsFacet ABI to interact with latest Reward functionality
 - Updates ERC721LazyDrop and ERC721LazyMint ABIs to handle new `endTimestamp` in claim conditions
 - Renames and updates starFactoryContracts and constellationFactoryContracts mappings
 - Updates subgraph mappings to latest endpoints
-  
+
 #### Fixed
+
 - Correctly map Chains.foundry in chain helpers
 
 ### Patch Changes
+
 #### Updated
+
 - Refactor getContract function to not use subgraph - [#136](https://github.com/open-format/js/pull/136)
 
 ## 1.1.3-dev-bfd2e07
