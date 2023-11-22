@@ -2,12 +2,15 @@ import { faker } from '@faker-js/faker';
 import {
   Chains,
   ContractErrors,
+  Errors,
+  Factory,
   OpenFormatSDK,
   starFactoryContracts,
 } from '../src';
+import { mockLowFeeBalance } from './mocks/lowFeeBalance';
 import { PRIVATE_KEY } from './setup';
 
-describe.only('ConstellationFactory', () => {
+describe('ConstellationFactory', () => {
   it('should return the ConstellationFactory address for localhost', async () => {
     const network = await global.sdk.provider.getNetwork();
     const foundryContractAddress =
@@ -91,6 +94,27 @@ describe.only('ConstellationFactory', () => {
     });
 
     expect(tx.constellationAddress).toContain('0x');
+  });
+
+  it('should fail to create a Constellation when the account has insufficient funds for transaction fees and throw a low balance error', async () => {
+    mockLowFeeBalance();
+
+    const factoryInstance = new Factory(
+      global.sdk.provider,
+      '',
+      global.sdk.signer
+    );
+
+    const params = {
+      name: faker.internet.domainWord(),
+      symbol: faker.hacker.abbreviation(),
+      decimals: 18,
+      supply: 1000,
+    };
+
+    await expect(factoryInstance.createConstellation(params)).rejects.toThrow(
+      Errors.LowTransactionFeeBalance
+    );
   });
 
   it('should throw error if app name already exists', async () => {

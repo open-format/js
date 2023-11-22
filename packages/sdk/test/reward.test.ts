@@ -1,13 +1,18 @@
 import { ethers } from 'ethers';
 import {
+  ActivityType,
   Constellation,
   ContractErrors,
   ContractType,
   ERC20Base,
   ERC721Base,
+  Errors,
+  Reward,
   RewardTriggerParams,
   RewardType,
+  toWei,
 } from '../src';
+import { mockLowFeeBalance } from './mocks/lowFeeBalance';
 import { WALLETS } from './utilities';
 
 describe('Reward', () => {
@@ -22,14 +27,9 @@ describe('Reward', () => {
     });
   });
 
-  it('should trigger XP, Reward currency and a badge', async () => {
+  it('should approve and trigger multiple rewards including XP, currency, and a badge', async () => {
     const AMOUNT = ethers.utils.parseEther('1');
     const TRANSFER_AMOUNT = ethers.utils.parseEther('2');
-
-    await constellationToken.approve({
-      spender: global.star,
-      amount: TRANSFER_AMOUNT,
-    });
 
     const params: RewardTriggerParams = {
       receiver: WALLETS[1],
@@ -39,20 +39,22 @@ describe('Reward', () => {
           address: xpToken.address(),
           amount: AMOUNT,
           type: RewardType.XP_TOKEN,
+          activityType: ActivityType.ACTION,
         },
         {
           id: 'connect_mission',
           address: constellationToken.address(),
           amount: TRANSFER_AMOUNT,
           type: RewardType.CONSTELLATION_TOKEN,
+          activityType: ActivityType.MISSION,
         },
         {
           id: 'connect_mission',
           address: badgeToken.address(),
           type: RewardType.BADGE,
-          quantity: 5,
           amount: 1,
           tokenURI: 'ipfs://',
+          activityType: ActivityType.MISSION,
         },
       ],
     };
@@ -74,6 +76,7 @@ describe('Reward', () => {
           address: constellationToken.address(),
           amount: TRANSFER_AMOUNT,
           type: RewardType.CONSTELLATION_TOKEN,
+          activityType: ActivityType.MISSION,
         },
       ],
     };
@@ -84,5 +87,36 @@ describe('Reward', () => {
     await expect(trigger).rejects.toThrow(
       ContractErrors.ERC20Base__InsufficientAllowance
     );
+  });
+
+  it('should fail to trigger reward when the account has insufficient funds for transaction fees and throw a low balance error', async () => {
+    mockLowFeeBalance();
+
+    const rewardInstance = new Reward(
+      global.sdk.provider,
+      global.star,
+      global.sdk.signer
+    );
+
+    const params: RewardTriggerParams = {
+      receiver: WALLETS[1],
+      tokens: [
+        {
+          id: 'connect',
+          address: xpToken.address(),
+          amount: toWei('1'),
+          type: RewardType.XP_TOKEN,
+          activityType: ActivityType.ACTION,
+        },
+      ],
+    };
+
+    // Call the trigger function and expect it to throw an error
+    await expect(rewardInstance.trigger(params)).rejects.toThrow(
+      Errors.LowTransactionFeeBalance
+    );
+
+    // Restore the original getFeeContract after this test
+    jest.restoreAllMocks();
   });
 });

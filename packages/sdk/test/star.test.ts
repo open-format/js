@@ -2,9 +2,12 @@ import { faker } from '@faker-js/faker';
 import {
   Chains,
   ContractErrors,
+  Errors,
+  Factory,
   OpenFormatSDK,
   starFactoryContracts,
 } from '../src';
+import { mockLowFeeBalance } from './mocks/lowFeeBalance';
 import { PRIVATE_KEY } from './setup';
 
 describe('StarFactory', () => {
@@ -100,5 +103,29 @@ describe('StarFactory', () => {
     await expect(handleCreate).rejects.toThrow(
       ContractErrors.Factory_nameAlreadyUsed
     );
+  });
+
+  it('should fail to create an app when the account has insufficient funds for transaction fees and throw a low balance error', async () => {
+    mockLowFeeBalance();
+
+    const params = {
+      name: faker.internet.domainWord(),
+      constellation: global.constellation,
+      owner: global.walletAddress,
+    };
+
+    const appInstance = new Factory(
+      global.sdk.provider,
+      global.star,
+      global.sdk.signer
+    );
+
+    // Call the trigger function and expect it to throw an error
+    await expect(appInstance.createStar(params)).rejects.toThrow(
+      Errors.LowTransactionFeeBalance
+    );
+
+    // Restore the original getFeeContract after this test
+    jest.restoreAllMocks();
   });
 });
