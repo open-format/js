@@ -39,7 +39,7 @@
   },
   "jest": {
     "testTimeout": 10000,
-    "globalSetup": "<rootDir>/test/setup.js",
+    "globalSetup": "<rootDir>/test/setup.ts",
     "collectCoverageFrom": [
       "src/!(contract-types)**/*"
     ]
@@ -81,6 +81,7 @@
     "husky": "^8.0.1",
     "jest": "^29.4.3",
     "size-limit": "^7.0.8",
+    "ts-node": "^10.9.1",
     "tslib": "^2.4.0",
     "typechain": "^8.1.0",
     "typedoc": "^0.23.26",
