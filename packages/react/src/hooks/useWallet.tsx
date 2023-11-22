@@ -1,4 +1,5 @@
-import { useAddress } from '@thirdweb-dev/react';
+import { useAddress as useAddressTW } from '@thirdweb-dev/react';
+import { useWallet as useWalletTW } from '@thirdweb-dev/react';
 /**
  * Hook to get the wallet state
  *
@@ -9,10 +10,8 @@ import { useAddress } from '@thirdweb-dev/react';
  */
 export function useWallet() {
   // @todo pass the address
-  const address = useAddress();
+  const address = useAddressTW();
   const isConnected = !!address;
-
-  console.log('Address SDK: ', address);
-  console.log('isConnected SDK: ', isConnected);
-  return { address, isConnected };
+  const wallet = useWalletTW();
+  return { address, isConnected, wallet };
 }

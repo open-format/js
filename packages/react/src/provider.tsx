@@ -49,13 +49,6 @@ export function OpenFormatProvider({
     activeChain?: 'mumbai' | 'polygon' | 'aurora' | 'aurora-testnet';
   };
 }) {
-  const projectId = process.env.REACT_APP_PROJECT_ID;
-
-  console.log('*** SDK OpenFormatProvider ***');
-  console.log('projectId:', config.walletConnect.projectId);
-  console.log('clientId:', config.walletConnect.clientId);
-  console.log('secretKey:', config.walletConnect.secretKey);
-
   return (
     <ThirdwebProvider
       activeChain={config.activeChain}
