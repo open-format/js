@@ -443,4 +443,9 @@ export enum ContractErrors {
   ERC721LazyDrop_cantClaimYet = 'Cannot claim yet, please wait for drop to begin.',
   ERC721LazyDrop_exceededMaxSupply = 'All tokens have been claimed.',
   BatchMintMetadata_invalidTokenId = 'The Token does not exist',
+  RewardsFacet_NotAuthorized = 'Signer not authorized to mint this token',
+}
+
+export enum Errors {
+  LowTransactionFeeBalance = 'Signer $OFT balance too low. Please top up.',
 }
