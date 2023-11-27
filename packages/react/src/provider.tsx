@@ -40,11 +40,10 @@ export function OpenFormatProvider({
   config?: {
     networks: Chain[];
     appId: string;
+    clientId: string;
     signer?: Signer | string;
     walletConnect: {
       projectId: string;
-      secretKey: string;
-      clientId: string;
     };
     activeChain?: 'mumbai' | 'polygon' | 'aurora' | 'aurora-testnet';
   };
@@ -52,7 +51,7 @@ export function OpenFormatProvider({
   return (
     <ThirdwebProvider
       activeChain={config.activeChain}
-      clientId={config.walletConnect.clientId}
+      clientId={config.clientId}
       supportedChains={[Polygon, Aurora, Mumbai, AuroraTestnet]}
       autoConnect={true}
       supportedWallets={[
