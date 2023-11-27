@@ -8,7 +8,6 @@ import {
   ThirdwebProvider,
   useChain,
   useSigner,
-  walletConnect,
 } from '@thirdweb-dev/react';
 import { Signer } from 'ethers';
 import React, { createContext, useContext } from 'react';
@@ -42,9 +41,6 @@ export function OpenFormatProvider({
     appId: string;
     clientId: string;
     signer?: Signer | string;
-    walletConnect: {
-      projectId: string;
-    };
     activeChain?: 'mumbai' | 'polygon' | 'aurora' | 'aurora-testnet';
   };
 }) {
@@ -54,11 +50,7 @@ export function OpenFormatProvider({
       clientId={config.clientId}
       supportedChains={[Polygon, Aurora, Mumbai, AuroraTestnet]}
       autoConnect={true}
-      supportedWallets={[
-        walletConnect({ ...config.walletConnect }),
-        metamaskWallet({ recommended: true }),
-        localWallet(),
-      ]}
+      supportedWallets={[metamaskWallet({ recommended: true }), localWallet()]}
     >
       <InnerProvider config={config}>{children}</InnerProvider>
     </ThirdwebProvider>
