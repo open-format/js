@@ -1,4 +1,4 @@
-import { useSwitchNetwork as useSwitchNetworkWagmi } from 'wagmi';
+import { useSwitchChain as useSwitchChainTW } from '@thirdweb-dev/react';
 
 /**
  * Hook to handle network switching
@@ -8,9 +8,8 @@ import { useSwitchNetwork as useSwitchNetworkWagmi } from 'wagmi';
  * const { switchNetwork } = useSwitchNetwork();
  * ```
  */
-export function useSwitchNetwork(...args: any) {
-  const network = useSwitchNetworkWagmi(...args);
-
+export function useSwitchNetwork() {
+  const network = useSwitchChainTW();
   return {
     ...network,
   };

@@ -1,4 +1,4 @@
-import { useSigner as useSignerWagmi } from 'wagmi';
+import { useSigner as useSignerTW } from '@thirdweb-dev/react';
 
 /**
  * Hook to access the signer
@@ -9,7 +9,7 @@ import { useSigner as useSignerWagmi } from 'wagmi';
  * ```
  */
 export function useSigner() {
-  const signer = useSignerWagmi();
+  const signer = useSignerTW();
 
   return {
     ...signer,

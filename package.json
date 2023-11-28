@@ -40,5 +40,8 @@
     "jsdoc-babel": "^0.5.0",
     "jsdoc-to-markdown": "^7.1.1",
     "turbo": "^1.2.16"
+  },
+  "resolutions": {
+    "react": "^18.2"
   }
 }

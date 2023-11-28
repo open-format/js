@@ -1,4 +1,4 @@
-import { useDisconnect as useDisconnectWagmi } from 'wagmi';
+import { useDisconnect as useDisconnectTW } from '@thirdweb-dev/react';
 
 /**
  * Hook for disconnecting the connected account.
@@ -8,10 +8,9 @@ import { useDisconnect as useDisconnectWagmi } from 'wagmi';
  * const { disconnect } = useDisconnect()
  * ```
  */
-export function useDisconnect(...args: any) {
-  const disconnect = useDisconnectWagmi(...args);
+export function useDisconnect() {
+  const disconnect = useDisconnectTW();
 
-  return {
-    ...disconnect,
-  };
+  //console.log('Disconnect SDK', disconnect);
+  return disconnect;
 }
