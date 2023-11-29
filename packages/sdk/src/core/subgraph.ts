@@ -29,6 +29,7 @@ export class Subgraph extends BaseContract {
     variables?: V
   ) {
     const endpoint = await this.getSubgraphEndpoint();
+    // @ts-ignore
     return await request<T, V>(endpoint, document, variables);
   }
 

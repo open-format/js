@@ -13,6 +13,7 @@ export function poll({
 }) {
   let attempts = 0;
 
+  // @ts-ignore
   const executePoll = async (resolve, reject) => {
     const result = await fn();
     attempts++;
