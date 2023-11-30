@@ -79,6 +79,8 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
+    "@microsoft/api-documenter": "^7.23.12",
+    "@microsoft/api-extractor": "^7.38.3",
     "@openformat/sdk": "1.2.1",
     "@tanstack/react-query": "^4.0.10",
     "@thirdweb-dev/chains": "^0.1.57",

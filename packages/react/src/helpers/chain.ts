@@ -9,5 +9,6 @@ export const chainIdToNetwork = {
 };
 
 export const getNetworkByChainId = (chainId: ChainId) => {
+  // @ts-ignore
   return chainIdToNetwork[chainId] ?? null;
 };

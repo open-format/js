@@ -22,6 +22,7 @@ export function useContract(address: string) {
   const { sdk } = useOpenFormat();
   const data = useQuery(['contract'], () =>
     //@TODO: Allow contractAddress AND/OR name to be passed
+    // @ts-ignore
     sdk.getContract({ contractAddress: address })
   );
 
