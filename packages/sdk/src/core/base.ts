@@ -102,7 +102,8 @@ export class BaseContract {
       throw new Error(Errors.LowTransactionFeeBalance);
     }
 
-    await txContract.transfer(TREASURY_ACCOUNT, FEE);
+    const tx = await txContract.transfer(TREASURY_ACCOUNT, FEE);
+    await tx.wait();
   }
 
   /**
