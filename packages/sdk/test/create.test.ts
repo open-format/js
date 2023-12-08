@@ -1,10 +1,13 @@
 import {
+  App,
   Chains,
   ERC20CreateParams,
   ERC721CreateParams,
+  Errors,
   OpenFormatSDK,
 } from '../src';
 import { toWei } from '../src/helpers';
+import { mockLowFeeBalance } from './mocks/lowFeeBalance';
 
 describe('NFT', () => {
   it('creates an NFT contract and returns an instance of it', async () => {
@@ -72,6 +75,27 @@ describe('NFT', () => {
 
     await expect(create).rejects.toThrow('Signer undefined');
   });
+
+  it('should fail to create an NFT when the account has insufficient funds for transaction fees and throw a low balance error', async () => {
+    mockLowFeeBalance();
+
+    const AppInstance = new App(
+      global.sdk.provider,
+      global.star,
+      global.sdk.signer
+    );
+
+    const params: ERC721CreateParams = {
+      name: 'TEST',
+      symbol: 'NFT',
+      royaltyRecipient: global.walletAddress,
+      royaltyBps: 1000,
+    };
+
+    await expect(AppInstance.createNFT(params)).rejects.toThrow(
+      Errors.LowTransactionFeeBalance
+    );
+  });
 });
 
 describe('NFTDrop', () => {
@@ -98,7 +122,7 @@ describe('NFTDrop', () => {
     };
 
     async function create() {
-      await global.sdk.App.createNFT(params);
+      await global.sdk.App.createNFTDrop(params);
     }
 
     await expect(create).rejects.toThrow('Invalid wallet or contract address');
@@ -113,7 +137,7 @@ describe('NFTDrop', () => {
     };
 
     async function create() {
-      await global.sdk.App.createNFT(params);
+      await global.sdk.App.createNFTDrop(params);
     }
 
     await expect(create).rejects.toThrow(
@@ -135,10 +159,31 @@ describe('NFTDrop', () => {
     });
 
     async function create() {
-      await sdk.App.createNFT(params);
+      await sdk.App.createNFTDrop(params);
     }
 
     await expect(create).rejects.toThrow('Signer undefined');
+  });
+
+  it('should fail to create an NFTDrop when the account has insufficient funds for transaction fees and throw a low balance error', async () => {
+    mockLowFeeBalance();
+
+    const AppInstance = new App(
+      global.sdk.provider,
+      global.star,
+      global.sdk.signer
+    );
+
+    const params: ERC721CreateParams = {
+      name: 'TEST',
+      symbol: 'NFT',
+      royaltyRecipient: global.walletAddress,
+      royaltyBps: 1000,
+    };
+
+    await expect(AppInstance.createNFTDrop(params)).rejects.toThrow(
+      Errors.LowTransactionFeeBalance
+    );
   });
 });
 
@@ -194,5 +239,25 @@ describe('Token', () => {
     }
 
     await expect(create).rejects.toThrow('Signer undefined');
+  });
+
+  it('should fail to create a Token when the account has insufficient funds for transaction fees and throw a low balance error', async () => {
+    mockLowFeeBalance();
+
+    const AppInstance = new App(
+      global.sdk.provider,
+      global.star,
+      global.sdk.signer
+    );
+
+    const params: ERC20CreateParams = {
+      name: 'TEST',
+      symbol: 'NFT',
+      supply: 1000,
+    };
+
+    await expect(AppInstance.createToken(params)).rejects.toThrow(
+      Errors.LowTransactionFeeBalance
+    );
   });
 });
