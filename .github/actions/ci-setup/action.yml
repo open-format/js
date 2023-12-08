@@ -2,11 +2,11 @@ name: "CI setup"
 runs:
   using: "composite"
   steps:
-    - name: Setup Node.js 16.x
-      uses: actions/setup-node@v3
+    - name: Setup Node.js 18.x
+      uses: actions/setup-node@v4
       with:
-        node-version: 16.x
-        cache: yarn
+        node-version: 18
+        cache: "yarn"
 
     - name: Install Dependencies
       run: yarn --immutable

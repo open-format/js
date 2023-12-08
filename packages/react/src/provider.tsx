@@ -1,19 +1,17 @@
 import { Chains, OpenFormatSDK } from '@openformat/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Chain } from '@wagmi/chains';
-import { ConnectKitProvider } from 'connectkit';
-import { Signer } from 'ethers';
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
+import { Aurora, AuroraTestnet, Mumbai, Polygon } from '@thirdweb-dev/chains';
 import {
-  Connector,
-  useConnect,
-  useNetwork,
+  Chain,
+  localWallet,
+  metamaskWallet,
+  ThirdwebProvider,
+  useChain,
   useSigner,
-  WagmiConfig,
-} from 'wagmi';
+} from '@thirdweb-dev/react';
+import { Signer } from 'ethers';
+import React, { createContext, useContext } from 'react';
 import { getNetworkByChainId } from './helpers';
-import { wagmiClient } from './wagmi-client';
-
 const OpenFormatContext = createContext<{ sdk: OpenFormatSDK } | undefined>(
   undefined
 );
@@ -34,19 +32,28 @@ export function OpenFormatProvider({
   config = {
     networks: [Chains.polygonMumbai],
     appId: '',
+    activeChain: 'mumbai',
   },
 }: {
   children: React.ReactNode;
   config?: {
     networks: Chain[];
     appId: string;
+    clientId: string;
     signer?: Signer | string;
+    activeChain?: 'mumbai' | 'polygon' | 'aurora' | 'aurora-testnet';
   };
 }) {
   return (
-    <WagmiConfig client={wagmiClient(config.networks)}>
+    <ThirdwebProvider
+      activeChain={config.activeChain}
+      clientId={config.clientId}
+      supportedChains={[Polygon, Aurora, Mumbai, AuroraTestnet]}
+      autoConnect={true}
+      supportedWallets={[metamaskWallet({ recommended: true }), localWallet()]}
+    >
       <InnerProvider config={config}>{children}</InnerProvider>
-    </WagmiConfig>
+    </ThirdwebProvider>
   );
 }
 
@@ -64,42 +71,22 @@ function InnerProvider({
     signer?: Signer | string;
   };
 }) {
-  const { connect, connectors } = useConnect();
-  const { data: signer } = useSigner();
-  const { chain } = useNetwork();
-  const network = getNetworkByChainId(chain?.id);
+  const signer = useSigner();
+  const chain = useChain();
+  const network = getNetworkByChainId(chain?.chainId);
 
-  const sdk = useMemo(() => {
+  const sdk = React.useMemo(() => {
     return new OpenFormatSDK({
       signer: signer as Signer,
       ...config,
       //@dev first network in the array of networks is the classed as the default chain.
       network: network ?? config.networks?.[0],
     });
-  }, [signer, chain]);
-
-  useEffect(() => {
-    const wallet = JSON.parse(localStorage.getItem('wagmi.wallet') ?? '""');
-    const previouslyConnected = JSON.parse(
-      localStorage.getItem('wagmi.connected') ?? 'false'
-    );
-
-    const connector = connectors.find(
-      (connector: Connector) => wallet === connector.id
-    );
-
-    if (wallet && previouslyConnected) {
-      connect({ connector });
-    }
-  }, []);
+  }, [signer, chain, network]);
 
   return (
     <OpenFormatContext.Provider value={{ sdk: sdk }}>
-      <ConnectKitProvider>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </ConnectKitProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </OpenFormatContext.Provider>
   );
 }
