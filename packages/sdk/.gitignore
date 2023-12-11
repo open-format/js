@@ -4,3 +4,4 @@ node_modules
 dist
 src/contract-types
 coverage
+temp

@@ -511,6 +511,7 @@ export class ERC721LazyMint extends BaseContract {
     try {
       await this.checkNetworksMatch();
 
+      // @ts-ignore
       const tx = await this.contract.owner();
       return tx;
     } catch (error: any) {

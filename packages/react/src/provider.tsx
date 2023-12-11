@@ -30,6 +30,7 @@ const queryClient = new QueryClient({
 export function OpenFormatProvider({
   children,
   config = {
+    // @ts-ignore
     networks: [Chains.polygonMumbai],
     appId: '',
     activeChain: 'mumbai',
@@ -60,6 +61,7 @@ export function OpenFormatProvider({
 function InnerProvider({
   children,
   config = {
+    // @ts-ignore
     networks: [Chains.polygonMumbai],
     appId: '',
   },
@@ -73,9 +75,11 @@ function InnerProvider({
 }) {
   const signer = useSigner();
   const chain = useChain();
+  // @ts-ignore
   const network = getNetworkByChainId(chain?.chainId);
 
   const sdk = React.useMemo(() => {
+    // @ts-ignore
     return new OpenFormatSDK({
       signer: signer as Signer,
       ...config,

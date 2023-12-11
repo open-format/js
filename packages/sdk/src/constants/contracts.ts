@@ -14,6 +14,7 @@ export const abis = unionBy(
   ERC20Base,
   SettingsFacet,
   RewardsFacet,
+  // @ts-ignore
   ERC721Base,
   ConstellationFactory,
   StarFactory,

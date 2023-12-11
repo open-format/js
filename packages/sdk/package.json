@@ -89,6 +89,8 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
+    "@microsoft/api-documenter": "^7.23.12",
+    "@microsoft/api-extractor": "^7.38.3",
     "@wagmi/chains": "^0.2.17",
     "axios": "^1.4.0",
     "graphql": "^16.6.0",

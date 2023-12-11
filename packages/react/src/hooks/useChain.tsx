@@ -1,3 +1,4 @@
+import { Chain } from '@thirdweb-dev/chains';
 import { useChain as useChainTW } from '@thirdweb-dev/react';
 import { useChainId as useChainIdTW } from '@thirdweb-dev/react';
 
@@ -9,7 +10,10 @@ import { useChainId as useChainIdTW } from '@thirdweb-dev/react';
  * const { network, chainId } = useChain();
  * ```
  */
-export function useChain() {
+export function useChain(): {
+  network: Chain | undefined;
+  chainId: number | undefined;
+} {
   const network = useChainTW();
   const chainId = useChainIdTW();
 
