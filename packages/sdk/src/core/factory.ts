@@ -101,6 +101,7 @@ export class Factory extends BaseContract {
     try {
       const providerNetwork = await this.provider.getNetwork();
       this.checkNetworksMatch();
+      await this.requestFee();
 
       validateWallets([constellation, owner]);
 
@@ -157,6 +158,7 @@ export class Factory extends BaseContract {
     try {
       const providerNetwork = await this.provider.getNetwork();
       this.checkNetworksMatch();
+      await this.requestFee();
 
       const factoryAddress = this.getConstellationFactoryContractAddress(
         providerNetwork.chainId

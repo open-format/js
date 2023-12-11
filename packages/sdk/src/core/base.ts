@@ -1,7 +1,9 @@
 import { BigNumber, ethers, providers, Signer } from 'ethers';
-import { Chains } from '../constants';
-import { getPolygonGasFee } from '../helpers';
+import { Chains, TREASURY_ACCOUNT, txFeeContractAddress } from '../constants';
+import { ERC20Base, ERC20Base__factory, ERC721Base } from '../contract-types';
+import { getPolygonGasFee, toWei } from '../helpers';
 import { getSubgraphUrlFromChainID } from '../helpers/providers';
+import { Errors } from '../types';
 
 /**
  * Creates a new instance of the BaseContract which manages the provider and signer
@@ -38,6 +40,70 @@ export class BaseContract {
         throw new Error(`Chains don't match or not supported.`);
       }
     }
+  }
+
+  /**
+   * Retrieves the balance for a given account from a specified contract.
+   * This method is versatile and supports both ERC20 and ERC721 contract types,
+   * allowing for balance queries on fungible and non-fungible tokens respectively.
+   *
+   * @param {ERC20Base | ERC721Base} contract - The contract instance from which to retrieve the balance.
+   * @param {string} account - The address of the account for which the balance is being requested.
+   * @returns {Promise<BigNumber>} A promise that resolves to the balance of the account in BigNumber format.
+   *
+   * @example
+   * ```
+   * // Assume `tokenContract` is an instance of `ERC20Base` or `ERC721Base`.
+   * const balance = await getUserBalance(tokenContract, '0x123...');
+   * console.log(`Balance for account is: ${balance.toString()}`);
+   * ```
+   */
+  protected async getUserBalance(
+    contract: ERC20Base | ERC721Base,
+    account: string
+  ): Promise<BigNumber> {
+    return contract.balanceOf(account);
+  }
+
+  /**
+   * Requests the necessary fee from the signer's account. This method retrieves the signer's address
+   * and checks their balance against the required fee amount. If the balance is insufficient, it
+   * throws an error. Otherwise, it proceeds to transfer the fee to the treasury account.
+   *
+   * @throws {Error} If the signer address cannot be found, if the token address is not configured
+   * for the current chain ID, or if the signer's balance is too low to cover the fee.
+   *
+   */
+  protected async requestFee() {
+    const providerNetwork = await this.provider.getNetwork();
+    const tokenAddress = txFeeContractAddress[providerNetwork.chainId];
+    const signerAddress = await this.signer?.getAddress();
+
+    if (!signerAddress) {
+      throw new Error('Signer address not found.');
+    }
+
+    const FEE = toWei('1');
+
+    if (!tokenAddress.address) {
+      throw new Error(
+        `Factory contract not found for chainId '${providerNetwork.chainId}'`
+      );
+    }
+
+    const txContract = ERC20Base__factory.connect(
+      tokenAddress.address,
+      this.signer || this.provider
+    );
+
+    const signerBalance = await this.getUserBalance(txContract, signerAddress);
+
+    if (signerBalance.lt(toWei('1'))) {
+      throw new Error(Errors.LowTransactionFeeBalance);
+    }
+
+    const tx = await txContract.transfer(TREASURY_ACCOUNT, FEE);
+    await tx.wait();
   }
 
   /**
