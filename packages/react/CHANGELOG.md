@@ -1,5 +1,16 @@
 # @openformat/react
 
+## 1.3.0
+
+### Minor Changes
+
+- [#151](https://github.com/open-format/js/pull/151) [`d13a93a`](https://github.com/open-format/js/commit/d13a93a4dda9bed0e6231f0607b5f57d186ec87e) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Implement new wallet functionality
+
+### Patch Changes
+
+- Updated dependencies [[`70afa02`](https://github.com/open-format/js/commit/70afa02affe274ce9fb4a2e4b359076640c94a4d)]:
+  - @openformat/sdk@1.2.2
+
 ## 1.2.2
 
 ### Patch Changes
