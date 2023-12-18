@@ -34,15 +34,18 @@ export function OpenFormatProvider({
     networks: [Chains.polygonMumbai],
     appId: '',
     activeChain: 'mumbai',
+    clientId: '46050913cfca79ef738688d492bb7ac3',
+    autoConnect: true,
   },
 }: {
   children: React.ReactNode;
   config?: {
     networks: Chain[];
     appId: string;
-    clientId: string;
+    clientId?: string;
     signer?: Signer | string;
     activeChain?: 'mumbai' | 'polygon' | 'aurora' | 'aurora-testnet';
+    autoConnect?: boolean;
   };
 }) {
   return (
@@ -50,7 +53,7 @@ export function OpenFormatProvider({
       activeChain={config.activeChain}
       clientId={config.clientId}
       supportedChains={[Polygon, Aurora, Mumbai, AuroraTestnet]}
-      autoConnect={true}
+      autoConnect={config.autoConnect}
       supportedWallets={[metamaskWallet({ recommended: true }), localWallet()]}
     >
       <InnerProvider config={config}>{children}</InnerProvider>
