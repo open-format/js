@@ -49,10 +49,6 @@ export const hederaPreviewnet = {
     },
   },
   blockExplorers: {
-    etherscan: {
-      name: 'HashScan',
-      url: 'https://hashscan.io/previewnet',
-    },
     default: {
       name: 'HashScan',
       url: 'https://hashscan.io/previewnet',
@@ -75,10 +71,6 @@ export const hederaTestnet = {
     },
   },
   blockExplorers: {
-    etherscan: {
-      name: 'HashScan',
-      url: 'https://hashscan.io/testnet',
-    },
     default: {
       name: 'HashScan',
       url: 'https://hashscan.io/testnet',
