@@ -35,10 +35,64 @@ export const polygonMumbai = {
   testnet: true,
 } as const satisfies Chain;
 
+export const hederaPreviewnet = {
+  id: 297,
+  name: 'Hedera PreviewNet',
+  network: 'Hedera Previewnet',
+  nativeCurrency: { name: 'HBAR', symbol: 'HBAR', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://previewnet.hashio.io/api'],
+    },
+    public: {
+      http: ['https://previewnet.hashio.io/api'],
+    },
+  },
+  blockExplorers: {
+    etherscan: {
+      name: 'HashScan',
+      url: 'https://hashscan.io/previewnet',
+    },
+    default: {
+      name: 'HashScan',
+      url: 'https://hashscan.io/previewnet',
+    },
+  },
+  testnet: true,
+} as const satisfies Chain;
+
+export const hederaTestnet = {
+  id: 296,
+  name: 'Hedera TestNet',
+  network: 'Hedera Testnet',
+  nativeCurrency: { name: 'HBAR', symbol: 'HBAR', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://testnet.hashio.io/api'],
+    },
+    public: {
+      http: ['https://testnet.hashio.io/api'],
+    },
+  },
+  blockExplorers: {
+    etherscan: {
+      name: 'HashScan',
+      url: 'https://hashscan.io/testnet',
+    },
+    default: {
+      name: 'HashScan',
+      url: 'https://hashscan.io/testnet',
+    },
+  },
+  testnet: true,
+} as const satisfies Chain;
+
 export const Chains = {
   aurora,
   auroraTestnet,
   foundry,
   polygon,
   polygonMumbai,
+  hederaTestnet,
+  hederaPreviewnet,
 };

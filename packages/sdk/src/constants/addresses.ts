@@ -24,6 +24,12 @@ export const starFactoryContracts: ContractData = {
     //@dev this change depending on local blockchain.
     address: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
   },
+  [Chains.hederaPreviewnet.id]: {
+    address: '0xB71197737D9CaDf3283ab96DE99601282bFcF95d',
+  },
+  [Chains.hederaTestnet.id]: {
+    address: '0xB71197737D9CaDf3283ab96DE99601282bFcF95d',
+  },
 };
 
 export const constellationFactoryContracts: ContractData = {
@@ -43,6 +49,12 @@ export const constellationFactoryContracts: ContractData = {
   [Chains.foundry.id]: {
     //@dev this change depending on local blockchain.
     address: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
+  },
+  [Chains.hederaPreviewnet.id]: {
+    address: '0x517A7dF38e4fca1bb77fCE1cBa718Bf3B0e377b7',
+  },
+  [Chains.hederaTestnet.id]: {
+    address: '0x517A7dF38e4fca1bb77fCE1cBa718Bf3B0e377b7',
   },
 };
 
@@ -64,6 +76,12 @@ export const txFeeContractAddress: ContractData = {
   [Chains.foundry.id]: {
     //@dev This value is mocked in the tests. Update it if testing locally.
     address: '0x123',
+  },
+  [Chains.hederaPreviewnet.id]: {
+    address: '0x33C6CEe4CD1CFEd3FFc98521D0D3cbF4184f5Ff7',
+  },
+  [Chains.hederaTestnet.id]: {
+    address: '0x33C6CEe4CD1CFEd3FFc98521D0D3cbF4184f5Ff7',
   },
 };
 
