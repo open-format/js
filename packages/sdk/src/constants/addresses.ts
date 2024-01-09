@@ -24,6 +24,9 @@ export const starFactoryContracts: ContractData = {
     //@dev this change depending on local blockchain.
     address: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
   },
+  [Chains.neonDevnet.id]: {
+    address: '0xA6eabc98e1D7a29aB0f940E2fFC522EbFaA66b60',
+  },
 };
 
 export const constellationFactoryContracts: ContractData = {
@@ -43,6 +46,9 @@ export const constellationFactoryContracts: ContractData = {
   [Chains.foundry.id]: {
     //@dev this change depending on local blockchain.
     address: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
+  },
+  [Chains.neonDevnet.id]: {
+    address: '0xF2469CB8AFC27bC54e92071EC313952F79887b45',
   },
 };
 
@@ -64,6 +70,9 @@ export const txFeeContractAddress: ContractData = {
   [Chains.foundry.id]: {
     //@dev This value is mocked in the tests. Update it if testing locally.
     address: '0x123',
+  },
+  [Chains.neonDevnet.id]: {
+    address: '0x2F619D1d0Ea1217C4C71Aff40239d9198Cd1B418',
   },
 };
 

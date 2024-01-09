@@ -35,10 +35,34 @@ export const polygonMumbai = {
   testnet: true,
 } as const satisfies Chain;
 
+export const neonDevnet = {
+  id: 245022926,
+  name: 'Neon EVM DevNet',
+  network: 'neonDevnet',
+  nativeCurrency: { name: 'NEON', symbol: 'NEON', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://devnet.neonevm.org'],
+    },
+    public: {
+      http: ['https://devnet.neonevm.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Neonscan',
+      url: 'https://devnet.neonscan.org',
+    },
+  },
+  testnet: true,
+} as const satisfies Chain;
+
+
 export const Chains = {
   aurora,
   auroraTestnet,
   foundry,
   polygon,
   polygonMumbai,
+  neonDevnet,
 };
