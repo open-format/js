@@ -29,7 +29,7 @@ export function parseErrorData(error: any) {
       if (isObject(value)) {
         getSignatureHash(value);
       } else if (key === 'data') {
-        if (value.length === 10) {
+        if (value && value.length === 10) {
           result = value;
         }
       }
