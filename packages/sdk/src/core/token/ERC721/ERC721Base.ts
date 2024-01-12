@@ -27,6 +27,7 @@ import {
   ERC721MintParams,
   ERC721OwnerOfParams,
   ERC721SetApprovalForAllParams,
+  ERC721SetMetadataURIParams,
   ERC721SetMinterRoleParams,
   ERC721TokenURIParams,
   ERC721TotalSupplyParams,
@@ -252,6 +253,27 @@ export class ERC721Base extends BaseContract {
           ...params.overrides,
         }
       );
+
+      const receipt = await processTransaction(tx);
+
+      return receipt;
+    } catch (error: any) {
+      const parsedError = parseErrorData(error);
+      throw new Error(parsedError);
+    }
+  }
+
+  async setContractURI(
+    params: ERC721SetMetadataURIParams
+  ): Promise<ContractReceipt> {
+    try {
+      await this.checkNetworksMatch();
+      const gasOverrides = await this.getGasPrice();
+
+      const tx = await this.contract.setContractURI(params.uri, {
+        ...gasOverrides,
+        ...params.overrides,
+      });
 
       const receipt = await processTransaction(tx);
 
