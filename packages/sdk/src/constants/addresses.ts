@@ -14,6 +14,9 @@ export const starFactoryContracts: ContractData = {
   [Chains.polygonMumbai.id]: {
     address: '0x429cB2c2A030952D3F5e10B534584aB49c303763',
   },
+  [Chains.polygonAmoy.id]: {
+    address: '0x542D145f2c66CB9ac58447Fe141BFB12fea7C8bE',
+  },
   [Chains.aurora.id]: {
     address: '0xc0553B98d93114FB241196272603DF4543359820',
   },
@@ -34,6 +37,9 @@ export const constellationFactoryContracts: ContractData = {
   [Chains.polygonMumbai.id]: {
     address: '0x609401678A22F7e2c7AaFd817F6F5a0bbBf44e8F',
   },
+  [Chains.polygonAmoy.id]: {
+    address: '0x4cE72ceB49223A259FA1265Ba3a78484BbE8B889',
+  },
   [Chains.aurora.id]: {
     address: '0xa3cCc90A2025cefad0AeDF4CFe44aD059605620c',
   },
@@ -53,6 +59,9 @@ export const txFeeContractAddress: ContractData = {
     address: '0x746a330Add641444ADbFa3Cc969F433aA632504E',
   },
   [Chains.polygonMumbai.id]: {
+    address: '0x746a330Add641444ADbFa3Cc969F433aA632504E',
+  },
+  [Chains.polygonAmoy.id]: {
     address: '0x746a330Add641444ADbFa3Cc969F433aA632504E',
   },
   [Chains.aurora.id]: {

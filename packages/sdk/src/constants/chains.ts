@@ -35,10 +35,41 @@ export const polygonMumbai = {
   testnet: true,
 } as const satisfies Chain;
 
+export const polygonAmoy = {
+  id: 80002,
+  name: 'Polygon Amoy',
+  network: 'amoy',
+  nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+  rpcUrls: {
+    alchemy: {
+      http: ['https://polygon-amoy.g.alchemy.com/v2'],
+      webSocket: ['wss://polygon-amoy.g.alchemy.com/v2'],
+    },
+    infura: {
+      http: ['https://polygon-amoy.infura.io/v3'],
+      webSocket: ['wss://polygon-amoy.infura.io/ws/v3'],
+    },
+    default: {
+      http: ['https://rpc-amoy.polygon.technology'],
+    },
+    public: {
+      http: ['https://rpc-amoy.polygon.technology'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'OkLink',
+      url: 'https://www.oklink.com/amoy',
+    },
+  },
+  testnet: true,
+} as const satisfies Chain;
+
 export const Chains = {
   aurora,
   auroraTestnet,
   foundry,
   polygon,
   polygonMumbai,
+  polygonAmoy,
 };
