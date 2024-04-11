@@ -14,6 +14,9 @@ export const appFactoryContracts: ContractData = {
   [Chains.polygonMumbai.id]: {
     address: '0x429cB2c2A030952D3F5e10B534584aB49c303763',
   },
+  [Chains.polygonAmoy.id]: {
+    address: '0x542D145f2c66CB9ac58447Fe141BFB12fea7C8bE',
+  },
   [Chains.aurora.id]: {
     address: '0xc0553B98d93114FB241196272603DF4543359820',
   },
