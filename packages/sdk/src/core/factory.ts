@@ -7,8 +7,8 @@ import {
 } from 'ethers';
 import { appFactoryContracts } from '../constants';
 import { AppFactory__factory } from '../contract-types';
-import { validateWallets } from '../helpers';
 import { getArgumentFromEvent, parseErrorData } from '../helpers/transaction';
+import { Errors } from '../types';
 import { BaseContract } from './base';
 /**
  * A class representing a Factory contract that extends the BaseContract class.
@@ -74,18 +74,16 @@ export class Factory extends BaseContract {
    * @returns {Promise<ContractReceipt>} A Promise that resolves to the transaction receipt of the contract creation.
    */
 
-  async createApp({
-    name,
-    owner,
-  }: {
-    name: string;
-    owner: string;
-  }): Promise<{ id: string }> {
+  async createApp({ name }: { name: string }): Promise<{ id: string }> {
     try {
       const providerNetwork = await this.provider.getNetwork();
       this.checkNetworksMatch();
 
-      validateWallets([owner]);
+      const signerAddress = await this.signer?.getAddress();
+
+      if (!signerAddress || !ethers.utils.isAddress(signerAddress)) {
+        throw new Error(Errors.InvalidSigner);
+      }
 
       const factoryAddress = this.getAppFactoryContractAddress(
         providerNetwork.chainId
@@ -98,7 +96,7 @@ export class Factory extends BaseContract {
 
       const tx = await contract.create(
         ethers.utils.formatBytes32String(name),
-        owner
+        signerAddress
       );
 
       const receipt = await this.processTransaction(tx);

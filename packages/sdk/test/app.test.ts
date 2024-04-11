@@ -77,7 +77,6 @@ describe('AppFactory', () => {
   it('should create an app', async () => {
     const app = await global.sdk.factory.createApp({
       name: faker.internet.domainWord(),
-      owner: global.walletAddress,
     });
 
     expect(app.id).toContain('0x');
@@ -85,14 +84,11 @@ describe('AppFactory', () => {
 
   it('should throw error if app name already exists', async () => {
     const name = faker.internet.domainWord();
-    const params = {
-      owner: global.walletAddress,
-    };
 
-    await global.sdk.factory.createApp({ name, ...params });
+    await global.sdk.factory.createApp({ name });
 
     async function handleCreate() {
-      await global.sdk.factory.createApp({ name, ...params });
+      await global.sdk.factory.createApp({ name });
     }
 
     await expect(handleCreate).rejects.toThrow(
