@@ -17,6 +17,9 @@ export const appFactoryContracts: ContractData = {
   [Chains.polygonAmoy.id]: {
     address: '0x542D145f2c66CB9ac58447Fe141BFB12fea7C8bE',
   },
+  [Chains.arbitrumSepolia.id]: {
+    address: '0x19781Af95cA4E113D5D1412452225D11A84ce992',
+  },
   [Chains.aurora.id]: {
     address: '0xc0553B98d93114FB241196272603DF4543359820',
   },
