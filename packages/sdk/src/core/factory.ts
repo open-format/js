@@ -1,17 +1,12 @@
 import {
-  BigNumberish,
   ContractReceipt,
   ContractTransaction,
   ethers,
   providers,
   Signer,
 } from 'ethers';
-import {
-  constellationFactoryContracts,
-  starFactoryContracts,
-} from '../constants';
-import { StarFactory__factory } from '../contract-types';
-import { ConstellationFactory__factory } from '../contract-types/factories/factories/ConstellationFactory__factory';
+import { starFactoryContracts } from '../constants';
+import { AppFactory__factory } from '../contract-types';
 import { validateWallets } from '../helpers';
 import { getArgumentFromEvent, parseErrorData } from '../helpers/transaction';
 import { BaseContract } from './base';
@@ -70,16 +65,6 @@ export class Factory extends BaseContract {
     return factoryContract.address;
   }
 
-  getConstellationFactoryContractAddress(chainId: number): string {
-    const constellationFactoryContract = constellationFactoryContracts[chainId];
-
-    if (!constellationFactoryContract) {
-      throw new Error(`Factory contract not found for chainId '${chainId}'`);
-    }
-
-    return constellationFactoryContract.address;
-  }
-
   /**
    * Creates a new contract with the given name.
    *
@@ -89,97 +74,36 @@ export class Factory extends BaseContract {
    * @returns {Promise<ContractReceipt>} A Promise that resolves to the transaction receipt of the contract creation.
    */
 
-  async createStar({
+  async createApp({
     name,
-    constellation,
     owner,
   }: {
     name: string;
-    constellation: string;
     owner: string;
   }): Promise<{ starAddress: string }> {
     try {
       const providerNetwork = await this.provider.getNetwork();
       this.checkNetworksMatch();
-      await this.requestFee();
 
-      validateWallets([constellation, owner]);
+      validateWallets([owner]);
 
       const factoryAddress = this.getStarFactoryContractAddress(
         providerNetwork.chainId
       );
 
-      const contract = StarFactory__factory.connect(
+      const contract = AppFactory__factory.connect(
         factoryAddress,
         this.signer || this.provider
       );
 
       const tx = await contract.create(
         ethers.utils.formatBytes32String(name),
-        constellation,
         owner
       );
 
       const receipt = await this.processTransaction(tx);
       return {
         starAddress: getArgumentFromEvent(
-          receipt,
-          contract.interface,
-          'Created',
-          0
-        ),
-      };
-    } catch (error: any) {
-      const parsedError = parseErrorData(error);
-      throw new Error(parsedError);
-    }
-  }
-
-  /**
-   * Creates a new contract with the given name.
-   *
-   * @async
-   * @function create
-   * @param {string} name - The name of the new contract.
-   * @returns {Promise<ContractReceipt>} A Promise that resolves to the transaction receipt of the contract creation.
-   */
-
-  async createConstellation({
-    name,
-    symbol,
-    decimals,
-    supply,
-  }: {
-    name: string;
-    symbol: string;
-    decimals: number;
-    supply: BigNumberish;
-  }): Promise<{ constellationAddress: string }> {
-    try {
-      const providerNetwork = await this.provider.getNetwork();
-      this.checkNetworksMatch();
-      await this.requestFee();
-
-      const factoryAddress = this.getConstellationFactoryContractAddress(
-        providerNetwork.chainId
-      );
-
-      const contract = ConstellationFactory__factory.connect(
-        factoryAddress,
-        this.signer || this.provider
-      );
-
-      const tx = await contract.create(
-        ethers.utils.formatBytes32String(name),
-        symbol,
-        decimals,
-        supply
-      );
-
-      const receipt = await this.processTransaction(tx);
-
-      return {
-        constellationAddress: getArgumentFromEvent(
           receipt,
           contract.interface,
           'Created',
