@@ -2,7 +2,6 @@
 export * from './constants';
 export * from './core/app';
 export { BaseContract } from './core/base';
-export * from './core/constellation';
 export { ERC721LazyDrop } from './core/drop/ERC721LazyDrop';
 export * from './core/factory';
 export * from './core/reward';

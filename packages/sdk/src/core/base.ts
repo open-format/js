@@ -1,9 +1,8 @@
 import { BigNumber, ethers, providers, Signer } from 'ethers';
-import { Chains, TREASURY_ACCOUNT, txFeeContractAddress } from '../constants';
-import { ERC20Base, ERC20Base__factory, ERC721Base } from '../contract-types';
-import { getPolygonGasFee, toWei } from '../helpers';
+import { Chains } from '../constants';
+import { ERC20Base, ERC721Base } from '../contract-types';
+import { getPolygonGasFee } from '../helpers';
 import { getSubgraphUrlFromChainID } from '../helpers/providers';
-import { Errors } from '../types';
 
 /**
  * Creates a new instance of the BaseContract which manages the provider and signer
@@ -66,47 +65,6 @@ export class BaseContract {
   }
 
   /**
-   * Requests the necessary fee from the signer's account. This method retrieves the signer's address
-   * and checks their balance against the required fee amount. If the balance is insufficient, it
-   * throws an error. Otherwise, it proceeds to transfer the fee to the treasury account.
-   *
-   * @throws {Error} If the signer address cannot be found, if the token address is not configured
-   * for the current chain ID, or if the signer's balance is too low to cover the fee.
-   *
-   */
-  protected async requestFee() {
-    const providerNetwork = await this.provider.getNetwork();
-    const tokenAddress = txFeeContractAddress[providerNetwork.chainId];
-    const signerAddress = await this.signer?.getAddress();
-
-    if (!signerAddress) {
-      throw new Error('Signer address not found.');
-    }
-
-    const FEE = toWei('1');
-
-    if (!tokenAddress.address) {
-      throw new Error(
-        `Factory contract not found for chainId '${providerNetwork.chainId}'`
-      );
-    }
-
-    const txContract = ERC20Base__factory.connect(
-      tokenAddress.address,
-      this.signer || this.provider
-    );
-
-    const signerBalance = await this.getUserBalance(txContract, signerAddress);
-
-    if (signerBalance.lt(toWei('1'))) {
-      throw new Error(Errors.LowTransactionFeeBalance);
-    }
-
-    const tx = await txContract.transfer(TREASURY_ACCOUNT, FEE);
-    await tx.wait();
-  }
-
-  /**
    * getGasPrice function to fetch the appropriate gas parameters.
    *
    * This function checks if the network supports EIP-1559 and returns the appropriate
@@ -163,7 +121,7 @@ export class BaseContract {
     }
   }
 
-  setStarId(starId: string) {
-    this.appId = starId;
+  setAppId(appId: string) {
+    this.appId = appId;
   }
 }
