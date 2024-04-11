@@ -80,7 +80,7 @@ export class Factory extends BaseContract {
   }: {
     name: string;
     owner: string;
-  }): Promise<{ starAddress: string }> {
+  }): Promise<{ appAddress: string }> {
     try {
       const providerNetwork = await this.provider.getNetwork();
       this.checkNetworksMatch();
@@ -103,7 +103,7 @@ export class Factory extends BaseContract {
 
       const receipt = await this.processTransaction(tx);
       return {
-        starAddress: getArgumentFromEvent(
+        appAddress: getArgumentFromEvent(
           receipt,
           contract.interface,
           'Created',
