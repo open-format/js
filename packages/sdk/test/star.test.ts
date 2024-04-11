@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import {
+  appFactoryContracts,
   Chains,
   ContractErrors,
   Errors,
   Factory,
   OpenFormatSDK,
-  starFactoryContracts,
 } from '../src';
 import { mockLowFeeBalance } from './mocks/lowFeeBalance';
 import { PRIVATE_KEY } from './setup';
@@ -18,7 +18,7 @@ describe('StarFactory', () => {
       global.sdk.factory.getStarFactoryContractAddress(network.chainId);
 
     expect(foundryContractAddress).toBe(
-      starFactoryContracts[network.chainId].address
+      appFactoryContracts[network.chainId].address
     );
   });
 
@@ -28,7 +28,7 @@ describe('StarFactory', () => {
       global.sdk.factory.getStarFactoryContractAddress(network.chainId);
 
     expect(foundryContractAddress).toBe(
-      starFactoryContracts[network.chainId].address
+      appFactoryContracts[network.chainId].address
     );
   });
   it('should return the factory address for polygon', async () => {
@@ -43,7 +43,7 @@ describe('StarFactory', () => {
       global.sdk.factory.getStarFactoryContractAddress(network.chainId);
 
     expect(foundryContractAddress).toBe(
-      starFactoryContracts[network.chainId].address
+      appFactoryContracts[network.chainId].address
     );
   });
   it('should return the factory address for aurora', async () => {
@@ -58,7 +58,7 @@ describe('StarFactory', () => {
       global.sdk.factory.getStarFactoryContractAddress(network.chainId);
 
     expect(foundryContractAddress).toBe(
-      starFactoryContracts[network.chainId].address
+      appFactoryContracts[network.chainId].address
     );
   });
   it('should return the factory address for aurora testnet', async () => {
@@ -73,7 +73,7 @@ describe('StarFactory', () => {
       global.sdk.factory.getStarFactoryContractAddress(network.chainId);
 
     expect(foundryContractAddress).toBe(
-      starFactoryContracts[network.chainId].address
+      appFactoryContracts[network.chainId].address
     );
   });
 

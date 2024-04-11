@@ -5,7 +5,7 @@ import {
   providers,
   Signer,
 } from 'ethers';
-import { starFactoryContracts } from '../constants';
+import { appFactoryContracts } from '../constants';
 import { AppFactory__factory } from '../contract-types';
 import { validateWallets } from '../helpers';
 import { getArgumentFromEvent, parseErrorData } from '../helpers/transaction';
@@ -56,7 +56,7 @@ export class Factory extends BaseContract {
   }
 
   getStarFactoryContractAddress(chainId: number): string {
-    const factoryContract = starFactoryContracts[chainId];
+    const factoryContract = appFactoryContracts[chainId];
 
     if (!factoryContract) {
       throw new Error(`Factory contract not found for chainId '${chainId}'`);
