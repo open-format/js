@@ -103,7 +103,7 @@ export class Reward extends BaseContract {
           transactions.push(tx);
           break;
 
-        case RewardType.CONSTELLATION_TOKEN:
+        case RewardType.REWARD_TOKEN:
           tx = this.contract.interface.encodeFunctionData('transferERC20', [
             token.address,
             params.receiver,

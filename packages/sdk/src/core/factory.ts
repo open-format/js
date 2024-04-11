@@ -55,7 +55,7 @@ export class Factory extends BaseContract {
     return receipt;
   }
 
-  getStarFactoryContractAddress(chainId: number): string {
+  getAppFactoryContractAddress(chainId: number): string {
     const factoryContract = appFactoryContracts[chainId];
 
     if (!factoryContract) {
@@ -87,7 +87,7 @@ export class Factory extends BaseContract {
 
       validateWallets([owner]);
 
-      const factoryAddress = this.getStarFactoryContractAddress(
+      const factoryAddress = this.getAppFactoryContractAddress(
         providerNetwork.chainId
       );
 
@@ -102,6 +102,7 @@ export class Factory extends BaseContract {
       );
 
       const receipt = await this.processTransaction(tx);
+
       return {
         id: getArgumentFromEvent(receipt, contract.interface, 'Created', 0),
       };
