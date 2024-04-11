@@ -1,68 +1,102 @@
-import { AppSetCreatorAccessParams } from '../src';
-import { WALLETS, ZERO_ADDRESS } from './utilities';
+import { faker } from '@faker-js/faker';
+import {
+  appFactoryContracts,
+  Chains,
+  ContractErrors,
+  OpenFormatSDK,
+} from '../src';
+import { PRIVATE_KEY } from './setup';
 
-describe('App', () => {
-  beforeEach(async () => {
-    await global.sdk.App.setCreatorAccess({
-      accounts: [ZERO_ADDRESS, WALLETS[0], WALLETS[1], WALLETS[2]],
-      approvals: [false, false, false, false],
-    });
+describe('AppFactory', () => {
+  let sdk: OpenFormatSDK;
+  it('should return the factory address for localhost', async () => {
+    const network = await global.sdk.provider.getNetwork();
+    const foundryContractAddress =
+      global.sdk.factory.getAppFactoryContractAddress(network.chainId);
+
+    expect(foundryContractAddress).toBe(
+      appFactoryContracts[network.chainId].address
+    );
   });
 
-  describe('setCreatorAccess()', () => {
-    it('should by default only allow the owner to create contracts', async () => {
-      const hasCreatorAccess = await global.sdk.App.hasCreatorAccess({
-        account: WALLETS[1],
-      });
-      const hasCreatorAccessOwner = await global.sdk.App.hasCreatorAccess({
-        account: WALLETS[0],
-      });
+  it('should return the factory address for mumbai', async () => {
+    const network = await global.sdk.provider.getNetwork();
+    const foundryContractAddress =
+      global.sdk.factory.getAppFactoryContractAddress(network.chainId);
 
-      expect(hasCreatorAccess).toBe(false);
-
-      //Owner always has access even though set to false in BeforeEach
-      expect(hasCreatorAccessOwner).toBe(true);
+    expect(foundryContractAddress).toBe(
+      appFactoryContracts[network.chainId].address
+    );
+  });
+  it('should return the factory address for polygon', async () => {
+    sdk = new OpenFormatSDK({
+      network: Chains.polygon,
+      appId: '',
+      signer: PRIVATE_KEY,
     });
 
-    it(`gives ${WALLETS[1]} access to creator contracts`, async () => {
-      const params: AppSetCreatorAccessParams = {
-        accounts: [WALLETS[1]],
-        approvals: [true],
-      };
+    const network = await global.sdk.provider.getNetwork();
+    const foundryContractAddress =
+      global.sdk.factory.getAppFactoryContractAddress(network.chainId);
 
-      await global.sdk.App.setCreatorAccess(params);
-
-      const hasCreatorAccess = await global.sdk.App.hasCreatorAccess({
-        account: WALLETS[1],
-      });
-
-      expect(hasCreatorAccess).toBe(true);
+    expect(foundryContractAddress).toBe(
+      appFactoryContracts[network.chainId].address
+    );
+  });
+  it('should return the factory address for aurora', async () => {
+    sdk = new OpenFormatSDK({
+      network: Chains.polygon,
+      appId: '',
+      signer: PRIVATE_KEY,
     });
 
-    it('gives anyone access to creator contracts', async () => {
-      const params: AppSetCreatorAccessParams = {
-        accounts: [ZERO_ADDRESS],
-        approvals: [true],
-      };
+    const network = await global.sdk.provider.getNetwork();
+    const foundryContractAddress =
+      global.sdk.factory.getAppFactoryContractAddress(network.chainId);
 
-      await global.sdk.App.setCreatorAccess(params);
-
-      const hasCreatorAccess = await global.sdk.App.hasCreatorAccess({
-        account: WALLETS[2],
-      });
-
-      expect(hasCreatorAccess).toBe(true);
+    expect(foundryContractAddress).toBe(
+      appFactoryContracts[network.chainId].address
+    );
+  });
+  it('should return the factory address for aurora testnet', async () => {
+    sdk = new OpenFormatSDK({
+      network: Chains.polygon,
+      appId: '',
+      signer: PRIVATE_KEY,
     });
+
+    const network = await global.sdk.provider.getNetwork();
+    const foundryContractAddress =
+      global.sdk.factory.getAppFactoryContractAddress(network.chainId);
+
+    expect(foundryContractAddress).toBe(
+      appFactoryContracts[network.chainId].address
+    );
   });
 
-  describe('setAcceptedCurrencies()', () => {
-    it('should accept ETH as acceptedCurrencies', async () => {
-      const tx = await global.sdk.App.setAcceptedCurrencies({
-        currencies: [ZERO_ADDRESS],
-        approvals: [true],
-      });
-
-      expect(tx.status).toBe(1);
+  it('should create an app', async () => {
+    const app = await global.sdk.factory.createApp({
+      name: faker.internet.domainWord(),
+      owner: global.walletAddress,
     });
+
+    expect(app.id).toContain('0x');
+  });
+
+  it('should throw error if app name already exists', async () => {
+    const name = faker.internet.domainWord();
+    const params = {
+      owner: global.walletAddress,
+    };
+
+    await global.sdk.factory.createApp({ name, ...params });
+
+    async function handleCreate() {
+      await global.sdk.factory.createApp({ name, ...params });
+    }
+
+    await expect(handleCreate).rejects.toThrow(
+      ContractErrors.App_nameAlreadyUsed
+    );
   });
 });

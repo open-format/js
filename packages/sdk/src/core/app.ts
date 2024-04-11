@@ -224,7 +224,6 @@ export class App extends BaseContract {
       }
 
       await this.checkNetworksMatch();
-      await this.requestFee();
 
       validateWallet(params.royaltyRecipient);
       validateBigNumbers([params.royaltyBps]);
@@ -263,7 +262,6 @@ export class App extends BaseContract {
       }
 
       await this.checkNetworksMatch();
-      await this.requestFee();
 
       validateWallet(params.royaltyRecipient);
       validateBigNumbers([params.royaltyBps]);
@@ -309,8 +307,6 @@ export class App extends BaseContract {
       }
 
       await this.checkNetworksMatch();
-
-      await this.requestFee();
 
       validateBigNumbers([params.supply]);
 

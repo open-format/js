@@ -9,7 +9,6 @@ import {
   ERC721LazyMint as ERC721LazyMintContract,
   SettingsFacet,
 } from '../contract-types';
-import { Constellation } from '../core/constellation';
 import { ERC721LazyDrop } from '../core/drop/ERC721LazyDrop';
 import { ERC20Base } from '../core/token/ERC20/ERC20Base';
 import { ERC721Base } from '../core/token/ERC721/ERC721Base';
@@ -19,10 +18,9 @@ import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 ///     SDK     ///
 ///////////////////
 
-// @TODO - change to Constellation/Star - https://chat.openai.com/share/71975ca3-da1a-46c0-8125-18744dc82688
 export interface SDKOptions {
   network: Chain;
-  starId: string;
+  appId: string;
   rpcUrl?: string;
   signer?: Signer | string;
 }
@@ -35,15 +33,13 @@ export type OpenFormatContract =
   | ERC20Base
   | ERC721Base
   | ERC721LazyMint
-  | ERC721LazyDrop
-  | Constellation;
+  | ERC721LazyDrop;
 
 export enum ContractType {
   NFT = 'NFT',
   NFTDrop = 'NFTDrop',
   NFTLazyMint = 'NFTLazyMint',
   Token = 'Token',
-  Constellation = 'Constellation',
 }
 
 export enum ImplementationType {
@@ -379,7 +375,7 @@ export interface AppSetApplicationFeeParams {
 export enum RewardType {
   XP_TOKEN = 'XP_TOKEN',
   BADGE = 'BADGE',
-  CONSTELLATION_TOKEN = 'CONSTELLATION_TOKEN',
+  REWARD_TOKEN = 'REWARD_TOKEN',
 }
 
 export enum ActivityType {
@@ -436,8 +432,7 @@ export enum ContractErrors {
   URIQueryForNonexistentToken = 'The token does not exist',
   MintERC2309QuantityExceedsLimit = 'The `quantity` minted with ERC2309 exceeds the safety limit.',
   OwnershipNotInitializedForExtraData = 'The `extraData` cannot be set on an unintialized ownership slot.',
-  Factory_nameAlreadyUsed = 'Star name already used',
-  Constellation_NameAlreadyUsed = 'Constellation name already used',
+  App_nameAlreadyUsed = 'App name already used',
   CurrencyTransferLib_insufficientValue = 'Transaction value is not set or too low.',
   ERC721LazyDrop_quantityZeroOrExceededWalletLimit = 'Exceeded wallet limit.',
   ERC721LazyDrop_cantClaimYet = 'Cannot claim yet, please wait for drop to begin.',

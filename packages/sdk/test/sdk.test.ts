@@ -5,7 +5,7 @@ describe('sdk', () => {
   it('should initialize the SDK on the polygon network', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.polygon,
-      starId: APP_ID,
+      appId: APP_ID,
     });
 
     const network = await sdk.provider.getNetwork();
@@ -15,7 +15,7 @@ describe('sdk', () => {
   it('should initialize the SDK on the mumbai network', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.polygonMumbai,
-      starId: APP_ID,
+      appId: APP_ID,
     });
 
     const network = await sdk.provider.getNetwork();
@@ -25,7 +25,7 @@ describe('sdk', () => {
   it('should initialize the SDK on the aurora network', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.aurora,
-      starId: APP_ID,
+      appId: APP_ID,
     });
     const network = await sdk.provider.getNetwork();
 
@@ -35,7 +35,7 @@ describe('sdk', () => {
   it('should initialize the SDK on the aurora testnet network', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.auroraTestnet,
-      starId: APP_ID,
+      appId: APP_ID,
     });
     const network = await sdk.provider.getNetwork();
 
@@ -45,7 +45,7 @@ describe('sdk', () => {
   it('should initialize the SDK on a local network', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.foundry,
-      starId: APP_ID,
+      appId: APP_ID,
     });
     const network = await sdk.provider.getNetwork();
 
@@ -55,7 +55,7 @@ describe('sdk', () => {
   it('should throw an error if contract address is invalid', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.foundry,
-      starId: APP_ID,
+      appId: APP_ID,
     });
 
     async function createInstance() {
@@ -68,10 +68,10 @@ describe('sdk', () => {
   it('should update the star ID', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.foundry,
-      starId: APP_ID,
+      appId: APP_ID,
     });
 
-    sdk.setStarId('0x123');
+    sdk.setAppId('0x123');
 
     expect(sdk.appId).toBe('0x123');
   });
