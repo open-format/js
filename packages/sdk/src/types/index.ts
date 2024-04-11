@@ -442,5 +442,5 @@ export enum ContractErrors {
 }
 
 export enum Errors {
-  LowTransactionFeeBalance = 'Signer $OFT balance too low. Please top up.',
+  InvalidSigner = 'The signer does not exist or is not a valid address',
 }
