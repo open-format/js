@@ -1,5 +1,6 @@
 import { Chains, ContractType, OpenFormatSDK } from '../src';
-import { APP_ID } from './utilities';
+
+const APP_ID = '';
 
 describe('sdk', () => {
   it('should initialize the SDK on the polygon network', async () => {
@@ -12,34 +13,15 @@ describe('sdk', () => {
 
     expect(network.chainId).toBe(137);
   });
-  it('should initialize the SDK on the mumbai network', async () => {
+  it('should initialize the SDK on the arbitrum sepolia network', async () => {
     const sdk = new OpenFormatSDK({
-      network: Chains.polygonMumbai,
+      network: Chains.arbitrumSepolia,
       appId: APP_ID,
     });
 
     const network = await sdk.provider.getNetwork();
 
-    expect(network.chainId).toBe(80001);
-  });
-  it('should initialize the SDK on the aurora network', async () => {
-    const sdk = new OpenFormatSDK({
-      network: Chains.aurora,
-      appId: APP_ID,
-    });
-    const network = await sdk.provider.getNetwork();
-
-    expect(network.chainId).toBe(1313161554);
-  });
-
-  it('should initialize the SDK on the aurora testnet network', async () => {
-    const sdk = new OpenFormatSDK({
-      network: Chains.auroraTestnet,
-      appId: APP_ID,
-    });
-    const network = await sdk.provider.getNetwork();
-
-    expect(network.chainId).toBe(1313161555);
+    expect(network.chainId).toBe(421614);
   });
 
   it('should initialize the SDK on a local network', async () => {
