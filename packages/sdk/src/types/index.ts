@@ -1,5 +1,5 @@
-import { Chain } from '@wagmi/chains';
 import { BigNumberish, Signer } from 'ethers';
+import { Chain } from 'viem/chains';
 import {
   ERC20Base as ERC20BaseContract,
   ERC20FactoryFacet,

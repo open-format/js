@@ -90,10 +90,7 @@ export class BaseContract {
       const chainId = (await this.provider.getNetwork()).chainId;
       let maxPriorityFeePerGas: BigNumber;
 
-      if (
-        chainId === Chains.polygon.id ||
-        chainId === Chains.polygonMumbai.id
-      ) {
+      if (chainId === Chains.polygon.id) {
         maxPriorityFeePerGas = await getPolygonGasFee(chainId);
       } else {
         maxPriorityFeePerGas = BigNumber.from(feeData.maxPriorityFeePerGas);

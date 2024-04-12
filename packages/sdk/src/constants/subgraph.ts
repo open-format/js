@@ -11,14 +11,11 @@ export const Subgraphs: SubgraphData = {
   [Chains.polygon.id]: {
     url: 'https://api.thegraph.com/subgraphs/name/open-format/polygon-v2',
   },
-  [Chains.polygonMumbai.id]: {
-    url: 'https://subgraphs.openformat.tech/subgraphs/name/open-format/mumbai',
+  [Chains.arbitrumSepolia.id]: {
+    url: 'https://subgraph.satsuma-prod.com/7238a0e24f3c/openformat--330570/open-format-arbitrum-sepolia/api',
   },
-  [Chains.aurora.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora-v2',
-  },
-  [Chains.auroraTestnet.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/aurora-testnet-v2',
+  [Chains.polygonAmoy.id]: {
+    url: 'https://subgraph.satsuma-prod.com/7238a0e24f3c/openformat--330570/open-format-amoy/api',
   },
   [Chains.foundry.id]: {
     url: 'http://0.0.0.0:8000/subgraphs/name/open-format/mumbai',

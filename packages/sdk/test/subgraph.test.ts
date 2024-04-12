@@ -2,15 +2,15 @@ import { gql } from 'graphql-request';
 import { Chains, OpenFormatSDK, Subgraphs } from '../src/index';
 
 describe('subgraph', () => {
-  it('should return subgraph endpoint for Polygon Mumbai', async () => {
+  it('should return subgraph endpoint for Arbitrum Sepolia', async () => {
     const sdk = new OpenFormatSDK({
-      network: Chains.polygonMumbai,
+      network: Chains.arbitrumSepolia,
       appId: global.app,
     });
 
     const endpoint = await sdk.getSubgraphEndpoint();
 
-    expect(endpoint).toBe(Subgraphs[Chains.polygonMumbai.id].url);
+    expect(endpoint).toBe(Subgraphs[Chains.arbitrumSepolia.id].url);
   });
 
   it('should return subgraph endpoint for Polygon Mainnet', async () => {
@@ -23,27 +23,7 @@ describe('subgraph', () => {
 
     expect(endpoint).toBe(Subgraphs[Chains.polygon.id].url);
   });
-  it('should return subgraph endpoint for Aurora', async () => {
-    const sdk = new OpenFormatSDK({
-      network: Chains.aurora,
-      appId: global.app,
-    });
 
-    const endpoint = await sdk.getSubgraphEndpoint();
-
-    expect(endpoint).toBe(Subgraphs[Chains.aurora.id].url);
-  });
-
-  it('should return subgraph endpoint for Aurora testnet', async () => {
-    const sdk = new OpenFormatSDK({
-      network: Chains.auroraTestnet,
-      appId: global.app,
-    });
-
-    const endpoint = await sdk.getSubgraphEndpoint();
-
-    expect(endpoint).toBe(Subgraphs[Chains.auroraTestnet.id].url);
-  });
   it('should return subgraph endpoint for Foundry(localhost)', async () => {
     const sdk = new OpenFormatSDK({
       network: Chains.foundry,
@@ -57,7 +37,7 @@ describe('subgraph', () => {
 
   it('allows you to perform a raw request', async () => {
     const sdk = new OpenFormatSDK({
-      network: Chains.polygonMumbai,
+      network: Chains.arbitrumSepolia,
       appId: global.app,
     });
 
