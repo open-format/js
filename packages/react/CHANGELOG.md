@@ -1,5 +1,14 @@
 # @openformat/react
 
+## 1.3.1
+
+### Patch Changes
+
+- [#169](https://github.com/open-format/js/pull/169) [`80e26f8`](https://github.com/open-format/js/commit/80e26f8ebc0706bc3e172d040b687b579c1e9747) Thanks [@refugene](https://github.com/refugene)! - - Remove support for old chains
+
+- Updated dependencies [[`80e26f8`](https://github.com/open-format/js/commit/80e26f8ebc0706bc3e172d040b687b579c1e9747), [`8223cdc`](https://github.com/open-format/js/commit/8223cdc72433e62b49ed6fdcae6f26496c6a3a5c), [`3386840`](https://github.com/open-format/js/commit/33868407549f913aee5d9ebe3aa7fe9b751faa79), [`fd17a28`](https://github.com/open-format/js/commit/fd17a28b2dc821ef7558fb5f1677979fda33c2e9)]:
+  - @openformat/sdk@1.3.0
+
 ## 1.3.0
 
 ### Minor Changes
