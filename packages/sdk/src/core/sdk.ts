@@ -26,7 +26,7 @@ import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
  * const sdk = new OpenFormatSDK({
  *  signer: "0x....",
  *  appId: "0x1ade2613adb6bafbc65d40eb9c1effbe3bfd8b81",
- *  network: Chains.polygonMumbai
+ *  network: Chains.arbitrumSepolia
  * });
  * ```
  */
@@ -38,7 +38,7 @@ export class OpenFormatSDK extends BaseContract {
   App: App;
 
   static defaultOptions: SDKOptions = {
-    network: Chains.polygonMumbai,
+    network: Chains.arbitrumSepolia,
     appId: '',
   };
 

@@ -115,16 +115,12 @@ export function fromWei(amount: BigNumberish): string {
  * ```
  */
 export async function getPolygonGasFee(
-  chainId: typeof Chains.polygon.id | typeof Chains.polygonMumbai.id
+  chainId: typeof Chains.polygon.id
 ): Promise<BigNumber> {
-  function getURL(
-    chainId: typeof Chains.polygon.id | typeof Chains.polygonMumbai.id
-  ) {
+  function getURL(chainId: typeof Chains.polygon.id) {
     switch (chainId) {
       case Chains.polygon.id:
         return 'https://gasstation.polygon.technology/v2';
-      case Chains.polygonMumbai.id:
-        return 'https://gasstation-testnet.polygon.technology/v2';
     }
   }
 

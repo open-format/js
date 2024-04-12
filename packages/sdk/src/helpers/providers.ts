@@ -7,12 +7,10 @@ export function getSubgraphUrlFromChainID(chainId: ChainId) {
   switch (chainId) {
     case Chains.polygon.id:
       return Subgraphs[Chains.polygon.id].url;
-    case Chains.polygonMumbai.id:
-      return Subgraphs[Chains.polygonMumbai.id].url;
-    case Chains.aurora.id:
-      return Subgraphs[Chains.aurora.id].url;
-    case Chains.auroraTestnet.id:
-      return Subgraphs[Chains.auroraTestnet.id].url;
+    case Chains.polygonAmoy.id:
+      return Subgraphs[Chains.polygonAmoy.id].url;
+    case Chains.arbitrumSepolia.id:
+      return Subgraphs[Chains.arbitrumSepolia.id].url;
     case Chains.foundry.id:
       return Subgraphs[Chains.foundry.id].url;
     default:

@@ -10,7 +10,7 @@ Fungible token creation and minting
 
 ```ts
 const sdk = new OpenFormatSDK({
-  network: Chains.polygonMumbai,
+  network: Chains.arbitrumSepolia,
   appId: 'INSERT_APP_ID',
   signer: 'INSERT_PRIVATE_KEY',
 });
@@ -33,7 +33,7 @@ NFT creation and minting
 
 ```ts
 const sdk = new OpenFormatSDK({
-  network: Chains.polygonMumbai,
+  network: Chains.arbitrumSepolia,
   appId: 'INSERT_APP_ID',
   signer: 'INSERT_PRIVATE_KEY',
 });
@@ -77,7 +77,7 @@ import { OpenFormatSDK, Chains } from '@openformat/sdk';
 
 const sdk = new OpenFormatSDK({
   // Choose which blockchain you would like to use
-  network: Chains.polygonMumbai,
+  network: Chains.arbitrumSepolia,
   // Go to https://apps.openformat.tech/ to generate App
   appId: 'INSERT_APP_ID',
   // Private key for sign transactions
