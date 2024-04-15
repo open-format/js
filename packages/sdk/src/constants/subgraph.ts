@@ -9,7 +9,7 @@ interface SubgraphData {
 export const Subgraphs: SubgraphData = {
   // Add the proper key-value pairs for each chainId
   [Chains.polygon.id]: {
-    url: 'https://api.thegraph.com/subgraphs/name/open-format/polygon-v2',
+    url: 'https://subgraph.satsuma-prod.com/7238a0e24f3c/openformat--330570/open-format-polygon/api',
   },
   [Chains.arbitrumSepolia.id]: {
     url: 'https://subgraph.satsuma-prod.com/7238a0e24f3c/openformat--330570/open-format-arbitrum-sepolia/api',
