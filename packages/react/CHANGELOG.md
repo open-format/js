@@ -1,5 +1,12 @@
 # @openformat/react
 
+## 1.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`2402e7d`](https://github.com/open-format/js/commit/2402e7d5be4f4642e34cf3b67e3fe8a92c9252be)]:
+  - @openformat/sdk@1.4.0
+
 ## 1.3.1
 
 ### Patch Changes
