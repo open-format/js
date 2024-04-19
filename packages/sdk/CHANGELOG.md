@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 1.4.0
+
+### Minor Changes
+
+- [#171](https://github.com/open-format/js/pull/171) [`2402e7d`](https://github.com/open-format/js/commit/2402e7d5be4f4642e34cf3b67e3fe8a92c9252be) Thanks [@nup9151f](https://github.com/nup9151f)! - Added support for Polygon Amoy
+
 ## 1.3.0
 
 ### Minor Changes
