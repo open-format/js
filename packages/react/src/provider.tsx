@@ -1,6 +1,6 @@
 import { Chains, OpenFormatSDK } from '@openformat/sdk';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Aurora, AuroraTestnet, Mumbai, Polygon } from '@thirdweb-dev/chains';
+import { ArbitrumSepolia } from '@thirdweb-dev/chains';
 import {
   Chain,
   localWallet,
@@ -31,9 +31,9 @@ export function OpenFormatProvider({
   children,
   config = {
     // @ts-ignore
-    networks: [Chains.polygonMumbai],
+    networks: [Chains.arbitrumSepolia],
     appId: '',
-    activeChain: 'mumbai',
+    activeChain: 'arbitrum-sepolia',
   },
 }: {
   children: React.ReactNode;
@@ -42,14 +42,14 @@ export function OpenFormatProvider({
     appId: string;
     clientId: string;
     signer?: Signer | string;
-    activeChain?: 'mumbai' | 'polygon' | 'aurora' | 'aurora-testnet';
+    activeChain?: 'arbitrum-sepolia';
   };
 }) {
   return (
     <ThirdwebProvider
       activeChain={config.activeChain}
       clientId={config.clientId}
-      supportedChains={[Polygon, Aurora, Mumbai, AuroraTestnet]}
+      supportedChains={[ArbitrumSepolia]}
       autoConnect={true}
       supportedWallets={[metamaskWallet({ recommended: true }), localWallet()]}
     >
@@ -62,7 +62,7 @@ function InnerProvider({
   children,
   config = {
     // @ts-ignore
-    networks: [Chains.polygonMumbai],
+    networks: [Chains.arbitrumSepolia],
     appId: '',
   },
 }: {

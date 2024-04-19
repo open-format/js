@@ -81,8 +81,6 @@ export class Reward extends BaseContract {
     let tx;
     let transactions: PromiseOrValue<BytesLike>[] = [];
 
-    await this.requestFee();
-
     for (const token of params.tokens) {
       if (!Object.values(ActivityType).includes(token.activityType)) {
         throw new Error('ActivityType is not valid.');
@@ -105,7 +103,7 @@ export class Reward extends BaseContract {
           transactions.push(tx);
           break;
 
-        case RewardType.CONSTELLATION_TOKEN:
+        case RewardType.REWARD_TOKEN:
           tx = this.contract.interface.encodeFunctionData('transferERC20', [
             token.address,
             params.receiver,

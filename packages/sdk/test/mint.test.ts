@@ -103,7 +103,7 @@ describe('ERC721', () => {
       async function createInstance() {
         return new ERC721Base(
           global.sdk.provider,
-          global.star,
+          global.app,
           '0x1',
           global.sdk.signer
         );

@@ -10,7 +10,6 @@ import {
 } from '../types';
 import { App } from './app';
 import { BaseContract } from './base';
-import { Constellation } from './constellation';
 import { Factory } from './factory';
 import { Reward } from './reward';
 import { Subgraph } from './subgraph';
@@ -27,7 +26,7 @@ import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
  * const sdk = new OpenFormatSDK({
  *  signer: "0x....",
  *  appId: "0x1ade2613adb6bafbc65d40eb9c1effbe3bfd8b81",
- *  network: Chains.polygonMumbai
+ *  network: Chains.arbitrumSepolia
  * });
  * ```
  */
@@ -39,8 +38,8 @@ export class OpenFormatSDK extends BaseContract {
   App: App;
 
   static defaultOptions: SDKOptions = {
-    network: Chains.polygonMumbai,
-    starId: '',
+    network: Chains.arbitrumSepolia,
+    appId: '',
   };
 
   constructor(options: SDKOptions) {
@@ -48,7 +47,7 @@ export class OpenFormatSDK extends BaseContract {
       getProviderFromUrl(
         options.rpcUrl ?? options.network.rpcUrls.default?.http?.[0]
       ),
-      options.starId,
+      options.appId,
       options.signer as Signer
     );
 
@@ -58,7 +57,7 @@ export class OpenFormatSDK extends BaseContract {
       options.rpcUrl ?? this.options.network.rpcUrls.default?.http?.[0]
     );
 
-    this.appId = this.options.starId;
+    this.appId = this.options.appId;
 
     if (this.options.signer) {
       this.signer = getSigner(this.options.signer, this.provider);
@@ -84,12 +83,12 @@ export class OpenFormatSDK extends BaseContract {
    * const sdk = new OpenFormatSDK(sdkOptions);
    * sdk.setAppId('newAppId');
    */
-  setStarId(starId: string) {
-    this.appId = starId;
-    this.App = new App(this.provider, starId, this?.signer);
-    this.Reward = new Reward(this.provider, starId, this?.signer);
-    this.factory = new Factory(this.provider, starId, this?.signer);
-    this.subgraph = new Subgraph(this.provider, starId, this?.signer);
+  setAppId(appId: string) {
+    this.appId = appId;
+    this.App = new App(this.provider, appId, this?.signer);
+    this.Reward = new Reward(this.provider, appId, this?.signer);
+    this.factory = new Factory(this.provider, appId, this?.signer);
+    this.subgraph = new Subgraph(this.provider, appId, this?.signer);
   }
 
   async getContract({
@@ -127,13 +126,6 @@ export class OpenFormatSDK extends BaseContract {
 
       case ContractType.Token:
         return new ERC20Base(
-          this.provider,
-          this.appId,
-          contractAddress,
-          this.signer
-        );
-      case ContractType.Constellation:
-        return new Constellation(
           this.provider,
           this.appId,
           contractAddress,

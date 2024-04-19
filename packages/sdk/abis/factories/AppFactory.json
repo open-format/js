@@ -22,22 +22,12 @@
   },
   {
     "inputs": [],
+    "name": "App_nameAlreadyUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "Factory__FailedDeployment",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Factory_invalidConstellation",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Factory_nameAlreadyUsed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Factory_notConstellationOwner",
     "type": "error"
   },
   {
@@ -57,12 +47,6 @@
         "indexed": false,
         "internalType": "address",
         "name": "id",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "constellation",
         "type": "address"
       },
       {
@@ -103,6 +87,25 @@
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "apps",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_account",
         "type": "address"
@@ -130,11 +133,6 @@
         "internalType": "bytes32",
         "name": "_name",
         "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "_constellation",
-        "type": "address"
       },
       {
         "internalType": "address",
@@ -229,25 +227,6 @@
     "name": "setTemplate",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "name": "stars",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
