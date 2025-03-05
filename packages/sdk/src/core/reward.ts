@@ -1,22 +1,23 @@
-import { BytesLike, ethers, providers, Signer } from 'ethers';
+import { ethers, type BytesLike, type providers, type Signer } from 'ethers';
 import {
-  RewardsFacet as RewardContract,
   RewardsFacet__factory,
+  type RewardsFacet as RewardContract,
 } from '../contract-types';
-import { PromiseOrValue } from '../contract-types/common';
+import type { PromiseOrValue } from '../contract-types/common';
 import { parseErrorData } from '../helpers/transaction';
 
 import {
   ActivityType,
-  ERC20CreateParams,
-  RewardTriggerParams,
+  RewardActionType,
   RewardType,
-  Reward_CreateBadgeParams,
+  type ERC20CreateParams,
+  type RewardTriggerParams,
+  type Reward_CreateBadgeParams,
 } from '../types';
 import { App } from './app';
 import { BaseContract } from './base';
 
-import { ERC20Base } from './token/ERC20/ERC20Base';
+import type { ERC20Base } from './token/ERC20/ERC20Base';
 
 /**
  * A class representing a Reward contract that extends the BaseContract class.
@@ -77,81 +78,61 @@ export class Reward extends BaseContract {
     }
   }
 
-  async trigger(params: RewardTriggerParams) {
-    let tx;
-    let transactions: PromiseOrValue<BytesLike>[] = [];
+  async trigger(params: RewardTriggerParams[]) {
+    const transactions: PromiseOrValue<BytesLike>[] = [];
 
-    for (const token of params.tokens) {
-      if (!Object.values(ActivityType).includes(token.activityType)) {
-        throw new Error('ActivityType is not valid.');
-      }
+    for (const param of params) {
+      let tx: string;
 
-      switch (token.type) {
+      switch (param.rewardType) {
         case RewardType.BADGE:
-          if (!token.tokenURI) throw new Error('tokenURI has not been set.');
-
-          tx = this.contract.interface.encodeFunctionData('mintERC721', [
-            token.address,
-            params.receiver,
-            token.amount,
-            token.tokenURI,
-            ethers.utils.formatBytes32String(token.id),
-            ethers.utils.formatBytes32String(token.activityType),
-            token.uri ?? '',
-          ]);
-
-          transactions.push(tx);
+          if (param.actionType === RewardActionType.MINT) {
+            tx = this.contract.interface.encodeFunctionData('batchMintBadge', [
+              param.address,
+              param.receiver,
+              param.amount,
+              ethers.utils.formatBytes32String(param.id),
+              ethers.utils.formatBytes32String(ActivityType.ACTION),
+              ethers.utils.toUtf8Bytes(param.uri ?? ''),
+            ]);
+          }
           break;
 
-        case RewardType.REWARD_TOKEN:
-          tx = this.contract.interface.encodeFunctionData('transferERC20', [
-            token.address,
-            params.receiver,
-            token.amount,
-            ethers.utils.formatBytes32String(token.id),
-            ethers.utils.formatBytes32String(token.activityType),
-            token.uri ?? '',
-          ]);
-
-          transactions.push(tx);
-          break;
-
-        case RewardType.XP_TOKEN:
-          tx = this.contract.interface.encodeFunctionData('mintERC20', [
-            token.address,
-            params.receiver,
-            token.amount,
-            ethers.utils.formatBytes32String(token.id),
-            ethers.utils.formatBytes32String(token.activityType),
-            token.uri ?? '',
-          ]);
-
-          transactions.push(tx);
+        case RewardType.TOKEN:
+          if (param.actionType === RewardActionType.MINT) {
+            tx = this.contract.interface.encodeFunctionData('mintERC20', [
+              param.address,
+              param.receiver,
+              param.amount,
+              ethers.utils.formatBytes32String(param.id),
+              ethers.utils.formatBytes32String(ActivityType.ACTION),
+              ethers.utils.formatBytes32String(param.uri ?? ''),
+            ]);
+          } else {
+            tx = this.contract.interface.encodeFunctionData('transferERC20', [
+              param.address,
+              param.receiver,
+              param.amount,
+              ethers.utils.formatBytes32String(param.id),
+              ethers.utils.formatBytes32String(ActivityType.ACTION),
+              ethers.utils.formatBytes32String(param.uri ?? ''),
+            ]);
+          }
           break;
 
         default:
-          throw new Error('RewardType not found.');
+          throw new Error(`Unsupported reward type: ${param.rewardType}`);
       }
+
+      transactions.push(tx);
     }
 
-    try {
-      this.checkNetworksMatch();
-      const gasOverrides = await this.getGasPrice();
+    const tx = await this.contract.multicall(transactions, {
+      ...(await this.getGasPrice()),
+    });
 
-      if (transactions?.length) {
-        const tx = await this.contract.multicall(transactions, {
-          ...gasOverrides,
-        });
+    const receipt = await tx.wait();
 
-        const receipt = tx.wait();
-
-        return receipt;
-      } else {
-        throw new Error('No transactions found.');
-      }
-    } catch (error: any) {
-      const parsedError = parseErrorData(error);
-      throw new Error(parsedError);
-    }
+    return { transactionHash: receipt.transactionHash };
   }
 }

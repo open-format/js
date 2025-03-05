@@ -4,9 +4,7 @@
   "private": true,
   "license": "Apache-2.0",
   "workspaces": [
-    "packages/**",
-    "examples/**",
-    "docs/"
+    "packages/**"
   ],
   "repository": "git@github.com:openformat/js.git",
   "author": "OpenFormat Dev <dev@openformat.tech>",

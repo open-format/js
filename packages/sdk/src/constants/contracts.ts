@@ -5,6 +5,7 @@ import SettingsFacet from '../../abis/facet/SettingsFacet.json';
 import AppFactory from '../../abis/factories/AppFactory.json';
 import Proxy from '../../abis/proxy/Proxy.json';
 import ERC20Base from '../../abis/tokens/ERC20/ERC20Base.json';
+import ERC721Badge from '../../abis/tokens/ERC721/ERC721Badge.json';
 import ERC721Base from '../../abis/tokens/ERC721/ERC721Base.json';
 import ERC721LazyMint from '../../abis/tokens/ERC721/ERC721LazyMint.json';
 
@@ -18,5 +19,6 @@ export const abis = unionBy(
   AppFactory,
   ERC721LazyDropFacet,
   ERC721LazyMint,
+  ERC721Badge,
   'name'
 );

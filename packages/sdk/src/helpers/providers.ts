@@ -1,14 +1,11 @@
-import { ethers, providers, Signer } from 'ethers';
+import type { Signer } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { Chains, Subgraphs } from '../constants';
-import { ChainId } from '../types';
+import type { ChainId } from '../types';
 
 //@TODO: comment
 export function getSubgraphUrlFromChainID(chainId: ChainId) {
   switch (chainId) {
-    case Chains.polygon.id:
-      return Subgraphs[Chains.polygon.id].url;
-    case Chains.polygonAmoy.id:
-      return Subgraphs[Chains.polygonAmoy.id].url;
     case Chains.arbitrumSepolia.id:
       return Subgraphs[Chains.arbitrumSepolia.id].url;
     case Chains.foundry.id:
