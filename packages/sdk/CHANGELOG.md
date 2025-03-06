@@ -1,5 +1,11 @@
 # @openformat/sdk
 
+## 1.5.0
+
+### Minor Changes
+
+- [#173](https://github.com/open-format/js/pull/173) [`dd39138`](https://github.com/open-format/js/commit/dd391380faf7def8c133424bf20f82019e083f39) Thanks [@tinypell3ts](https://github.com/tinypell3ts)! - Add support for new chains
+
 ## 1.4.0
 
 ### Minor Changes
