@@ -1,12 +1,12 @@
-import { ethers, Signer } from 'ethers';
+import { ethers, type Signer } from 'ethers';
 import merge from 'lodash.merge';
 import { Chains } from '../constants/chains';
 import { getProviderFromUrl, getSigner } from '../helpers/providers';
 import {
   ContractType,
-  GetContractParameters,
-  OpenFormatContract,
-  SDKOptions,
+  type GetContractParameters,
+  type OpenFormatContract,
+  type SDKOptions,
 } from '../types';
 import { App } from './app';
 import { BaseContract } from './base';
@@ -14,6 +14,7 @@ import { Factory } from './factory';
 import { Reward } from './reward';
 import { Subgraph } from './subgraph';
 import { ERC20Base } from './token/ERC20/ERC20Base';
+import { ERC721Badge } from './token/ERC721/ERC721Badge';
 import { ERC721Base } from './token/ERC721/ERC721Base';
 import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
 
@@ -115,7 +116,13 @@ export class OpenFormatSDK extends BaseContract {
           contractAddress,
           this.signer
         );
-
+      case ContractType.Badge:
+        return new ERC721Badge(
+          this.provider,
+          this.appId,
+          contractAddress,
+          this.signer
+        );
       case ContractType.NFTLazyMint:
         return new ERC721LazyMint(
           this.provider,

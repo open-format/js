@@ -1,20 +1,20 @@
 import {
-  BigNumber,
-  BigNumberish,
-  ContractReceipt,
   ethers,
-  providers,
-  Signer,
+  type BigNumber,
+  type BigNumberish,
+  type ContractReceipt,
+  type providers,
+  type Signer,
 } from 'ethers';
 import {
-  ERC20FactoryFacet as ERC20FactoryContract,
   ERC20FactoryFacet__factory,
-  ERC721FactoryFacet as ERC721FactoryContract,
   ERC721FactoryFacet__factory,
-  ERC721LazyDropFacet as ERC721LazyDropFacetContract,
   ERC721LazyDropFacet__factory,
-  SettingsFacet as SettingsContract,
   SettingsFacet__factory,
+  type ERC20FactoryFacet as ERC20FactoryContract,
+  type ERC721FactoryFacet as ERC721FactoryContract,
+  type ERC721LazyDropFacet as ERC721LazyDropFacetContract,
+  type SettingsFacet as SettingsContract,
 } from '../contract-types';
 import {
   getArgumentFromEvent,
@@ -23,17 +23,18 @@ import {
 } from '../helpers/transaction';
 import { validateBigNumbers, validateWallet } from '../helpers/validation';
 import {
-  AppHasCreatorAccessParams,
-  AppSetAcceptedCurrenciesParams,
-  AppSetApplicationFeeParams,
-  AppSetCreatorAccessParams,
-  ERC20CreateParams,
-  ERC721CreateParams,
   ImplementationType,
+  type AppHasCreatorAccessParams,
+  type AppSetAcceptedCurrenciesParams,
+  type AppSetApplicationFeeParams,
+  type AppSetCreatorAccessParams,
+  type ERC20CreateParams,
+  type ERC721CreateParams,
 } from '../types';
 import { BaseContract } from './base';
 import { Subgraph } from './subgraph';
 import { ERC20Base } from './token/ERC20/ERC20Base';
+import { ERC721Badge } from './token/ERC721/ERC721Badge';
 import { ERC721Base } from './token/ERC721/ERC721Base';
 import { ERC721LazyMint } from './token/ERC721/ERC721LazyMint';
 
@@ -217,7 +218,9 @@ export class App extends BaseContract {
     }
   }
 
-  async createNFT(params: ERC721CreateParams): Promise<ERC721Base> {
+  async createNFT(
+    params: ERC721CreateParams
+  ): Promise<ERC721Base | ERC721Badge> {
     try {
       if (!this.signer) {
         throw new Error('Signer undefined');
@@ -232,14 +235,30 @@ export class App extends BaseContract {
 
       const { platformFee } = await this.platformFeeInfo(0);
 
-      const tx = await this.ERC721Factory.createERC721(
-        params.name,
-        params.symbol,
-        params.royaltyRecipient,
-        params.royaltyBps,
-        ethers.utils.formatBytes32String(ImplementationType.BASE),
-        { ...gasOverrides, ...params.overrides, value: platformFee }
-      );
+      let tx;
+      switch (params.implementationType) {
+        case ImplementationType.BADGE:
+          tx = await this.ERC721Factory.createERC721(
+            params.name,
+            params.symbol,
+            params.royaltyRecipient,
+            params.royaltyBps,
+            ethers.utils.formatBytes32String(ImplementationType.BADGE),
+            { ...gasOverrides, ...params.overrides, value: platformFee }
+          );
+          break;
+        default:
+          tx = await this.ERC721Factory.createERC721(
+            params.name,
+            params.symbol,
+            params.royaltyRecipient,
+            params.royaltyBps,
+            ethers.utils.formatBytes32String(ImplementationType.BASE),
+            { ...gasOverrides, ...params.overrides, value: platformFee }
+          );
+          break;
+      }
+
       const receipt = await tx.wait();
       const contractId = getArgumentFromEvent(
         receipt,
@@ -248,7 +267,22 @@ export class App extends BaseContract {
         0
       );
 
-      return new ERC721Base(this.provider, this.appId, contractId, this.signer);
+      switch (params.implementationType) {
+        case ImplementationType.BADGE:
+          return new ERC721Badge(
+            this.provider,
+            this.appId,
+            contractId,
+            this.signer
+          );
+        default:
+          return new ERC721Base(
+            this.provider,
+            this.appId,
+            contractId,
+            this.signer
+          );
+      }
     } catch (error: any) {
       const parsedError = parseErrorData(error);
       throw new Error(parsedError);

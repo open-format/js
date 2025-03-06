@@ -1,18 +1,20 @@
-import { BigNumberish, Signer } from 'ethers';
-import { Chain } from 'viem/chains';
-import {
+import type { BigNumberish, Signer } from 'ethers';
+import type { Chain } from 'viem/chains';
+import type {
   ERC20Base as ERC20BaseContract,
   ERC20FactoryFacet,
+  ERC721Badge as ERC721BadgeContract,
   ERC721Base as ERC721BaseContract,
   ERC721FactoryFacet,
   ERC721LazyDropFacet,
   ERC721LazyMint as ERC721LazyMintContract,
   SettingsFacet,
 } from '../contract-types';
-import { ERC721LazyDrop } from '../core/drop/ERC721LazyDrop';
-import { ERC20Base } from '../core/token/ERC20/ERC20Base';
-import { ERC721Base } from '../core/token/ERC721/ERC721Base';
-import { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
+import type { ERC721LazyDrop } from '../core/drop/ERC721LazyDrop';
+import type { ERC20Base } from '../core/token/ERC20/ERC20Base';
+import type { ERC721Badge } from '../core/token/ERC721/ERC721Badge';
+import type { ERC721Base } from '../core/token/ERC721/ERC721Base';
+import type { ERC721LazyMint } from '../core/token/ERC721/ERC721LazyMint';
 
 ///////////////////
 ///     SDK     ///
@@ -32,6 +34,7 @@ export interface SDKOptions {
 export type OpenFormatContract =
   | ERC20Base
   | ERC721Base
+  | ERC721Badge
   | ERC721LazyMint
   | ERC721LazyDrop;
 
@@ -39,11 +42,13 @@ export enum ContractType {
   NFT = 'NFT',
   NFTDrop = 'NFTDrop',
   NFTLazyMint = 'NFTLazyMint',
+  Badge = 'Badge',
   Token = 'Token',
 }
 
 export enum ImplementationType {
   BASE = 'Base',
+  BADGE = 'Badge',
   LAZY_MINT = 'LazyMint',
 }
 
@@ -107,6 +112,7 @@ export interface ERC721CreateParams {
   symbol: Parameters<ERC721FactoryFacet['createERC721']>[1];
   royaltyRecipient: Parameters<ERC721FactoryFacet['createERC721']>[2];
   royaltyBps: Parameters<ERC721FactoryFacet['createERC721']>[3];
+  implementationType: ImplementationType;
   overrides?: Parameters<ERC721FactoryFacet['createERC721']>[5];
 }
 
@@ -114,6 +120,11 @@ export interface ERC721MintParams {
   to: Parameters<ERC721BaseContract['mintTo']>[0];
   tokenURI: Parameters<ERC721BaseContract['mintTo']>[1];
   overrides?: Parameters<ERC721BaseContract['mintTo']>[2];
+}
+
+export interface ERC721BadgeMintParams {
+  to: Parameters<ERC721BadgeContract['mintTo']>[0];
+  overrides?: Parameters<ERC721BadgeContract['mintTo']>[1];
 }
 
 export interface ERC721SetMinterRoleParams {
@@ -127,6 +138,12 @@ export interface ERC721BatchMintParams {
   quantity: Parameters<ERC721BaseContract['batchMintTo']>[1];
   baseURI: Parameters<ERC721BaseContract['batchMintTo']>[2];
   overrides?: Parameters<ERC721BaseContract['batchMintTo']>[3];
+}
+
+export interface ERC721BatchMintBadgeParams {
+  to: Parameters<ERC721BadgeContract['batchMintTo']>[0];
+  quantity: Parameters<ERC721BadgeContract['batchMintTo']>[1];
+  overrides?: Parameters<ERC721BadgeContract['batchMintTo']>[2];
 }
 
 export interface ERC721BurnParams {
@@ -373,9 +390,8 @@ export interface AppSetApplicationFeeParams {
 ///////////////////
 
 export enum RewardType {
-  XP_TOKEN = 'XP_TOKEN',
+  TOKEN = 'TOKEN',
   BADGE = 'BADGE',
-  REWARD_TOKEN = 'REWARD_TOKEN',
 }
 
 export enum ActivityType {
@@ -383,19 +399,28 @@ export enum ActivityType {
   MISSION = 'MISSION',
 }
 
-export interface RewardTriggerParams {
-  receiver: string;
-  tokens: RewardToken[];
+export enum RewardActionType {
+  MINT = 'MINT',
+  BURN = 'BURN',
+  TRANSFER = 'TRANSFER',
 }
 
-export interface RewardToken {
-  amount: BigNumberish;
-  address: string;
-  type: RewardType;
+export interface RewardTriggerParams {
+  receiver: string;
   id: string;
-  activityType: ActivityType;
+  address: string;
+  amount: BigNumberish;
+  actionType: RewardActionType;
+  rewardType: RewardType;
   uri?: string;
   tokenURI?: string;
+}
+
+export interface Reward {
+  id: string;
+  amount: BigNumberish;
+  address: string;
+  uri?: string;
 }
 
 export interface Reward_CreateBadgeParams {

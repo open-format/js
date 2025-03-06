@@ -98,6 +98,6 @@
     "lodash.isobject": "^3.0.2",
     "lodash.merge": "^4.6.2",
     "lodash.unionby": "^4.8.0",
-    "viem": "^2.9.16"
+    "viem": "^2.23.6"
   }
 }

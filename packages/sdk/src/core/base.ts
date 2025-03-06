@@ -1,7 +1,5 @@
-import { BigNumber, ethers, providers, Signer } from 'ethers';
-import { Chains } from '../constants';
-import { ERC20Base, ERC721Base } from '../contract-types';
-import { getPolygonGasFee } from '../helpers';
+import { BigNumber, ethers, type providers, type Signer } from 'ethers';
+import type { ERC20Base, ERC721Badge, ERC721Base } from '../contract-types';
 import { getSubgraphUrlFromChainID } from '../helpers/providers';
 
 /**
@@ -58,7 +56,7 @@ export class BaseContract {
    * ```
    */
   protected async getUserBalance(
-    contract: ERC20Base | ERC721Base,
+    contract: ERC20Base | ERC721Base | ERC721Badge,
     account: string
   ): Promise<BigNumber> {
     return contract.balanceOf(account);
@@ -86,21 +84,11 @@ export class BaseContract {
     const isEIP559 = feeData.maxFeePerGas && feeData.maxPriorityFeePerGas;
 
     if (isEIP559) {
-      // EIP-1559 is supported
-      const chainId = (await this.provider.getNetwork()).chainId;
-      let maxPriorityFeePerGas: BigNumber;
-
-      if (chainId === Chains.polygon.id) {
-        maxPriorityFeePerGas = await getPolygonGasFee(chainId);
-      } else {
-        maxPriorityFeePerGas = BigNumber.from(feeData.maxPriorityFeePerGas);
-      }
+      const maxPriorityFeePerGas = BigNumber.from(feeData.maxPriorityFeePerGas);
 
       const block = await this.provider.getBlock('latest');
       const baseBlockFee =
-        block && block.baseFeePerGas
-          ? block.baseFeePerGas
-          : ethers.utils.parseUnits('1', 'gwei');
+        block?.baseFeePerGas ?? ethers.utils.parseUnits('1', 'gwei');
 
       const baseMaxFeePerGas = baseBlockFee.mul(2);
       const maxFeePerGas = baseMaxFeePerGas.add(maxPriorityFeePerGas).mul('2');
@@ -108,17 +96,17 @@ export class BaseContract {
         maxFeePerGas,
         maxPriorityFeePerGas,
       };
-    } else {
-      // For non EIP-1559 networks, use the standard gas price
-      const gasPrice = await this.provider.getGasPrice();
-
-      return {
-        gasPrice,
-      };
     }
+
+    // For non EIP-1559 networks, use the standard gas price
+    const gasPrice = await this.provider.getGasPrice();
+
+    return {
+      gasPrice,
+    };
   }
 
-  setAppId(appId: string) {
+  public setAppId(appId: string): void {
     this.appId = appId;
   }
 }

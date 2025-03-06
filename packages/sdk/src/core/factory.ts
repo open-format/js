@@ -1,9 +1,9 @@
 import {
-  ContractReceipt,
-  ContractTransaction,
   ethers,
-  providers,
-  Signer,
+  type ContractReceipt,
+  type ContractTransaction,
+  type providers,
+  type Signer,
 } from 'ethers';
 import { appFactoryContracts } from '../constants';
 import { AppFactory__factory } from '../contract-types';
